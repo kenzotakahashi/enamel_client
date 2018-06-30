@@ -13,7 +13,18 @@
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "apollo-cache-inmemory": "1.2.5",
+    "apollo-cache-persist": "0.1.1",
+    "apollo-client": "2.3.5",
+    "apollo-link": "1.2.2",
+    "apollo-link-error": "1.1.0",
+    "apollo-link-http": "1.5.4",
+    "apollo-link-state": "0.4.1",
+    "graphql": "0.13.2",
+    "graphql-tag": "2.9.2",
+    "vee-validate": "^2.1.0-beta.2",
+    "vue-apollo": "3.0.0-beta.19"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
@@ -34,9 +45,6 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
   "lint-staged": {
     "*.js": [
       "vue-cli-service lint",

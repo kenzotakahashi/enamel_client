@@ -1,3 +1,22 @@
 module.exports = {
-  lintOnSave: false
+  lintOnSave: false,
+  devServer: {
+    port: 8001,
+    proxy: 'http://localhost:5500'
+  },
+  pwa: {
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'default'
+  },
+  configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.(graphql|gql)$/,
+          exclude: /node_modules/,
+          loader: 'graphql-tag/loader'
+        }
+      ]
+    }
+  }
 }
