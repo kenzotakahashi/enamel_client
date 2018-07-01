@@ -15,7 +15,7 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
-// import './assets/css/style.sass'
+import './assets/css/style.sass'
 
 Vue.use(VeeValidate)
 Vue.config.productionTip = false

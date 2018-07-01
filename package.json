@@ -10,10 +10,6 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "register-service-worker": "^1.0.0",
-    "vue": "^2.5.16",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
     "apollo-cache-inmemory": "1.2.5",
     "apollo-cache-persist": "0.1.1",
     "apollo-client": "2.3.5",
@@ -23,8 +19,13 @@
     "apollo-link-state": "0.4.1",
     "graphql": "0.13.2",
     "graphql-tag": "2.9.2",
+    "register-service-worker": "^1.0.0",
+    "spectre.css": "0.5.3",
     "vee-validate": "^2.1.0-beta.2",
-    "vue-apollo": "3.0.0-beta.19"
+    "vue": "^2.5.16",
+    "vue-apollo": "3.0.0-beta.19",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
