@@ -7,8 +7,8 @@
         <div class="form-group">
           <label class="form-label" for="name-1">Full Name</label>
           <input class="form-input" type="text" id="name-1" v-model="form.name" placeholder="Your full name">
-          <label class="form-label">Password</label>
-          <input class="form-input" type="password" v-model="form.password" placeholder="Create password">
+          <label class="form-label" for="password-1">Password</label>
+          <input class="form-input" type="password" id="password-1" v-model="form.password" placeholder="Create password">
         </div>
         <button class="btn btn-primary" @click="signup">Complete</button>
       </div>
