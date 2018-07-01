@@ -24,3 +24,7 @@ mutation Login($email: String!, $password: String!) {
     }
   }
 }
+
+query FolderTree {
+  folderTree
+}

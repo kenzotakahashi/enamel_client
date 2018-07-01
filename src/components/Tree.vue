@@ -1,20 +1,17 @@
 <template name="tree">
   <li>
     <div
-      :class="{bold: isFolder}"
-      @click="toggle"
-      @dblclick="changeType">
+      @click="toggle">
       {{ model.name }}
       <span v-if="isFolder">[{{ open ? '-' : '+' }}]</span>
     </div>
     <ul v-show="open" v-if="isFolder">
       <tree
         class="item"
-        v-for="(model, index) in model.children"
-        :key="index"
+        v-for="model in model.subfolders"
+        :key="model.id"
         :model="model">
       </tree>
-      <li class="add" @click="addChild">+</li>
     </ul>
   </li>
 </template>
@@ -37,8 +34,7 @@ export default {
   },
   computed: {
     isFolder: function () {
-      return this.model.children &&
-        this.model.children.length
+      return this.model.subfolders && this.model.subfolders.length
     }
   },
   methods: {
@@ -47,17 +43,10 @@ export default {
         this.open = !this.open
       }
     },
-    changeType: function () {
-      if (!this.isFolder) {
-        Vue.set(this.model, 'children', [])
-        this.addChild()
-        this.open = true
-      }
-    },
     addChild: function () {
-      this.model.children.push({
-        name: 'new stuff'
-      })
+      // this.model.subfolders.push({
+      //   name: 'new stuff'
+      // })
     }
   }
 };
@@ -66,9 +55,6 @@ export default {
 <style>
 .item {
   cursor: pointer;
-}
-.bold {
-  font-weight: bold;
 }
 ul {
   padding-left: 1em;

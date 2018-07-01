@@ -4,10 +4,12 @@
     <h4>Workspace</h4>
     <div class="columns">
       <div class="column col-3">
-        <Tree
-          class="item"
-          :model="treeData">
-        </Tree>
+        <div v-for="tree in folderTree">
+          <Tree
+            class="item"
+            :model="tree">
+          </Tree>
+        </div>
       </div>
       <div class="column col-9">
       </div>
@@ -17,35 +19,7 @@
 
 <script>
 import Tree from '@/components/Tree'
-
-var data = {
-  name: 'My Tree',
-  children: [
-    { name: 'hello' },
-    { name: 'wat' },
-    {
-      name: 'child folder',
-      children: [
-        {
-          name: 'child folder',
-          children: [
-            { name: 'hello' },
-            { name: 'wat' }
-          ]
-        },
-        { name: 'hello' },
-        { name: 'wat' },
-        {
-          name: 'child folder',
-          children: [
-            { name: 'hello' },
-            { name: 'wat' }
-          ]
-        }
-      ]
-    }
-  ]
-}
+import { FolderTree } from '../constants/query.gql'
 
 export default {
   components: {
@@ -53,7 +27,19 @@ export default {
   },
   data() {
     return {
-      treeData: data
+      folderTree: []
+    }
+  },
+  apollo: {
+    folderTree: {
+      query: FolderTree,
+      // update: data => {
+      // },
+      // result({ data }) {
+      // },
+      error(error) {
+        console.error(error)
+      },
     }
   },
   methods: {

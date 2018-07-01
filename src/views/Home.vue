@@ -44,7 +44,6 @@ export default {
           variables: {email}
         }).then(({data}) => {
           this.submitted = true
-          console.log(data)
           this.id = data.captureEmail.id
         }).catch((error) => {
           console.log(error)
