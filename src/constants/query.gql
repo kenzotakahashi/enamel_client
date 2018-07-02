@@ -28,3 +28,24 @@ mutation Login($email: String!, $password: String!) {
 query FolderTree {
   folderTree
 }
+
+mutation CreateTask($folder: String!, $name: String!) {
+  createTask(folder: $folder, name: $name) {
+    id
+    name
+  }
+}
+
+query GetFolder($id: String!) {
+  getFolder(id: $id) {
+    id
+    name
+    shareWith
+    tasks {
+      id
+      name
+      status
+      subtasks
+    }
+  }
+}

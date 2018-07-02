@@ -32,17 +32,18 @@ export default {
   },
   methods: {
     async login() {
+      console.log(this.$apollo)
       const validated = await this.$validator.validate()
       const { email, password } = this.form
       if (validated && email && password) {
         this.$apollo.mutate({
           mutation: Login,
           variables: { email, password }
-        }).then(({data: {login}}) => {
+        }).then(async (data) => {
+          const login = data.data.login
           const id = login.user.id
           const token = login.token
           this.saveUserData(id, token)
-
           this.$router.push({name: 'workspace'})
         }).catch((error) => {
           console.log(error)

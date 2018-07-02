@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h2>Enamel</h2>
-    <h4>Workspace</h4>
     <div class="columns">
       <div class="column col-3">
         <div v-for="tree in folderTree">
@@ -12,6 +11,7 @@
         </div>
       </div>
       <div class="column col-9">
+        <router-view/>
       </div>
     </div>
   </div>
