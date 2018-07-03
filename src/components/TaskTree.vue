@@ -1,10 +1,13 @@
 <template name="tree">
   <li>
-    <div>
+    <div class="columns">
       <span v-if="isParent" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
-      <router-link :to="{name: 'task', params: {taskId: model.id}}">        
+      <router-link :to="{name: 'task', params: {taskId: model.id}}" class="column col-9">      
         <span class="folder">{{ model.name }}</span>
       </router-link>
+      <span class="column col-3">
+        {{ model.status }}
+      </span>
     </div>
     <ul v-show="open" v-if="isParent">
       <tree
@@ -49,9 +52,6 @@ export default {
 </script>
 
 <style>
-.item {
-  cursor: pointer;
-}
 ul {
   padding-left: 1em;
   line-height: 1.5em;

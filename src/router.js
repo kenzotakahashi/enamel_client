@@ -6,6 +6,7 @@ import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import Workspace from './views/Workspace.vue'
 import Folder from './views/Folder.vue'
+import FolderDetail from './views/FolderDetail.vue'
 import Task from './views/Task.vue'
 
 Vue.use(Router)
@@ -35,9 +36,14 @@ export default new Router({
       children: [
         {
           path: 'folder/:id',
-          name: 'folder',
           component: Folder,
+          props: true,
           children: [
+            {
+              path: '',
+              name: 'folder',
+              component: FolderDetail
+            },
             {
               path: 'task/:taskId',
               name: 'task',

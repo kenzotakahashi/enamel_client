@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="columns">
-      <div class="column col-6">
+      <div class="white column col-6">
         <h3>{{folder.name}}</h3>
         <div>
           <span class="menu-title">LIST</span>
@@ -12,18 +12,19 @@
           <span class="menu-title">MORE</span>
         </div>
         <div class="">
-          <div class="btn">+ New Task</div>
+          <div class="btn btn-sm">+ New task</div>
         </div>
         <hr>
-        <div v-for="task in folder.tasks" :key="task.id" class="task-list-group">
-          <TaskTree
-            class="item"
-            :model="task">
-          </TaskTree>
-        </div>
+        <TaskTree
+          v-for="task in folder.tasks" :key="task.id" class="item task-list-group"
+          :model="task">
+        </TaskTree>
       </div>
-      <div class="column col-6">
-        <router-view />
+      <div v-if="subRoute==='task'" class="column col-6">
+        <router-view></router-view>
+      </div>
+      <div v-if="subRoute==='folder'" class="column col-6">
+        <FolderDetail :folder="folder"></FolderDetail>
       </div>
     </div>
   </div>
@@ -32,13 +33,20 @@
 <script>
 import { GetFolder } from '../constants/query.gql'
 import TaskTree from '@/components/TaskTree'
+import FolderDetail from './FolderDetail.vue'
 
 export default {
   components: {
-    TaskTree
+    TaskTree,
+    FolderDetail
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.subRoute = to.name
+    next()
   },
   data() {
     return {
+      subRoute: 'folder',
       folder: {}
     }
   },
@@ -49,6 +57,7 @@ export default {
         return {id: this.$route.params.id}
       },
       result({ data }) {
+        console.log(data.getFolder)
         this.folder = data.getFolder
       }
     },

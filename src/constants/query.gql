@@ -58,7 +58,7 @@ query GetTask($id: String!) {
       id
       name
     }
-    folders {
+    folders { 
       id
       name
     }
@@ -69,6 +69,16 @@ query GetTask($id: String!) {
     creator {
       id
       name
+    }
+    comments {
+      id
+      body
+      user {
+        id
+        name
+        initials
+        avatarColor
+      }
     }
     shareWith
     startDate

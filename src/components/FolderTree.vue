@@ -54,9 +54,6 @@ export default {
 </script>
 
 <style>
-.item {
-  cursor: pointer;
-}
 ul {
   padding-left: 1em;
   line-height: 1.5em;

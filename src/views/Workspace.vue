@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <h2>Enamel</h2>
+    <h3>Enamel</h3>
     <div class="columns">
-      <div class="column col-3">
+      <div class="column col-2">
         <div v-for="tree in folderTree">
           <Tree
             class="item"
@@ -10,8 +10,8 @@
           </Tree>
         </div>
       </div>
-      <div class="column col-9">
-        <router-view/>
+      <div class="column col-10">
+        <router-view></router-view>
       </div>
     </div>
   </div>
