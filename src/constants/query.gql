@@ -29,10 +29,21 @@ query FolderTree {
   folderTree
 }
 
-mutation CreateTask($folder: String!, $name: String!) {
-  createTask(folder: $folder, name: $name) {
+mutation CreateTask($folder: String, $parent: String, $name: String!) {
+  createTask(folder: $folder, parent: $parent, name: $name) {
     id
     name
+    status
+    subtasks
+  }
+}
+
+mutation UpdateTask($id: String!, $name: String) {
+  updateTask(id: $id, name: $name) {
+    id
+    name
+    status
+    subtasks
   }
 }
 

@@ -2,7 +2,11 @@
   <div class="white container">
     <div class="task-view-header">
       <div v-if="task.parent">{{task.parent.name}}</div>
-      <h4>{{task.name}}</h4>
+      <div>
+        <input type="text" name="taskname" ref="taskname" v-model="taskName"
+          @keyup.enter="updateTask" @keyup.esc="cancel">
+        </input>
+      </div>
       <span v-for="folder in task.folders">
         <span class="folder-tag">{{ folder.name }}</span>
       </span>
@@ -51,7 +55,7 @@
 </template>
 
 <script>
-import { GetTask } from '../constants/query.gql'
+import { GetTask, UpdateTask } from '../constants/query.gql'
 import { formatDate } from '@/helpers/helpers'
 import TaskTree from '@/components/TaskTree'
 import Comments from '@/components/Comments'
@@ -66,6 +70,7 @@ export default {
   data() {
     return {
       formatDate,
+      taskName: '',
       task: {
         parent: {},
         creator: {},
@@ -86,6 +91,7 @@ export default {
       result({ data: {getTask} }) {
         console.log(getTask)
         this.task = getTask
+        this.taskName = getTask.name
       }
     },
   },
@@ -93,6 +99,31 @@ export default {
     formatSubtaskCount(subtasks) {
       const count = subtasks.length
       return `${count} subtask${count > 1 ? 's' : ''}`
+    },
+    updateTask(e) {
+      const id = this.$route.params.taskId
+      const name = this.taskName
+      if (name === this.task.name) return
+      this.$apollo.mutate({
+        mutation: UpdateTask,
+        variables: { id, name },
+        optimisticResponse: {
+          __typename: "Mutation",
+          updateTask: {
+            id,
+            __typename: "Task",
+            ...this.task,
+            name
+          }
+        }
+      }).then(({ data: { createTask } }) => {
+        this.cancel(e)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    cancel(e) {
+      e.target.blur()
     }
   }
 }

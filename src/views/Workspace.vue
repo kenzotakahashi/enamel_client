@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h3>Enamel</h3>
+    <h3>enamel</h3>
     <div class="columns">
       <div class="column col-2">
         <div v-for="tree in folderTree">

@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <h2>Enamel</h2>
+    <h2>enamel</h2>
     <div class="columns">
       <div class="column col-4 col-mx-auto">
         <div>Enter your email address to start free trial</div>
         <div class="form-group">
           <label class="form-label" for="email-1">Email</label>
           <input class="form-input" type="email" id="email-1" v-model="form.email" placeholder="Email">
-          <button class="btn btn-primary" @click="capture">Create my Enamel account</button>
+          <button class="btn btn-primary" @click="capture">Create my enamel account</button>
         </div>
 
         <div v-if="submitted">

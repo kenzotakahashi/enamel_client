@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <h2>Enamel</h2>
+    <h2>enamel</h2>
     <div class="columns">
       <div class="column col-4 col-mx-auto">
-        <div>Welcome to Enamel! Finish setting up your account</div>
+        <div>Welcome to enamel! Finish setting up your account</div>
         <div class="form-group">
           <label class="form-label" for="name-1">Full Name</label>
           <input class="form-input" type="text" id="name-1" v-model="form.name" placeholder="Your full name">

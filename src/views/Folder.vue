@@ -11,8 +11,13 @@
           <span class="menu-title">STREAM</span>
           <span class="menu-title">MORE</span>
         </div>
-        <div class="">
-          <div class="btn btn-sm">+ New task</div>
+        <div>
+          <div v-show="isFormOpen">
+            <input @focusout="closeForm" @keyup.enter="createTask" @keyup.esc="closeForm"
+              class="task-form" ref="taskform" type="text" name="task"
+              v-model="newTaskName" placeholder="Enter title for new task"></input>
+          </div>
+          <div v-show="!isFormOpen" @click="openForm" class="btn btn-sm">+ New task</div>
         </div>
         <hr>
         <TaskTree
@@ -31,7 +36,7 @@
 </template>
 
 <script>
-import { GetFolder } from '../constants/query.gql'
+import { GetFolder, CreateTask } from '../constants/query.gql'
 import TaskTree from '@/components/TaskTree'
 import FolderDetail from './FolderDetail.vue'
 
@@ -44,8 +49,15 @@ export default {
     this.subRoute = to.name
     next()
   },
+  mounted() {
+    if (this.$route.params.taskId) {
+      this.subRoute = 'task'
+    }
+  },
   data() {
     return {
+      isFormOpen: false,
+      newTaskName: '',
       subRoute: 'folder',
       folder: {}
     }
@@ -57,10 +69,52 @@ export default {
         return {id: this.$route.params.id}
       },
       result({ data }) {
-        console.log(data.getFolder)
+        // console.log(data.getFolder)
         this.folder = data.getFolder
       }
     },
+  },
+  methods: {
+    openForm() {
+      this.isFormOpen = true
+      this.$nextTick(() => this.$refs.taskform.focus())
+    },
+    closeForm() {
+      this.isFormOpen = false
+    },
+    async createTask() {
+      if (!this.newTaskName) return
+      const id = this.$route.params.id
+      this.$apollo.mutate({
+        mutation: CreateTask,
+        variables: {
+          folder: id,
+          parent: null,
+          name: this.newTaskName
+        },
+        update: (store, { data: { createTask } }) => {
+          try {
+            const data = store.readQuery({
+              query: GetFolder,
+              variables: {id}
+            })
+            data.getFolder.tasks.unshift(createTask)
+            store.writeQuery({
+              query: GetFolder,
+              variables: {id},
+              data
+            })
+          } catch(err) {
+          }
+        }
+      }).then(({ data: { createTask } }) => {
+        this.newTaskName = ''
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+
+
   }
 }
 </script>

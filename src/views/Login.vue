@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>Enamel</h2>
+    <h2>enamel</h2>
     <div class="columns">
       <div class="column col-4 col-mx-auto">
         <div>Login</div>
