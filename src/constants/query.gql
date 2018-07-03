@@ -49,3 +49,32 @@ query GetFolder($id: String!) {
     }
   }
 }
+
+query GetTask($id: String!) {
+  getTask(id: $id) {
+    id
+    name
+    parent {
+      id
+      name
+    }
+    folders {
+      id
+      name
+    }
+    assignees {
+      id
+      name
+    }
+    creator {
+      id
+      name
+    }
+    shareWith
+    startDate
+    finishDate
+    importance
+    status
+    subtasks
+  }
+}

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Tree from '@/components/Tree'
+import Tree from '@/components/FolderTree'
 import { FolderTree } from '../constants/query.gql'
 
 export default {

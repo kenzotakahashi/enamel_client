@@ -15,12 +15,12 @@
           <div class="btn">+ New Task</div>
         </div>
         <hr>
-        <router-link v-for="task in folder.tasks" 
-                     :to="{name: 'task', params: {taskId: task.id}}"
-                     :key="task.id"
-                     class="task-list-group">
-          <span class="task-list-group">{{task.name}}</span>
-        </router-link>
+        <div v-for="task in folder.tasks" :key="task.id" class="task-list-group">
+          <TaskTree
+            class="item"
+            :model="task">
+          </TaskTree>
+        </div>
       </div>
       <div class="column col-6">
         <router-view />
@@ -31,8 +31,12 @@
 
 <script>
 import { GetFolder } from '../constants/query.gql'
+import TaskTree from '@/components/TaskTree'
 
 export default {
+  components: {
+    TaskTree
+  },
   data() {
     return {
       folder: {}

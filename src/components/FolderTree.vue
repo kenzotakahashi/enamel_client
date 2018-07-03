@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import Tree from './Tree'
+import FolderTree from './FolderTree'
 
 export default {
   name: 'tree',
   components: {
-    'tree': Tree
+    'tree': FolderTree
   },
   props: {
     model: Object
