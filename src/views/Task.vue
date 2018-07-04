@@ -1,11 +1,40 @@
 <template>
   <div class="white container">
-    <div class="task-view-header">
-      <div v-if="task.parent">{{task.parent.name}}</div>
-      <div>
-        <input type="text" name="taskname" ref="taskname" v-model="taskName"
-          @keyup.enter="updateTask" @keyup.esc="cancel">
-        </input>
+    <div class="task-view-header columns">
+      <div class="column col-8">
+        <div v-if="task.parent">{{task.parent.name}}</div>
+        <div>
+          <input type="text" name="taskname" ref="taskname" v-model="taskName"
+            @keyup.enter="updateTask" @keyup.esc="cancel">
+          </input>
+        </div>
+      </div>
+      <div class="column col-4">
+        <span class="icon">
+          <i class="far fa-star"></i>
+        </span>
+        <span class="icon">
+          <i class="fas fa-thumbtack"></i>
+        </span>
+        <span class="icon">
+          <i class="fas fa-link"></i>
+        </span>
+        <span class="icon dropdown" @click="">
+          <i class="fas fa-ellipsis-h"></i>
+          <div class="dropdown-content">
+            <div>Make reccurent</div>
+            <div>Duplicate task</div>
+            <div>Request status update</div>
+            <div>Print</div>
+            <hr></hr>
+            <div>Enter full screeen</div>
+            <div>Open task in separate tab</div>
+            <hr></hr>
+            <div @click="deleteTask">Delete task</div>
+            <hr></hr>
+            <div>Close panel</div>
+          </div>
+        </span>
       </div>
       <span v-for="folder in task.folders">
         <span class="folder-tag">{{ folder.name }}</span>
@@ -55,11 +84,22 @@
 </template>
 
 <script>
-import { GetTask, UpdateTask } from '../constants/query.gql'
+import { GetTask, UpdateTask, DeleteTask, GetFolder } from '../constants/query.gql'
 import { formatDate } from '@/helpers/helpers'
 import TaskTree from '@/components/TaskTree'
 import Comments from '@/components/Comments'
 import CommentBox from '@/components/CommentBox'
+
+function deleteTaskInFolder(id, tasks) {
+  // Only works for a non-subtask
+  for (const [i, task] of tasks.entries()) {
+    if (task.id === id) {
+      tasks.splice(i, 1)
+      return true
+    }
+    deleteTaskInFolder(id, task.subtasks)    
+  }
+}
 
 export default {
   components: {
@@ -71,6 +111,7 @@ export default {
     return {
       formatDate,
       taskName: '',
+      option: false,
       task: {
         parent: {},
         creator: {},
@@ -89,7 +130,7 @@ export default {
         return {id: this.$route.params.taskId}
       },
       result({ data: {getTask} }) {
-        console.log(getTask)
+        // console.log(getTask)
         this.task = getTask
         this.taskName = getTask.name
       }
@@ -122,6 +163,24 @@ export default {
         console.log(error)
       })
     },
+    deleteTask() {
+
+      const taskId = this.$route.params.taskId
+      const id = this.$route.params.id
+      const parent = this.task.parent ? this.task.parent.id : null
+      this.$apollo.mutate({
+        mutation: DeleteTask,
+        variables: { id: taskId, parent },
+      }).then((result) => {
+        this.$router.replace({
+          name: "folder",
+          params: {id},
+          query: { delete: 'true' }
+        })
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     cancel(e) {
       e.target.blur()
     }
@@ -139,5 +198,12 @@ export default {
   left: 30px;
 }
 
+.icon {
+  padding: 0 7px;
+  cursor: pointer;
+}
+.icon:hover {
+  color: #48f;
+}
 
 </style>

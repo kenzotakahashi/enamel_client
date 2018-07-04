@@ -54,6 +54,11 @@ export default {
       this.subRoute = 'task'
     }
   },
+  async updated() {
+    if (this.$route.query.delete) {
+      const data = await this.$apollo.queries.getFolder.refetch()
+    }
+  },
   data() {
     return {
       isFormOpen: false,
@@ -68,10 +73,9 @@ export default {
       variables() {
         return {id: this.$route.params.id}
       },
-      result({ data }) {
-        // console.log(data.getFolder)
+      result ({data}) {
         this.folder = data.getFolder
-      }
+      },
     },
   },
   methods: {

@@ -47,6 +47,10 @@ mutation UpdateTask($id: String!, $name: String) {
   }
 }
 
+mutation DeleteTask($id: String!, $parent: String) {
+  deleteTask(id: $id, parent: $parent)
+}
+
 query GetFolder($id: String!) {
   getFolder(id: $id) {
     id
