@@ -47,7 +47,8 @@ export default new Router({
             {
               path: 'task/:taskId',
               name: 'task',
-              component: Task
+              component: Task,
+              props: true
             }
           ]
         }

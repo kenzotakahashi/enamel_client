@@ -11,14 +11,7 @@
           <span class="menu-title">STREAM</span>
           <span class="menu-title">MORE</span>
         </div>
-        <div>
-          <div v-show="isFormOpen">
-            <input @focusout="closeForm" @keyup.enter="createTask" @keyup.esc="closeForm"
-              class="task-form" ref="taskform" type="text" name="task"
-              v-model="newTaskName" placeholder="Enter title for new task"></input>
-          </div>
-          <div v-show="!isFormOpen" @click="openForm" class="btn btn-sm">+ New task</div>
-        </div>
+        <TaskForm></TaskForm>
         <hr>
         <TaskTree
           v-for="task in folder.tasks" :key="task.id" class="item task-list-group"
@@ -36,13 +29,15 @@
 </template>
 
 <script>
-import { GetFolder, CreateTask } from '../constants/query.gql'
+import { GetFolder } from '../constants/query.gql'
 import TaskTree from '@/components/TaskTree'
+import TaskForm from '@/components/TaskForm'
 import FolderDetail from './FolderDetail.vue'
 
 export default {
   components: {
     TaskTree,
+    TaskForm,
     FolderDetail
   },
   beforeRouteUpdate (to, from, next) {
@@ -55,14 +50,12 @@ export default {
     }
   },
   async updated() {
-    if (this.$route.query.delete) {
+    if (this.$route.query.refetch) {
       const data = await this.$apollo.queries.getFolder.refetch()
     }
   },
   data() {
     return {
-      isFormOpen: false,
-      newTaskName: '',
       subRoute: 'folder',
       folder: {}
     }
@@ -78,48 +71,6 @@ export default {
       },
     },
   },
-  methods: {
-    openForm() {
-      this.isFormOpen = true
-      this.$nextTick(() => this.$refs.taskform.focus())
-    },
-    closeForm() {
-      this.isFormOpen = false
-    },
-    async createTask() {
-      if (!this.newTaskName) return
-      const id = this.$route.params.id
-      this.$apollo.mutate({
-        mutation: CreateTask,
-        variables: {
-          folder: id,
-          parent: null,
-          name: this.newTaskName
-        },
-        update: (store, { data: { createTask } }) => {
-          try {
-            const data = store.readQuery({
-              query: GetFolder,
-              variables: {id}
-            })
-            data.getFolder.tasks.unshift(createTask)
-            store.writeQuery({
-              query: GetFolder,
-              variables: {id},
-              data
-            })
-          } catch(err) {
-          }
-        }
-      }).then(({ data: { createTask } }) => {
-        this.newTaskName = ''
-      }).catch((error) => {
-        console.log(error)
-      })
-    }
-
-
-  }
 }
 </script>
 

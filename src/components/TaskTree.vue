@@ -31,6 +31,9 @@ export default {
   props: {
     model: Object
   },
+  mounted() {
+    console.log(this.model)
+  },
   data: function () {
     return {
       open: false

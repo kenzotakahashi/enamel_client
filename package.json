@@ -21,6 +21,7 @@
     "graphql-tag": "2.9.2",
     "moment": "2.22.2",
     "register-service-worker": "^1.0.0",
+    "shortid": "2.2.8",
     "spectre.css": "0.5.3",
     "vee-validate": "^2.1.0-beta.2",
     "vue": "^2.5.16",
