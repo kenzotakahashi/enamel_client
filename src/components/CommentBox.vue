@@ -6,21 +6,58 @@
           placeholder="Add comment"></input>        
       </span>
       <span class="column col-2">
-        <span class="btn btn-primary btn-sm">Send</span>        
+        <span @click="createComment" class="btn btn-primary btn-sm">Send</span>        
       </span>        
     </div>
   </div>
 </template>
 
 <script>
+import { GetComments, CreateComment } from '../constants/query.gql'
 
 export default {
-  // props: ['comments'],
+  props: ['parent'],
   data() {
     return {
       form: {
         body: ''
       }
+    }
+  },
+  methods: {
+    createComment() {
+      if (!this.form.body) return
+      const parent = this.parent
+      this.$apollo.mutate({
+        mutation: CreateComment,
+        variables: {
+          parent: {
+            "kind": "Task",
+            "item": parent
+          },
+          body: this.form.body
+        },
+        update: (store, { data: { createComment } }) => {
+          try {
+            const data = store.readQuery({
+              query: GetComments,
+              variables: {parent}
+            })
+            data.getComments.push(createComment)
+            store.writeQuery({
+              query: GetComments,
+              variables: {parent},
+              data
+            })
+          } catch(err) {
+            console.log(err)
+          }
+        }
+      }).then(() => {
+        this.form.body = ''
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }

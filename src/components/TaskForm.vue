@@ -46,7 +46,11 @@ export default {
               query: GetTasks,
               variables: {folder, parent}
             })
-            data.getTasks.unshift(createTask)
+            if (parent) {
+              data.getTasks.push(createTask)
+            } else {
+              data.getTasks.unshift(createTask)
+            }
             store.writeQuery({
               query: GetTasks,
               variables: {folder, parent},
@@ -56,7 +60,7 @@ export default {
             console.log(err)
           }
         }
-      }).then(({ data: { createTask } }) => {
+      }).then(() => {
         this.newTaskName = ''
       }).catch((error) => {
         console.log(error)

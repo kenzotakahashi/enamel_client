@@ -47,10 +47,6 @@
 <script>
 import { UpdateTask, DeleteTask, GetTasks } from '../constants/query.gql'
 
-function deleteTaskInFolder(id, tasks) {
-
-}
-
 export default {
   props: ['task'],
   data() {
@@ -71,15 +67,6 @@ export default {
       this.$apollo.mutate({
         mutation: UpdateTask,
         variables: { id, name },
-        // optimisticResponse: {
-        //   __typename: "Mutation",
-        //   updateTask: {
-        //     id,
-        //     __typename: "Task",
-        //     ...this.task,
-        //     name
-        //   }
-        // }
       }).then(({ data: { createTask } }) => {
         this.cancel(e)
       }).catch((error) => {

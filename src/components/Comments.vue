@@ -31,6 +31,8 @@ export default {
 <style scoped>
 .comment-wrapper {
   padding: 10px;
+  margin: 10px 0;
+  background-color: rgba(0,0,0,.04);
 }
 
 .date {

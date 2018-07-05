@@ -24,6 +24,17 @@ fragment TaskFields on Task {
   status
 }
 
+fragment CommentFields on Comment {
+  id
+  body
+  user {
+    id
+    name
+    initials
+    avatarColor
+  }
+}
+
 mutation CaptureEmail($email: String!) {
   captureEmail(email: $email) {
     id
@@ -64,16 +75,6 @@ mutation CreateTask($folder: String, $parent: String, $name: String!) {
 mutation UpdateTask($id: String!, $name: String) {
   updateTask(id: $id, name: $name) {
     ...TaskFields
-    comments {
-      id
-      body
-      user {
-        id
-        name
-        initials
-        avatarColor
-      }
-    } 
   }
 }
 
@@ -106,15 +107,17 @@ query GetTasks($parent: String, $folder: String) {
 query GetTask($id: String!) {
   getTask(id: $id) {
     ...TaskFields
-    comments {
-      id
-      body
-      user {
-        id
-        name
-        initials
-        avatarColor
-      }
-    }
+  }
+}
+
+query GetComments($parent: String) {
+  getComments(parent: $parent) {
+    ...CommentFields
+  }
+}
+
+mutation CreateComment($body: String, $parent: ShareInput) {
+  createComment(body: $body, parent: $parent) {
+    ...CommentFields
   }
 }

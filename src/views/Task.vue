@@ -36,13 +36,13 @@
     <div class="description-field">
       <span class="description-text">Click to add the description</span>
     </div>
-    <Comments :comments="task.comments"></Comments>
-    <CommentBox></CommentBox>
+    <Comments :comments="getComments"></Comments>
+    <CommentBox :parent="task.id"></CommentBox>
   </div>
 </template>
 
 <script>
-import { GetTask, GetTasks } from '../constants/query.gql'
+import { GetTask, GetTasks, GetComments } from '../constants/query.gql'
 import { formatDate } from '@/helpers/helpers'
 import TaskHeader from '@/components/TaskHeader'
 import TaskTree from '@/components/TaskTree'
@@ -67,10 +67,10 @@ export default {
         creator: {},
         folders: [],
         assignees: [],
-        shareWith: [],
-        comments: []
+        shareWith: []
       },
       subtasks: [],
+      comments: []
     }
   },
   apollo: {
@@ -93,6 +93,15 @@ export default {
       },
       result({ data: {getTasks} }) {
         this.subtasks = getTasks
+      },
+    },
+    getComments: {
+      query: GetComments,
+      variables() {
+        return { parent: this.task.id }
+      },
+      skip() {
+        return !this.task.id
       },
     }
   },
