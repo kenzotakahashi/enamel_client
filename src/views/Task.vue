@@ -86,7 +86,10 @@ export default {
     getTasks: {
       query: GetTasks,
       variables() {
-        return {ids: this.task.subtasks}
+        return { parent: this.task.id }
+      },
+      skip() {
+        return !this.task.id
       },
       result({ data: {getTasks} }) {
         this.subtasks = getTasks

@@ -49,11 +49,11 @@ export default {
       this.subRoute = 'task'
     }
   },
-  async updated() {
-    if (this.$route.query.refetch) {
-      const data = await this.$apollo.queries.getFolder.refetch()
-    }
-  },
+  // async updated() {
+  //   if (this.$route.query.refetch) {
+  //     const data = await this.$apollo.queries.getFolder.refetch()
+  //   }
+  // },
   data() {
     return {
       subRoute: 'folder',

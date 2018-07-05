@@ -45,17 +45,10 @@
 </template>
 
 <script>
-import { UpdateTask, DeleteTask } from '../constants/query.gql'
+import { UpdateTask, DeleteTask, GetTasks } from '../constants/query.gql'
 
 function deleteTaskInFolder(id, tasks) {
-  // Only works for a non-subtask
-  for (const [i, task] of tasks.entries()) {
-    if (task.id === id) {
-      tasks.splice(i, 1)
-      return true
-    }
-    deleteTaskInFolder(id, task.subtasks)    
-  }
+
 }
 
 export default {
@@ -78,15 +71,15 @@ export default {
       this.$apollo.mutate({
         mutation: UpdateTask,
         variables: { id, name },
-        optimisticResponse: {
-          __typename: "Mutation",
-          updateTask: {
-            id,
-            __typename: "Task",
-            ...this.task,
-            name
-          }
-        }
+        // optimisticResponse: {
+        //   __typename: "Mutation",
+        //   updateTask: {
+        //     id,
+        //     __typename: "Task",
+        //     ...this.task,
+        //     name
+        //   }
+        // }
       }).then(({ data: { createTask } }) => {
         this.cancel(e)
       }).catch((error) => {
@@ -94,17 +87,31 @@ export default {
       })
     },
     deleteTask() {
-      const taskId = this.task.id
-      const id = this.$route.params.id
-      const parent = this.task.parent ? this.task.parent.id : null
+      const id = this.task.id
+      const folderId = this.$route.params.id
+
       this.$apollo.mutate({
         mutation: DeleteTask,
-        variables: { id: taskId, parent },
-      }).then((result) => {
+        variables: {id},
+        update: (store, data) => {
+          const parent = this.task.parent ? this.task.parent.id : undefined
+          const folders = parent ? [undefined] : this.task.folders.map(o => o.id)
+          for (const folder of folders) {
+            const variables = {folder, parent}
+            const query = GetTasks
+            try {
+              const data = store.readQuery({ query, variables })
+              data.getTasks.splice(data.getTasks.findIndex(o => o.id === id), 1)
+              store.writeQuery({ query, variables, data })
+            } catch(err) {
+              console.log(err)
+            }
+          }
+        }
+      }).then(() => {
         this.$router.replace({
           name: "folder",
-          params: {id},
-          query: { refetch: 'true' }
+          params: {id: folderId},
         })
       }).catch((error) => {
         console.log(error)

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { GetFolder, GetTask, CreateTask } from '../constants/query.gql'
+import { GetTasks, GetTask, CreateTask } from '../constants/query.gql'
 import shortid from 'shortid'
 
 export default {
@@ -31,78 +31,37 @@ export default {
     },
     createTask() {
       if (!this.newTaskName) return
-      const id = this.$route.params.id
-      if (this.parentId) {
-        this.createSubtask(id, this.parentId)
-      } else {
-        this.createToptask(id)
-      }
-    },
-    createToptask(id) {
+      const parent = this.parentId
+      const folder = parent ? undefined : this.$route.params.id
       this.$apollo.mutate({
         mutation: CreateTask,
         variables: {
-          folder: id,
-          parent: null,
-          name: this.newTaskName
-        },
-        update: (store, { data: { createTask } }) => {
-          try {
-            const data = store.readQuery({
-              query: GetFolder,
-              variables: {id}
-            })
-            data.getFolder.tasks.unshift(createTask)
-            store.writeQuery({
-              query: GetFolder,
-              variables: {id},
-              data
-            })
-          } catch(err) {
-          }
-        }
-      }).then(({ data: { createTask } }) => {
-        this.newTaskName = ''
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-    createSubtask(id, parent) {
-      this.$apollo.mutate({
-        mutation: CreateTask,
-        variables: {
-          folder: null,
+          folder,
           parent,
           name: this.newTaskName
         },
         update: (store, { data: { createTask } }) => {
           try {
             const data = store.readQuery({
-              query: GetTask,
-              variables: { id: parent }
+              query: GetTasks,
+              variables: {folder, parent}
             })
-            console.log(data.getTask)
-            console.log(createTask)
-            data.getTask.subtasks.push(createTask)
+            data.getTasks.unshift(createTask)
             store.writeQuery({
-              query: GetTask,
-              variables: { id: parent },
+              query: GetTasks,
+              variables: {folder, parent},
               data
             })
           } catch(err) {
+            console.log(err)
           }
         }
       }).then(({ data: { createTask } }) => {
         this.newTaskName = ''
-        this.$router.replace({
-          name: "task",
-          params: {id, taskId: parent},
-          query: { refetch: shortid.generate() }
-        })
       }).catch((error) => {
         console.log(error)
       })
-    },
+    }
   }
 }
 

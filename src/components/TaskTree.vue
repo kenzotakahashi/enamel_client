@@ -42,18 +42,18 @@ export default {
   },
   computed: {
     isParent: function () {
-      return this.model.subtasks && this.model.subtasks.length
+      return this.getTasks.length > 0
     }
   },
   apollo: {
     getTasks: {
       query: GetTasks,
       variables() {
-        return { ids: this.model.subtasks }
+        return { parent: this.model.id }
       },
-      skip() {
-        return !this.open
-      },
+      // skip() {
+      //   return !this.open
+      // },
       error(error) {
         console.error(error)
       }
