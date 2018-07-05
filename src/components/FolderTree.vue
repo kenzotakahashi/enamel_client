@@ -9,9 +9,9 @@
     <ul v-show="open" v-if="isFolder">
       <tree
         class="item"
-        v-for="model in model.subfolders"
-        :key="model.id"
-        :model="model">
+        v-for="folder in subfolders"
+        :key="folder.id"
+        :model="folder">
       </tree>
     </ul>
   </li>
@@ -19,6 +19,7 @@
 
 <script>
 import FolderTree from './FolderTree'
+import { GetFolders } from '../constants/query.gql'
 
 export default {
   name: 'tree',
@@ -30,7 +31,8 @@ export default {
   },
   data: function () {
     return {
-      open: false
+      open: false,
+      subfolders: []
     }
   },
   computed: {
@@ -42,6 +44,19 @@ export default {
     toggle: function () {
       if (this.isFolder) {
         this.open = !this.open
+      }
+      if (this.open) {
+        this.$apollo.addSmartQuery('getFolders', {
+          query: GetFolders,
+          variables: {ids: this.model.subfolders},
+          result({data}) {
+            console.log(data.getFolders)
+            this.subfolders = data.getFolders
+          },
+          error(error) {
+            console.error(error)
+          },
+        })
       }
     },
     addChild: function () {

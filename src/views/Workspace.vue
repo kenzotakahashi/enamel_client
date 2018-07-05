@@ -3,12 +3,12 @@
     <h3>enamel</h3>
     <div class="columns">
       <div class="column col-2">
-        <div v-for="tree in folderTree">
-          <Tree
-            class="item"
-            :model="tree">
-          </Tree>
-        </div>
+        <Tree
+          class="item"
+          v-for="folder in getFolders"
+          :key="folder.id"
+          :model="folder">
+        </Tree>
       </div>
       <div class="column col-10">
         <router-view></router-view>
@@ -19,7 +19,7 @@
 
 <script>
 import Tree from '@/components/FolderTree'
-import { FolderTree } from '../constants/query.gql'
+import { GetFolders } from '../constants/query.gql'
 
 export default {
   components: {
@@ -27,16 +27,12 @@ export default {
   },
   data() {
     return {
-      folderTree: []
+      getFolders: []
     }
   },
   apollo: {
-    folderTree: {
-      query: FolderTree,
-      // update: data => {
-      // },
-      // result({ data }) {
-      // },
+    getFolders: {
+      query: GetFolders,
       error(error) {
         console.error(error)
       },

@@ -51,6 +51,18 @@ mutation DeleteTask($id: String!, $parent: String) {
   deleteTask(id: $id, parent: $parent)
 }
 
+query GetFolders($ids: [String]) {
+  getFolders(ids: $ids) {
+    id
+    name
+    subfolders
+    tasks {
+      id
+      name
+    }
+  }
+}
+
 query GetFolder($id: String!) {
   getFolder(id: $id) {
     id
