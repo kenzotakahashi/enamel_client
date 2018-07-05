@@ -56,10 +56,6 @@ query GetFolders($ids: [String]) {
     id
     name
     subfolders
-    tasks {
-      id
-      name
-    }
   }
 }
 
@@ -68,17 +64,11 @@ query GetFolder($id: String!) {
     id
     name
     shareWith
-    tasks {
-      id
-      name
-      status
-      subtasks
-    }
   }
 }
 
-query GetTasks($ids: [String]) {
-  getTasks(ids: $ids) {
+query GetTasks($ids: [String], $folder: String) {
+  getTasks(ids: $ids, folder: $folder) {
     id
     name
     parent {
@@ -102,12 +92,7 @@ query GetTasks($ids: [String]) {
     finishDate
     importance
     status
-    subtasks {
-      id
-      name
-      status
-      subtasks
-    }
+    subtasks
   }
 }
 
@@ -146,11 +131,6 @@ query GetTask($id: String!) {
     finishDate
     importance
     status
-    subtasks {
-      id
-      name
-      status
-      subtasks
-    }
+    subtasks
   }
 }

@@ -21,7 +21,7 @@
         0.00
       </div>
       <div class="column col-3">
-        <span v-if="task.subtasks.length > 0">{{formatSubtaskCount(task.subtasks)}}</span>
+        <span v-if="subtasks.length > 0">{{formatSubtaskCount(subtasks)}}</span>
         <span v-else>Add subtask</span>
       </div>
       <div class="column col-3">
@@ -30,7 +30,7 @@
     </div>
     <TaskTree
       class="item task-list-group"
-      v-for="model in task.subtasks" :key="model.id" :model="model">
+      v-for="model in subtasks" :key="model.id" :model="model">
     </TaskTree>
     <TaskForm :parentId="taskId"></TaskForm>
     <div class="description-field">
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { GetTask } from '../constants/query.gql'
+import { GetTask, GetTasks } from '../constants/query.gql'
 import { formatDate } from '@/helpers/helpers'
 import TaskHeader from '@/components/TaskHeader'
 import TaskTree from '@/components/TaskTree'
@@ -67,10 +67,10 @@ export default {
         creator: {},
         folders: [],
         assignees: [],
-        subtasks: [],
         shareWith: [],
         comments: []
-      }
+      },
+      subtasks: [],
     }
   },
   apollo: {
@@ -79,11 +79,19 @@ export default {
       variables() {
         return {id: this.taskId}
       },
-      result({ data: {getTask} }) {
-        // console.log(getTask)
+      result({ data: { getTask } }) {
         this.task = getTask
       }
     },
+    getTasks: {
+      query: GetTasks,
+      variables() {
+        return {ids: this.task.subtasks}
+      },
+      result({ data: {getTasks} }) {
+        this.subtasks = getTasks
+      },
+    }
   },
   methods: {
     formatSubtaskCount(subtasks) {

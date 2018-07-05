@@ -12,7 +12,7 @@
     <ul v-show="open" v-if="isParent">
       <tree
         class="item"
-        v-for="task in subtasks"
+        v-for="task in getTasks"
         :key="task.id"
         :model="task">
       </tree>
@@ -37,7 +37,7 @@ export default {
   data: function () {
     return {
       open: false,
-      subtasks: []
+      getTasks: []
     }
   },
   computed: {
@@ -45,23 +45,24 @@ export default {
       return this.model.subtasks && this.model.subtasks.length
     }
   },
+  apollo: {
+    getTasks: {
+      query: GetTasks,
+      variables() {
+        return { ids: this.model.subtasks }
+      },
+      skip() {
+        return !this.open
+      },
+      error(error) {
+        console.error(error)
+      }
+    }
+  },
   methods: {
     toggle: function () {
       if (this.isParent) {
         this.open = !this.open
-      }
-      if (this.open) {
-        this.$apollo.addSmartQuery('getTasks', {
-          query: GetTasks,
-          variables: {ids: this.model.subtasks},
-          result({data}) {
-            // console.log(data.getTasks)
-            this.subtasks = data.getTasks
-          },
-          error(error) {
-            console.error(error)
-          },
-        })
       }
     }
   }

@@ -13,7 +13,7 @@ import VueApollo from 'vue-apollo'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import './registerServiceWorker'
+// import './registerServiceWorker'
 
 import './assets/css/style.scss'
 
@@ -35,10 +35,10 @@ const cache = new InMemoryCache({
   },
 })
 
-persistCache({
-  cache,
-  storage: window.localStorage,
-})
+// persistCache({
+//   cache,
+//   storage: window.localStorage,
+// })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem('user-token')

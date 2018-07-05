@@ -14,7 +14,7 @@
         <TaskForm></TaskForm>
         <hr>
         <TaskTree
-          v-for="task in folder.tasks" :key="task.id" class="item task-list-group"
+          v-for="task in getTasks" :key="task.id" class="item task-list-group"
           :model="task">
         </TaskTree>
       </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { GetFolder } from '../constants/query.gql'
+import { GetFolder, GetTasks } from '../constants/query.gql'
 import TaskTree from '@/components/TaskTree'
 import TaskForm from '@/components/TaskForm'
 import FolderDetail from './FolderDetail.vue'
@@ -57,7 +57,8 @@ export default {
   data() {
     return {
       subRoute: 'folder',
-      folder: {}
+      folder: {},
+      getTasks: []
     }
   },
   apollo: {
@@ -66,11 +67,22 @@ export default {
       variables() {
         return {id: this.$route.params.id}
       },
-      result ({data}) {
-        // console.log(data.getFolder)
-        this.folder = data.getFolder
+      result ({data: { getFolder }}) {
+        this.folder = getFolder
       },
     },
+    getTasks: {
+      query: GetTasks,
+      variables() {
+        return { folder: this.folder.id }
+      },
+      skip() {
+        return !this.folder.id
+      },
+      error(error) {
+        console.error(error)
+      }
+    }
   },
 }
 </script>
