@@ -51,9 +51,6 @@ export default {
       variables() {
         return { parent: this.model.id }
       },
-      // skip() {
-      //   return !this.open
-      // },
       error(error) {
         console.error(error)
       }

@@ -9,7 +9,7 @@
     <ul v-show="open" v-if="isFolder">
       <tree
         class="item"
-        v-for="folder in subfolders"
+        v-for="folder in getFolders"
         :key="folder.id"
         :model="folder">
       </tree>
@@ -32,30 +32,29 @@ export default {
   data: function () {
     return {
       open: false,
-      subfolders: []
+      getFolders: []
     }
   },
   computed: {
     isFolder: function () {
-      return this.model.subfolders && this.model.subfolders.length
+      return this.getFolders.length > 0
+    }
+  },
+  apollo: {
+    getFolders: {
+      query: GetFolders,
+      variables() {
+        return { parent: this.model.id }
+      },
+      error(error) {
+        console.error(error)
+      },
     }
   },
   methods: {
     toggle: function () {
       if (this.isFolder) {
         this.open = !this.open
-      }
-      if (this.open) {
-        this.$apollo.addSmartQuery('getFolders', {
-          query: GetFolders,
-          variables: {ids: this.model.subfolders},
-          result({data}) {
-            this.subfolders = data.getFolders
-          },
-          error(error) {
-            console.error(error)
-          },
-        })
       }
     },
     addChild: function () {

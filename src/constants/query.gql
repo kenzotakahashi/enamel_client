@@ -62,10 +62,6 @@ mutation Login($email: String!, $password: String!) {
   }
 }
 
-query FolderTree {
-  folderTree
-}
-
 mutation CreateTask($folder: String, $parent: String, $name: String!) {
   createTask(folder: $folder, parent: $parent, name: $name) {
     ...TaskFields 
@@ -82,11 +78,11 @@ mutation DeleteTask($id: String!) {
   deleteTask(id: $id)
 }
 
-query GetFolders($ids: [String]) {
-  getFolders(ids: $ids) {
+query GetFolders($parent: String) {
+  getFolders(parent: $parent) {
     id
     name
-    subfolders
+    shareWith
   }
 }
 
