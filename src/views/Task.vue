@@ -80,7 +80,7 @@ export default {
         return {id: this.taskId}
       },
       result({ data: {getTask} }) {
-        console.log(getTask.subtasks)
+        // console.log(getTask)
         this.task = getTask
       }
     },
@@ -95,21 +95,5 @@ export default {
 </script>
 
 <style scoped>
-.task-view-header {
-  padding: 10px;
-}
-
-.new-task {
-  position: relative;
-  left: 30px;
-}
-
-.icon {
-  padding: 0 7px;
-  cursor: pointer;
-}
-.icon:hover {
-  color: #48f;
-}
 
 </style>

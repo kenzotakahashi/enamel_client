@@ -67,6 +67,7 @@ export default {
         return {id: this.$route.params.id}
       },
       result ({data}) {
+        // console.log(data.getFolder)
         this.folder = data.getFolder
       },
     },

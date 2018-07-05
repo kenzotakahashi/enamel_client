@@ -77,6 +77,40 @@ query GetFolder($id: String!) {
   }
 }
 
+query GetTasks($ids: [String]) {
+  getTasks(ids: $ids) {
+    id
+    name
+    parent {
+      id
+      name
+    }
+    folders { 
+      id
+      name
+    }
+    assignees {
+      id
+      name
+    }
+    creator {
+      id
+      name
+    }
+    shareWith
+    startDate
+    finishDate
+    importance
+    status
+    subtasks {
+      id
+      name
+      status
+      subtasks
+    }
+  }
+}
+
 query GetTask($id: String!) {
   getTask(id: $id) {
     id
@@ -112,6 +146,11 @@ query GetTask($id: String!) {
     finishDate
     importance
     status
-    subtasks
+    subtasks {
+      id
+      name
+      status
+      subtasks
+    }
   }
 }

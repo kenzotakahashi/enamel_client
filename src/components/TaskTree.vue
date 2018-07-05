@@ -12,9 +12,9 @@
     <ul v-show="open" v-if="isParent">
       <tree
         class="item"
-        v-for="model in model.subtasks"
-        :key="model.id"
-        :model="model">
+        v-for="task in subtasks"
+        :key="task.id"
+        :model="task">
       </tree>
     </ul>
   </li>
@@ -22,6 +22,7 @@
 
 <script>
 import TaskTree from './TaskTree'
+import { GetTasks } from '../constants/query.gql'
 
 export default {
   name: 'tree',
@@ -32,11 +33,11 @@ export default {
     model: Object
   },
   mounted() {
-    console.log(this.model)
   },
   data: function () {
     return {
-      open: false
+      open: false,
+      subtasks: []
     }
   },
   computed: {
@@ -48,6 +49,19 @@ export default {
     toggle: function () {
       if (this.isParent) {
         this.open = !this.open
+      }
+      if (this.open) {
+        this.$apollo.addSmartQuery('getTasks', {
+          query: GetTasks,
+          variables: {ids: this.model.subtasks},
+          result({data}) {
+            // console.log(data.getTasks)
+            this.subtasks = data.getTasks
+          },
+          error(error) {
+            console.error(error)
+          },
+        })
       }
     }
   }

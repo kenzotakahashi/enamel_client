@@ -50,7 +50,6 @@ export default {
           query: GetFolders,
           variables: {ids: this.model.subfolders},
           result({data}) {
-            console.log(data.getFolders)
             this.subfolders = data.getFolders
           },
           error(error) {

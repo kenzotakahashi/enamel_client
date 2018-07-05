@@ -116,3 +116,17 @@ export default {
   }
 } 
 </script>
+
+<style scoped>
+.task-view-header {
+  padding: 10px;
+}
+
+.icon {
+  padding: 0 7px;
+  cursor: pointer;
+}
+.icon:hover {
+  color: #48f;
+}
+</style>
