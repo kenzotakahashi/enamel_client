@@ -3,7 +3,7 @@
     <div>
       <span v-if="isFolder" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
       <router-link :to="{name: 'folder', params: {id: model.id}}">
-        <span class="folder">{{ model.name }}</span>    
+        <span class="folder">{{ model.name }}</span>
       </router-link>
     </div>
     <ul v-show="open" v-if="isFolder">

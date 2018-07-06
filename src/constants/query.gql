@@ -5,7 +5,7 @@ fragment TaskFields on Task {
     id
     name
   }
-  folders { 
+  folders {
     id
     name
   }
@@ -38,7 +38,7 @@ fragment CommentFields on Comment {
 mutation CaptureEmail($email: String!) {
   captureEmail(email: $email) {
     id
-    email      
+    email
   }
 }
 
@@ -64,7 +64,7 @@ mutation Login($email: String!, $password: String!) {
 
 mutation CreateTask($folder: String, $parent: String, $name: String!) {
   createTask(folder: $folder, parent: $parent, name: $name) {
-    ...TaskFields 
+    ...TaskFields
   }
 }
 
@@ -76,6 +76,13 @@ mutation UpdateTask($id: String!, $name: String) {
 
 mutation DeleteTask($id: String!) {
   deleteTask(id: $id)
+}
+
+query GetTeam {
+  getTeam {
+    id
+    name
+  }
 }
 
 query GetFolders($parent: String) {

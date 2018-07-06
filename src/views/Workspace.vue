@@ -3,6 +3,11 @@
     <h3>enamel</h3>
     <div class="columns">
       <div class="column col-2">
+        <div v-if="getTeam.id">
+          <router-link :to="{name: 'folder', params: {id: getTeam.id}}">
+            <span class="folder">{{ getTeam.name }}</span>
+          </router-link>
+        </div>
         <Tree
           class="item"
           v-for="folder in getFolders"
@@ -19,7 +24,7 @@
 
 <script>
 import Tree from '@/components/FolderTree'
-import { GetFolders } from '../constants/query.gql'
+import { GetFolders, GetTeam } from '../constants/query.gql'
 
 export default {
   components: {
@@ -27,10 +32,14 @@ export default {
   },
   data() {
     return {
-      getFolders: []
+      getFolders: [],
+      getTeam: {}
     }
   },
   apollo: {
+    getTeam: {
+      query: GetTeam,
+    },
     getFolders: {
       query: GetFolders,
       error(error) {
@@ -42,5 +51,3 @@ export default {
   }
 }
 </script>
-
-
