@@ -21,7 +21,7 @@
       <div v-if="subRoute==='task'" class="column col-6">
         <router-view></router-view>
       </div>
-      <div v-if="subRoute==='folder'" class="column col-6">
+      <div v-if="!isTeam(folder) && subRoute==='folder'" class="column col-6">
         <FolderDetail :folder="folder"></FolderDetail>
       </div>
     </div>
@@ -79,6 +79,11 @@ export default {
       }
     }
   },
+  methods: {
+    isTeam(folder) {
+      return !folder.parent && folder.shareWith.length === 0
+    }
+  }
 }
 </script>
 
