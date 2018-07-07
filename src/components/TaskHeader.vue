@@ -18,9 +18,9 @@
       <span class="icon">
         <i class="fas fa-link"></i>
       </span>
-      <span class="icon dropdown">
+      <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveDropdown', 'task-menu')">
         <i class="fas fa-ellipsis-h"></i>
-        <div class="dropdown-content">
+        <div class="dropdown-content" v-show="activeDropdown === 'task-menu'">
           <div>Make reccurent</div>
           <div>Duplicate task</div>
           <div>Request status update</div>
@@ -39,16 +39,18 @@
       <span class="folder-tag">{{ folder.name }}</span>
     </span>
     <span>
-      <span>+</span>        
+      <span>+</span>
     </span>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { UpdateTask, DeleteTask, GetTasks } from '../constants/query.gql'
 
 export default {
   props: ['task'],
+  computed: mapState(['activeDropdown']),
   data() {
     return {
       taskName: this.task.name
@@ -108,7 +110,7 @@ export default {
       e.target.blur()
     }
   }
-} 
+}
 </script>
 
 <style scoped>

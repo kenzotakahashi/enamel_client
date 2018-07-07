@@ -1,4 +1,5 @@
 @import "node_modules/spectre.css/src/spectre";
+$hover-inverse: #526477;
 
 body {
   color: #fff;
@@ -20,6 +21,21 @@ a, a:visited, a:hover, a:active, a:focus {
 input {
   outline: none;
   border: none;
+}
+
+nav {
+  overflow: hidden;
+  padding: 9px 10px;
+  cursor: pointer;
+}
+
+nav a {
+  text-align: center;
+  margin:auto;
+}
+
+.logo {
+  font-size: 25px;
 }
 
 .white {
@@ -44,8 +60,33 @@ input {
   border-color: #e0e0e0;
 }
 
-.item {
+ul.tree {
+  padding-left: 1em;
+  line-height: 1.5em;
+}
+
+.folder {
+  position: relative;
+  left: 25px;
+}
+
+.fold-button {
+  position: absolute;
+}
+
+.folder:hover, .fold-button:hover {
+  background-color: $hover-inverse;
+}
+
+.tree-item {
   cursor: pointer;
+}
+
+.no-select-color::-moz-selection {
+  background: none;
+}
+.no-select-color::selection {
+  background: none;
 }
 
 .description-field {
@@ -74,9 +115,9 @@ input {
 }
 
 .dropdown-content {
-    display: none;
     position: absolute;
-    right: 0;
+    // right: 0;
+    left:0;
     background-color: #fff;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);

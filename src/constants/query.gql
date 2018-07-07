@@ -35,6 +35,12 @@ fragment CommentFields on Comment {
   }
 }
 
+fragment FolderFields on Folder {
+  id
+  name
+  shareWith
+}
+
 mutation CaptureEmail($email: String!) {
   captureEmail(email: $email) {
     id
@@ -42,8 +48,8 @@ mutation CaptureEmail($email: String!) {
   }
 }
 
-mutation Signup($id: String!, $name: String!, $password: String!) {
-  signup(id: $id, name: $name, password: $password) {
+mutation Signup($id: String!, $firstname: String!, $lastname: String!, $password: String!) {
+  signup(id: $id, firstname: $firstname, lastname: $lastname, password: $password) {
     token
     user {
       id
@@ -85,21 +91,32 @@ query GetTeam {
   }
 }
 
-query GetFolders($parent: String) {
-  getFolders(parent: $parent) {
+query GetUser($id: String) {
+  getUser(id: $id) {
     id
     name
-    shareWith
+    firstname
+    lastname
+    email
+    avatarColor
+    role
+    status
+  }
+}
+
+query GetFolders($parent: String) {
+  getFolders(parent: $parent) {
+    ...FolderFields
   }
 }
 
 query GetFolder($id: String!) {
   getFolder(id: $id) {
-    id
-    name
-    shareWith
+    ...FolderFields
   }
 }
+
+
 
 query GetTasks($parent: String, $folder: String) {
   getTasks(parent: $parent, folder: $folder) {

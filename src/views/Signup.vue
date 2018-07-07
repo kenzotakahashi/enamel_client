@@ -1,12 +1,14 @@
 <template>
   <div class="container">
-    <h2>enamel</h2>
+    <h3 class="logo">enamel</h3>
     <div class="columns">
       <div class="column col-4 col-mx-auto">
         <div>Welcome to enamel! Finish setting up your account</div>
         <div class="form-group">
-          <label class="form-label" for="name-1">Full Name</label>
-          <input class="form-input" type="text" id="name-1" v-model="form.name" placeholder="Your full name">
+          <label class="form-label" for="firstname">First name</label>
+          <input class="form-input" type="text" id="firstname" v-model="form.firstname" placeholder="Your first name">
+          <label class="form-label" for="lastname">Last name</label>
+          <input class="form-input" type="text" id="lastname" v-model="form.lastname" placeholder="Your last name">
           <label class="form-label" for="password-1">Password</label>
           <input class="form-input" type="password" id="password-1" v-model="form.password" placeholder="Create password">
         </div>
@@ -25,7 +27,8 @@ export default {
   data() {
     return {
       form: {
-        name: '',
+        firstname: '',
+        lastname: '',
         password: '',
       }
     }
@@ -33,13 +36,14 @@ export default {
   methods: {
     async signup() {
       const validated = await this.$validator.validate()
-      const { name, password } = this.form
-      if (validated && name && password) {
+      const { firstname, lastname, password } = this.form
+      if (validated && firstname && lastname && password) {
         this.$apollo.mutate({
           mutation: Signup,
           variables: {
             id: this.$route.params.id,
-            name,
+            firstname,
+            lastname,
             password
           }
         }).then(({data: {signup}}) => {

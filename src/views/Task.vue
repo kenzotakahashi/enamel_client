@@ -7,10 +7,10 @@
       </div>
       <div class="column col-5">
         <span v-if="task.assignees.length > 0">TODO: Assignees</span>
-        <span v-else>+ Add assignee</span>        
+        <span v-else>+ Add assignee</span>
       </div>
       <div class="column col-5">
-        <span class="small-text">by {{task.creator.name}} at {{formatDate(task.createdAt)}}</span>        
+        <span class="small-text">by {{task.creator.name}} at {{formatDate(task.createdAt)}}</span>
       </div>
     </div>
     <div class="columns">
@@ -29,7 +29,7 @@
       </div>
     </div>
     <TaskTree
-      class="item task-list-group"
+      class="tree-item task-list-group"
       v-for="model in subtasks" :key="model.id" :model="model">
     </TaskTree>
     <TaskForm :parentId="taskId"></TaskForm>

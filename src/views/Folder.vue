@@ -14,7 +14,7 @@
         <TaskForm></TaskForm>
         <hr>
         <TaskTree
-          v-for="task in getTasks" :key="task.id" class="item task-list-group"
+          v-for="task in getTasks" :key="task.id" class="tree-item task-list-group"
           :model="task">
         </TaskTree>
       </div>
@@ -52,7 +52,9 @@ export default {
   data() {
     return {
       subRoute: 'folder',
-      folder: {},
+      folder: {
+        shareWith: []
+      },
       getTasks: []
     }
   },

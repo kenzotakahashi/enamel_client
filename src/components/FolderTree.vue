@@ -1,14 +1,25 @@
 <template name="tree">
   <li>
-    <div>
+    <div class="tree-item dropdown"
+        @click.right.stop.prevent="$store.dispatch('changeActiveDropdown', `folder${model.id}`)"
+        @click.left.stop="$router.push({name: 'folder', params: {id: model.id}})">
       <span v-if="isFolder" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
-      <router-link :to="{name: 'folder', params: {id: model.id}}">
-        <span class="folder">{{ model.name }}</span>
-      </router-link>
+      <span class="folder no-select-color">{{ model.name }}</span>
+
+      <div class="dropdown-content" v-show="activeDropdown === `folder${model.id}`">
+        <div @click="createFolder(model.id)">Add Folder</div>
+        <div>Add Project</div>
+        <div>Share</div>
+        <div>Rename</div>
+        <div>Delete</div>
+        <div>Duplicate</div>
+        <hr></hr>
+        <div>Turn into Project</div>
+      </div>
     </div>
-    <ul v-show="open" v-if="isFolder">
+    <ul class="tree" v-show="open" v-if="isFolder">
       <tree
-        class="item"
+        class=""
         v-for="folder in getFolders"
         :key="folder.id"
         :model="folder">
@@ -18,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
 import { GetFolders } from '../constants/query.gql'
 
@@ -29,7 +41,7 @@ export default {
   props: {
     model: Object
   },
-  data: function () {
+  data() {
     return {
       open: false,
       getFolders: []
@@ -38,7 +50,8 @@ export default {
   computed: {
     isFolder: function () {
       return this.getFolders.length > 0
-    }
+    },
+    ...mapState(['activeDropdown'])
   },
   apollo: {
     getFolders: {
@@ -52,12 +65,14 @@ export default {
     }
   },
   methods: {
-    toggle: function () {
+    toggle() {
       if (this.isFolder) {
         this.open = !this.open
       }
     },
-    addChild: function () {
+    goToDetail() {
+    },
+    addChild() {
       // this.model.subfolders.push({
       //   name: 'new stuff'
       // })
@@ -67,17 +82,4 @@ export default {
 </script>
 
 <style>
-ul {
-  padding-left: 1em;
-  line-height: 1.5em;
-}
-
-.folder {
-  position: relative;
-  left: 30px;
-}
-
-.fold-button {
-  position: absolute;
-}
 </style>
