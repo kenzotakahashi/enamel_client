@@ -30,7 +30,6 @@ fragment CommentFields on Comment {
   user {
     id
     name
-    initials
     avatarColor
   }
 }

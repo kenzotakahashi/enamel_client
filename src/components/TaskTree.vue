@@ -3,7 +3,10 @@
     <div class="columns">
       <span v-if="isParent" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
       <router-link :to="{name: 'task', params: {taskId: model.id}}" class="column col-9">
-        <span class="folder">{{ model.name }}</span>
+        <span class="task">
+          <Avatar :size="24"></Avatar>
+          {{ model.name }}
+        </span>
       </router-link>
       <span class="column col-3">
         {{ model.status }}
@@ -22,12 +25,14 @@
 
 <script>
 import TaskTree from './TaskTree'
+import Avatar from './Avatar'
 import { GetTasks } from '../constants/query.gql'
 
 export default {
   name: 'tree',
   components: {
-    'tree': TaskTree
+    'tree': TaskTree,
+    Avatar
   },
   props: {
     model: Object

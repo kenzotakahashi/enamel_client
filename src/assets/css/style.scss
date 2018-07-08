@@ -1,5 +1,6 @@
 @import "node_modules/spectre.css/src/spectre";
 $hover-inverse: #526477;
+$hover: #F0F0F0;
 
 body {
   color: #fff;
@@ -18,7 +19,7 @@ a, a:visited, a:hover, a:active, a:focus {
   box-shadow: none;
 }
 
-input {
+input.no-outline {
   outline: none;
   border: none;
 }
@@ -65,7 +66,7 @@ ul.tree {
   line-height: 1.5em;
 }
 
-.folder {
+.folder, .task {
   position: relative;
   left: 25px;
 }
@@ -74,7 +75,7 @@ ul.tree {
   position: absolute;
 }
 
-.folder:hover, .fold-button:hover {
+.folder:hover, .fold-button.inverse:hover {
   background-color: $hover-inverse;
 }
 
@@ -115,13 +116,19 @@ ul.tree {
 }
 
 .dropdown-content {
-    position: absolute;
-    // right: 0;
-    left:0;
-    background-color: #fff;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content.right {
+  right: 0;
+}
+
+.dropdown-content.left {
+  left: 0;
 }
 
 .dropdown-content div {
@@ -131,7 +138,7 @@ ul.tree {
 }
 
 .dropdown-content div:hover {
-  background-color: #F0F0F0;
+  background-color: $hover;
 }
 
 .dropdown:hover .dropdown-content {

@@ -3,12 +3,13 @@
     <div class="tree-item dropdown"
         @click.right.stop.prevent="$store.dispatch('changeActiveDropdown', `folder${model.id}`)"
         @click.left.stop="$router.push({name: 'folder', params: {id: model.id}})">
-      <span v-if="isFolder" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
+      <span v-if="isFolder" @click="toggle" class="fold-button invrese">[{{ open ? '-' : '+' }}]</span>
       <span class="folder no-select-color">{{ model.name }}</span>
 
-      <div class="dropdown-content" v-show="activeDropdown === `folder${model.id}`">
-        <div @click="createFolder(model.id)">Add Folder</div>
-        <div>Add Project</div>
+      <div class="dropdown-content left" v-show="activeDropdown === `folder${model.id}`">
+        <!-- <div @click="createFolder(model.id)">Add Folder</div> -->
+        <div @click="openModal('folder')">Add Folder</div>
+        <div @click="openModal('project')">Add Project</div>
         <div>Share</div>
         <div>Rename</div>
         <div>Delete</div>
@@ -25,18 +26,22 @@
         :model="folder">
       </tree>
     </ul>
+
+    <Modal v-if="showModal" :config="modalConfig" @close="showModal = false"></Modal>
   </li>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
+import Modal from './Modal'
 import { GetFolders } from '../constants/query.gql'
 
 export default {
   name: 'tree',
   components: {
-    'tree': FolderTree
+    'tree': FolderTree,
+    Modal
   },
   props: {
     model: Object
@@ -44,6 +49,10 @@ export default {
   data() {
     return {
       open: false,
+      modalConfig: {
+        mode: 'folder'
+      },
+      showModal: false,
       getFolders: []
     }
   },
@@ -68,6 +77,13 @@ export default {
     toggle() {
       if (this.isFolder) {
         this.open = !this.open
+      }
+    },
+    openModal(mode) {
+      this.$store.dispatch('changeActiveDropdown', null)
+      this.showModal = true
+      this.modalConfig = {
+        mode
       }
     },
     goToDetail() {

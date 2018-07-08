@@ -2,12 +2,12 @@
   <div class="comment-box container">
     <div class="columns">
       <span class="column col-10">
-        <input type="text" name="comment" v-model="form.body"
-          placeholder="Add comment"></input>        
+        <input class="no-outline" type="text" name="comment" v-model="form.body"
+          placeholder="Add comment"></input>
       </span>
       <span class="column col-2">
-        <span @click="createComment" class="btn btn-primary btn-sm">Send</span>        
-      </span>        
+        <span @click="createComment" class="btn btn-primary btn-sm">Send</span>
+      </span>
     </div>
   </div>
 </template>

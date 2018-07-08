@@ -3,7 +3,7 @@
     <div class="column col-8">
       <div v-if="task.parent">{{task.parent.name}}</div>
       <div>
-        <input type="text" name="taskname" ref="taskname" v-model="taskName"
+        <input class="no-outline" type="text" name="taskname" ref="taskname" v-model="taskName"
           @keyup.enter="updateTask" @keyup.esc="cancel">
         </input>
       </div>
@@ -20,7 +20,7 @@
       </span>
       <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveDropdown', 'task-menu')">
         <i class="fas fa-ellipsis-h"></i>
-        <div class="dropdown-content" v-show="activeDropdown === 'task-menu'">
+        <div class="dropdown-content right" v-show="activeDropdown === 'task-menu'">
           <div>Make reccurent</div>
           <div>Duplicate task</div>
           <div>Request status update</div>
@@ -53,7 +53,7 @@ export default {
   computed: mapState(['activeDropdown']),
   data() {
     return {
-      taskName: this.task.name
+      taskName: ''
     }
   },
   watch: {
