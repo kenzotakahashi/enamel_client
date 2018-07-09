@@ -40,6 +40,19 @@ fragment FolderFields on Folder {
   shareWith
 }
 
+fragment ProjectFields on Project {
+  id
+  name
+  shareWith
+  owners {
+    id
+    name
+  }
+  startDate
+  finishDate
+  status
+}
+
 mutation CaptureEmail($email: String!) {
   captureEmail(email: $email) {
     id
@@ -92,10 +105,6 @@ mutation CreateFolder($parent: String, $name: String!, $shareWith: [ShareInput])
 mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput], $owners: [String], $startDate: Date, $finishDate: Date) {
   createProject(parent: $parent, name: $name, shareWith: $shareWith, owners: $owners, startDate: $startDate, finishDate: $finishDate) {
     ...FolderFields
-    owners
-    startDate
-    finishDate
-    status
   }
 }
 

@@ -26,7 +26,8 @@
               </div>
             </div>
 
-            <el-button type="primary" @click="createFolder">Create</el-button>
+            <el-button type="primary" @click="create(mode)">
+              Create</el-button>
             <el-button type="" @click="$emit('close')">Cancel</el-button>
 
           </el-col>
@@ -46,23 +47,27 @@ export default {
     return {
       form: {
         name: '',
-        shareWith: []
+        shareWith: [],
+        owners: []
       },
       mode: this.config.mode
     }
   },
   methods: {
-    createFolder() {
-      const { name, shareWith } = this.form
+    create(mode) {
+      const { name, shareWith, owners } = this.form
       if (!name) return
       const parent = this.config.parent
+      if (mode === 'folder') {
+        this.createFolder(name, parent, shareWith)
+      } else {
+        this.createProject(name, parent, shareWith, owners)
+      }
+    },
+    createFolder(name, parent, shareWith) {
       this.$apollo.mutate({
         mutation: CreateFolder,
-        variables: {
-          name,
-          parent,
-          shareWith
-        },
+        variables: {name, parent, shareWith},
         update: (store, { data: { createFolder } }) => {
           try {
             const data = store.readQuery({
@@ -82,6 +87,33 @@ export default {
       }).then(({ data: { createFolder } }) => {
         this.$emit('close')
         this.$router.push({name: 'folder', params: {id: createFolder.id} })
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    createProject(name, parent, shareWith, owners) {
+      this.$apollo.mutate({
+        mutation: CreateProject,
+        variables: {name, parent, shareWith, owners},
+        update: (store, { data: { createProject } }) => {
+          try {
+            const data = store.readQuery({
+              query: GetFolders,
+              variables: {parent}
+            })
+            data.getFolders.push(createProject)
+            store.writeQuery({
+              query: GetFolders,
+              variables: {parent},
+              data
+            })
+          } catch(err) {
+            console.log(err)
+          }
+        }
+      }).then(({ data: { createProject } }) => {
+        this.$emit('close')
+        this.$router.push({name: 'folder', params: {id: createProject.id} })
       }).catch((error) => {
         console.log(error)
       })
