@@ -7,7 +7,6 @@
       <span class="folder no-select-color">{{ model.name }}</span>
 
       <div class="dropdown-content left" v-show="activeDropdown === `folder${model.id}`">
-        <!-- <div @click="createFolder(model.id)">Add Folder</div> -->
         <div @click="openModal('folder')">Add Folder</div>
         <div @click="openModal('project')">Add Project</div>
         <div>Share</div>
@@ -83,7 +82,8 @@ export default {
       this.$store.dispatch('changeActiveDropdown', null)
       this.showModal = true
       this.modalConfig = {
-        mode
+        mode,
+        parent: this.model.id
       }
     },
     goToDetail() {

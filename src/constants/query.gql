@@ -83,6 +83,22 @@ mutation DeleteTask($id: String!) {
   deleteTask(id: $id)
 }
 
+mutation CreateFolder($parent: String, $name: String!, $shareWith: [ShareInput]) {
+  createFolder(parent: $parent, name: $name, shareWith: $shareWith) {
+    ...FolderFields
+  }
+}
+
+mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput], $owners: [String], $startDate: Date, $finishDate: Date) {
+  createProject(parent: $parent, name: $name, shareWith: $shareWith, owners: $owners, startDate: $startDate, finishDate: $finishDate) {
+    ...FolderFields
+    owners
+    startDate
+    finishDate
+    status
+  }
+}
+
 query GetTeam {
   getTeam {
     id
@@ -114,8 +130,6 @@ query GetFolder($id: String!) {
     ...FolderFields
   }
 }
-
-
 
 query GetTasks($parent: String, $folder: String) {
   getTasks(parent: $parent, folder: $folder) {

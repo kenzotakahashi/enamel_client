@@ -1,45 +1,36 @@
 <template>
   <div class="modal-mask white">
     <div class="modal-wrapper">
-      <div class="container modal-container">
-
-        <div class="columns">
-          <div class="colum col-6">
-            <div>Create {{mode}}</div>
+      <div class="modal-container">
+        <el-row>
+          <el-col :span="12">
+            <h3>Create {{mode}}</h3>
 
             <div>
-              <input type="text" name="foldername" ref="foldername" v-model="foldername"
-                 @keyup.esc="$emit('close')">
-              </input>
+              <el-input type="text" name="foldername" ref="foldername" v-model="form.name"
+                :placeholder="`${mode} name`" :autofocus="true" @keyup.esc="$emit('close')">
+              </el-input>
+            </div>
+            <div class="radio-group">
+              <el-radio v-model="mode" label="project">
+                Project
+              </el-radio>
+              <div class="description">
+                Use Projects to manage tasks that are part of a larger goal. Projects can have their own attributes separate from tasks, like Status and Finish Date, which you can track.
+              </div>
+              <el-radio v-model="mode" label="folder">
+                Folder
+              </el-radio>
+              <div class="description">
+                Use Folders as containers to organize and categorize work, making it easier to find and share information. Unlike Projects, Folders do not have attributes you can track.
+              </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-radio">
-                <input type="radio" name="mode" value="project" v-model="mode" >
-                <i class="form-icon"></i>
-                <span>
-                  Project
-                  <div>
-                    Use Projects to manage tasks that are part of a larger goal. Projects can have their own attributes separate from tasks, like Status and Finish Date, which you can track.
-                  </div>
-                </span>
-              </label>
-              <label class="form-radio">
-                <i class="form-icon"></i>
-                <input type="radio" name="mode" value="folder" v-model="mode" >
-                <span>
-                  Folder
-                </span>
-              </label>
-            </div>
+            <el-button type="primary" @click="createFolder">Create</el-button>
+            <el-button type="" @click="$emit('close')">Cancel</el-button>
 
-            <span @click="$emit('close')" class="btn btn-primary btn-sm">Create</span>
-            <span @click="$emit('close')" class="btn btn-sm">Cancel</span>
-          </div>
-          <div class="colum col-6">
-
-          </div>
-        </div>
+          </el-col>
+        </el-row>
 
       </div>
     </div>
@@ -47,13 +38,53 @@
 </template>
 
 <script>
+import { CreateFolder, CreateProject, GetFolders } from '../constants/query.gql'
+
 export default {
   props: ['config'],
   data() {
     return {
-      foldername: '',
-      mode: 'folder'
-      // mode: this.config.mode
+      form: {
+        name: '',
+        shareWith: []
+      },
+      mode: this.config.mode
+    }
+  },
+  methods: {
+    createFolder() {
+      const { name, shareWith } = this.form
+      if (!name) return
+      const parent = this.config.parent
+      this.$apollo.mutate({
+        mutation: CreateFolder,
+        variables: {
+          name,
+          parent,
+          shareWith
+        },
+        update: (store, { data: { createFolder } }) => {
+          try {
+            const data = store.readQuery({
+              query: GetFolders,
+              variables: {parent}
+            })
+            data.getFolders.push(createFolder)
+            store.writeQuery({
+              query: GetFolders,
+              variables: {parent},
+              data
+            })
+          } catch(err) {
+            console.log(err)
+          }
+        }
+      }).then(({ data: { createFolder } }) => {
+        this.$emit('close')
+        this.$router.push({name: 'folder', params: {id: createFolder.id} })
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
@@ -99,5 +130,18 @@ export default {
 
 .modal-default-button {
   float: right;
+}
+
+.radio-group {
+  padding: 20px 0;
+}
+
+.description {
+  position: relative;
+  left: 28px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.56);
+  line-height: 1.67;
+  padding-bottom: 10px;
 }
 </style>
