@@ -1,15 +1,13 @@
 <template>
-  <div class="comment-box container">
-    <div class="columns">
-      <span class="column col-10">
-        <input class="no-outline" type="text" name="comment" v-model="form.body"
-          placeholder="Add comment"></input>
-      </span>
-      <span class="column col-2">
-        <span @click="createComment" class="btn btn-primary btn-sm">Send</span>
-      </span>
-    </div>
-  </div>
+  <el-row class="comment-box">
+    <el-col :span="20">
+      <input class="no-outline" type="text" name="comment" v-model="form.body"
+        placeholder="Add comment"></input>
+    </el-col>
+    <el-col :span="4">
+      <el-button type="primary" size="small" @click="createComment">Send</el-button>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

@@ -1,11 +1,17 @@
-@import "node_modules/spectre.css/src/spectre";
 $hover-inverse: #526477;
 $hover: #F0F0F0;
 
 body {
   color: #fff;
+  margin: 0;
   background-color: #1E374B;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   // font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN","Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 8px 0;
 }
 
 ul, li {
@@ -19,20 +25,24 @@ a, a:visited, a:hover, a:active, a:focus {
   box-shadow: none;
 }
 
-input.no-outline {
-  outline: none;
-  border: none;
+.el-header {
+  padding: 0;
 }
 
-nav {
+.nav > .el-col {
   overflow: hidden;
-  padding: 9px 10px;
+  padding: 10px 10px;
   cursor: pointer;
+  text-align: center;
+  // margin:auto;
 }
 
-nav a {
-  text-align: center;
-  margin:auto;
+.space {
+  padding: 10px;
+}
+
+.card {
+  margin: 0 5px;
 }
 
 .logo {
@@ -42,6 +52,16 @@ nav a {
 .white {
   color: #50596c;
   background: #fff;
+}
+
+input {
+  font-size: inherit;
+  vertical-align: -webkit-baseline-middle;
+}
+
+input.no-outline {
+  outline: none;
+  border: none;
 }
 
 .small-text {
@@ -105,7 +125,7 @@ ul.tree {
 
 .comment-box {
   color: rgba(0,0,0,.56);
-  padding: 15px;
+  padding: 12px;
   border-top: 1px solid;
   border-color: rgba(0,0,0,.16);
 }

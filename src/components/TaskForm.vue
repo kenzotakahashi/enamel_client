@@ -2,10 +2,10 @@
   <div>
     <div v-show="isFormOpen">
       <input @focusout="closeForm" @keyup.enter="createTask" @keyup.esc="closeForm"
-        class="task-form" ref="taskform" type="text" name="task"
+        class="no-outline" ref="taskform" type="text" name="task"
         v-model="newTaskName" placeholder="Enter title for new task"></input>
     </div>
-    <div v-show="!isFormOpen" @click="openForm" class="btn btn-sm">+ New task</div>
+    <el-button v-show="!isFormOpen" @click="openForm" type="text">+ New task</el-button>
   </div>
 </template>
 

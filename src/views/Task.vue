@@ -1,33 +1,33 @@
 <template>
-  <div class="white container">
+  <div class="white card">
     <TaskHeader :task="task"></TaskHeader>
-    <div class="task-statebar columns">
-      <div class="column col-2">
+    <el-row class="task-statebar">
+      <el-col :span="4">
         <span>{{task.status}}</span>
-      </div>
-      <div class="column col-5">
+      </el-col>
+      <el-col :span="10">
         <span v-if="task.assignees.length > 0">TODO: Assignees</span>
         <span v-else>+ Add assignee</span>
-      </div>
-      <div class="column col-5">
+      </el-col>
+      <el-col :span="10">
         <span class="small-text">by {{task.creator.name}} at {{formatDate(task.createdAt)}}</span>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column col-3">
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="6">
         <span>Set Date</span>
-      </div>
-      <div class="column col-3">
+      </el-col>
+      <el-col :span="6">
         0.00
-      </div>
-      <div class="column col-3">
+      </el-col>
+      <el-col :span="6">
         <span v-if="subtasks.length > 0">{{formatSubtaskCount(subtasks)}}</span>
         <span v-else>Add subtask</span>
-      </div>
-      <div class="column col-3">
+      </el-col>
+      <el-col :span="6">
         <span class="shared-with">{{task.shareWith.length}}</span>
-      </div>
-    </div>
+      </el-col>
+    </el-row>
     <TaskTree
       class="tree-item task-list-group"
       v-for="model in subtasks" :key="model.id" :model="model">
@@ -39,6 +39,7 @@
     <Comments :comments="getComments"></Comments>
     <CommentBox :parent="task.id"></CommentBox>
   </div>
+
 </template>
 
 <script>

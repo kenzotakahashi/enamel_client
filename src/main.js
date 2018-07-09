@@ -9,14 +9,17 @@ import { HttpLink } from 'apollo-link-http'
 import { withClientState } from 'apollo-link-state'
 import { enableExperimentalFragmentVariables } from 'graphql-tag'
 import VueApollo from 'vue-apollo'
+import ElementUI from 'element-ui'
 
 import App from './App.vue'
 import router from './router'
 import store from './store'
 // import './registerServiceWorker'
 
+import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/style.scss'
 
+Vue.use(ElementUI)
 Vue.use(VeeValidate)
 Vue.config.productionTip = false
 

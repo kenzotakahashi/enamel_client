@@ -1,19 +1,35 @@
 <template>
-  <div class="container">
-    <h2>enamel</h2>
-    <div class="columns">
-      <div class="column col-4 col-mx-auto">
-        <div>Login</div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" type="email" v-model="form.email" placeholder="Email">
-          <label class="form-label">Password</label>
-          <input class="form-input" type="password" v-model="form.password" placeholder="Password">
-        </div>
-        <button class="btn btn-primary" @click="login">Login</button>
-      </div>
-    </div>
-  </div>
+  <el-container>
+    <el-header height="56px">
+      <el-row>
+        <el-col :span="2">
+          <div class="logo">enamel</div>
+        </el-col>
+      </el-row>
+    </el-header>
+
+    <el-main>
+      <el-row>
+        <el-col :span="6" :offset="9" justify="center">
+          <h2>Login</h2>
+
+          <el-form ref="form" :model="form">
+            <el-form-item>
+              <label>Email</label>
+              <el-input v-model="form.email" placeholder="Email"></el-input>
+              <label>Password</label>
+              <el-input v-model="form.password" placeholder="Password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="login">Login</el-button>
+            </el-form-item>
+          </el-form>
+
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
+
 </template>
 
 <script>
@@ -32,7 +48,6 @@ export default {
   },
   methods: {
     async login() {
-      console.log(this.$apollo)
       const validated = await this.$validator.validate()
       const { email, password } = this.form
       if (validated && email && password) {
@@ -58,3 +73,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+label {
+  text-align: left;
+}
+</style>

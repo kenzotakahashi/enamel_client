@@ -1,15 +1,17 @@
 <template>
-  <div class="container">
-    <div class="columns">
-      <div class="white column col-6">
-        <h3>{{folder.name}}</h3>
-        <div>
-          <span class="menu-title">LIST</span>
-          <span class="menu-title">BOARD</span>
-          <span class="menu-title">TABLE</span>
-          <span class="menu-title">GANTT CHART</span>
-          <span class="menu-title">STREAM</span>
-          <span class="menu-title">MORE</span>
+  <el-row>
+    <el-col :span="12">
+      <div class="white card">
+        <div class="space">
+          <h3>{{folder.name}}</h3>
+          <div>
+            <span class="menu-title">LIST</span>
+            <span class="menu-title">BOARD</span>
+            <span class="menu-title">TABLE</span>
+            <span class="menu-title">GANTT CHART</span>
+            <span class="menu-title">STREAM</span>
+            <span class="menu-title">MORE</span>
+          </div>
         </div>
         <TaskForm></TaskForm>
         <hr>
@@ -18,14 +20,14 @@
           :model="task">
         </TaskTree>
       </div>
-      <div v-if="subRoute==='task'" class="column col-6">
-        <router-view></router-view>
-      </div>
-      <div v-if="!isTeam(folder) && subRoute==='folder'" class="column col-6">
-        <FolderDetail :folder="folder"></FolderDetail>
-      </div>
-    </div>
-  </div>
+    </el-col>
+    <el-col v-if="subRoute==='task'" :span="12">
+      <router-view></router-view>
+    </el-col>
+    <el-col v-if="!isTeam(folder) && subRoute==='folder'" :span="12">
+      <FolderDetail :folder="folder"></FolderDetail>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

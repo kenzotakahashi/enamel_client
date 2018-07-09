@@ -1,17 +1,20 @@
 <template name="tree">
   <li>
-    <div class="columns">
-      <span v-if="isParent" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
-      <router-link :to="{name: 'task', params: {taskId: model.id}}" class="column col-9">
-        <span class="task">
-          <Avatar :size="24"></Avatar>
-          {{ model.name }}
-        </span>
-      </router-link>
-      <span class="column col-3">
+    <el-row>
+      <el-col :span="19">
+        <span v-if="isParent" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
+        <router-link :to="{name: 'task', params: {taskId: model.id}}">
+          <span class="task">
+            <Avatar :size="24"></Avatar>
+            {{ model.name }}
+          </span>
+        </router-link>
+      </el-col>
+      <el-col :span="5">
         {{ model.status }}
-      </span>
-    </div>
+      </el-col>
+    </el-row>
+
     <ul class="tree" v-show="open" v-if="isParent">
       <tree
         class="tree-item"

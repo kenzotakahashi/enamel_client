@@ -1,14 +1,21 @@
 <template>
-  <div class="task-view-header columns">
-    <div class="column col-8">
+  <el-row class="space">
+    <el-col :span="16">
       <div v-if="task.parent">{{task.parent.name}}</div>
       <div>
         <input class="no-outline" type="text" name="taskname" ref="taskname" v-model="taskName"
           @keyup.enter="updateTask" @keyup.esc="cancel">
         </input>
       </div>
-    </div>
-    <div class="column col-4">
+
+      <span v-for="folder in task.folders">
+        <span class="folder-tag">{{ folder.name }}</span>
+      </span>
+      <span>
+        <span>+</span>
+      </span>
+    </el-col>
+    <el-col :span="8">
       <span class="icon">
         <i class="far fa-star"></i>
       </span>
@@ -34,14 +41,8 @@
           <div>Close panel</div>
         </div>
       </span>
-    </div>
-    <span v-for="folder in task.folders">
-      <span class="folder-tag">{{ folder.name }}</span>
-    </span>
-    <span>
-      <span>+</span>
-    </span>
-  </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -65,7 +66,10 @@ export default {
     updateTask(e) {
       const id = this.task.id
       const name = this.taskName
-      if (name === this.task.name) return
+      if (name === this.task.name) {
+        this.cancel(e)
+        return
+      }
       this.$apollo.mutate({
         mutation: UpdateTask,
         variables: { id, name },

@@ -1,14 +1,16 @@
 <template>
-  <div class="white container">
-    <h4>{{folder.name}}</h4>
-    folder
-    <div class="columns">
-      <div class="column col-3">
+  <div class="white card">
+    <div class="space">
+      <h4>{{folder.name}}</h4>
+
+      <el-row>
         <span class="shared-with">{{folder.shareWith && folder.shareWith.length}}</span>
+      </el-row>
+
+      <div class="description-field">
+        <span class="description-text">Click to add the description</span>
       </div>
-    </div>
-    <div class="description-field">
-      <span class="description-text">Click to add the description</span>
+
     </div>
   </div>
 </template>
