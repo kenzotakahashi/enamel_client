@@ -69,15 +69,16 @@ export default {
         mutation: CreateFolder,
         variables: {name, parent, shareWith},
         update: (store, { data: { createFolder } }) => {
+          const variables = parent ? { parent } : {}
           try {
             const data = store.readQuery({
               query: GetFolders,
-              variables: {parent}
+              variables
             })
             data.getFolders.push(createFolder)
             store.writeQuery({
               query: GetFolders,
-              variables: {parent},
+              variables,
               data
             })
           } catch(err) {

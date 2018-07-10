@@ -1,5 +1,5 @@
 <template>
-  <div class="white card">
+  <div class="white card max-height">
     <TaskHeader :task="task"></TaskHeader>
     <el-row class="task-statebar">
       <el-col :span="4">
@@ -37,7 +37,7 @@
       <span class="description-text">Click to add the description</span>
     </div>
     <Comments :comments="getComments"></Comments>
-    <CommentBox :parent="task.id"></CommentBox>
+    <CommentBox :parent="task.id" class="stick-bottom"></CommentBox>
   </div>
 
 </template>
@@ -116,5 +116,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

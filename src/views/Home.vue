@@ -36,9 +36,9 @@ export default {
   },
   methods: {
     async capture() {
-      const validated = await this.$validator.validate()
+      // const validated = await this.$validator.validate()
       const {email} = this.form
-      if (validated && email) {
+      if (email) {
         this.$apollo.mutate({
           mutation: CaptureEmail,
           variables: {email}

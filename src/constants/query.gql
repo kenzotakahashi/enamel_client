@@ -37,6 +37,7 @@ fragment CommentFields on Comment {
 fragment FolderFields on Folder {
   id
   name
+  parent
   shareWith
 }
 
@@ -106,6 +107,10 @@ mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput]
   createProject(parent: $parent, name: $name, shareWith: $shareWith, owners: $owners, startDate: $startDate, finishDate: $finishDate) {
     ...FolderFields
   }
+}
+
+mutation DeleteFolder($id: String!) {
+  deleteFolder(id: $id)
 }
 
 query GetTeam {

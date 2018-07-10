@@ -1,7 +1,7 @@
 <template>
-  <el-row>
-    <el-col :span="12">
-      <div class="white card">
+  <el-row class="max-height">
+    <el-col :span="12" class="max-height">
+      <div class="white card max-height">
         <div class="space">
           <h3>{{folder.name}}</h3>
           <div>
@@ -21,10 +21,10 @@
         </TaskTree>
       </div>
     </el-col>
-    <el-col v-if="subRoute==='task'" :span="12">
+    <el-col v-if="subRoute==='task'" :span="12" class="max-height">
       <router-view></router-view>
     </el-col>
-    <el-col v-if="!isTeam(folder) && subRoute==='folder'" :span="12">
+    <el-col v-if="!isTeam(folder) && subRoute==='folder'" :span="12" class="max-height">
       <FolderDetail :folder="folder"></FolderDetail>
     </el-col>
   </el-row>
@@ -95,5 +95,9 @@ export default {
 .menu-title {
   margin: 0 5px;
   font-size: 12px;
+}
+
+.max-height {
+  height: 100%;
 }
 </style>

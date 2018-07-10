@@ -35,9 +35,9 @@ export default {
   },
   methods: {
     async signup() {
-      const validated = await this.$validator.validate()
+      // const validated = await this.$validator.validate()
       const { firstname, lastname, password } = this.form
-      if (validated && firstname && lastname && password) {
+      if (firstname && lastname && password) {
         this.$apollo.mutate({
           mutation: Signup,
           variables: {

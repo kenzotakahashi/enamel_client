@@ -48,9 +48,9 @@ export default {
   },
   methods: {
     async login() {
-      const validated = await this.$validator.validate()
+      // const validated = await this.$validator.validate()
       const { email, password } = this.form
-      if (validated && email && password) {
+      if (email && password) {
         this.$apollo.mutate({
           mutation: Login,
           variables: { email, password }

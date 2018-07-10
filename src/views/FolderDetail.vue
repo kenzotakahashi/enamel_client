@@ -1,5 +1,5 @@
 <template>
-  <div class="white card">
+  <div class="white card max-height">
     <div class="space">
       <h4>{{folder.name}}</h4>
 

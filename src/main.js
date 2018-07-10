@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VeeValidate from 'vee-validate'
+// import VeeValidate from 'vee-validate'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { persistCache } from 'apollo-cache-persist'
@@ -20,7 +20,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/style.scss'
 
 Vue.use(ElementUI)
-Vue.use(VeeValidate)
+// Vue.use(VeeValidate)
 Vue.config.productionTip = false
 
 const uri = `${process.env.VUE_APP_URI}/graphql`

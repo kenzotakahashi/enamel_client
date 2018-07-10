@@ -11,7 +11,7 @@
         <div @click="openModal('project')">Add Project</div>
         <div>Share</div>
         <div>Rename</div>
-        <div>Delete</div>
+        <div @click="deleteFolder">Delete</div>
         <div>Duplicate</div>
         <hr></hr>
         <div>Turn into Project</div>
@@ -22,7 +22,8 @@
         class=""
         v-for="folder in getFolders"
         :key="folder.id"
-        :model="folder">
+        :model="folder"
+      >
       </tree>
     </ul>
 
@@ -34,7 +35,7 @@
 import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
 import Modal from './Modal'
-import { GetFolders } from '../constants/query.gql'
+import { GetFolders, DeleteFolder } from '../constants/query.gql'
 
 export default {
   name: 'tree',
@@ -42,9 +43,7 @@ export default {
     'tree': FolderTree,
     Modal
   },
-  props: {
-    model: Object
-  },
+  props: ['model', 'team'],
   data() {
     return {
       open: false,
@@ -86,13 +85,33 @@ export default {
         parent: this.model.id
       }
     },
-    goToDetail() {
+    deleteFolder() {
+      const { id, parent } = this.model
+      this.$apollo.mutate({
+        mutation: DeleteFolder,
+        variables: {id},
+        update: (store) => {
+          const variables = this.team ? {} : {parent}
+          const data = store.readQuery({
+            query: GetFolders,
+            variables
+          })
+          data.getFolders.splice(data.getFolders.findIndex(o => o.id === id), 1)
+          store.writeQuery({
+            query: GetFolders,
+            variables,
+            data
+          })
+        }
+      }).then(() => {
+        this.$router.replace({
+          name: "folder",
+          params: {id: this.team || parent},
+        })
+      }).catch((error) => {
+        console.log(error)
+      })
     },
-    addChild() {
-      // this.model.subfolders.push({
-      //   name: 'new stuff'
-      // })
-    }
   }
 };
 </script>
