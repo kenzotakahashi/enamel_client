@@ -8,6 +8,7 @@ import Workspace from './views/Workspace.vue'
 import Folder from './views/Folder.vue'
 import FolderDetail from './views/FolderDetail.vue'
 import Task from './views/Task.vue'
+import Account from './views/Account.vue'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: Account
     },
     {
       path: '/workspace',

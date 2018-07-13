@@ -54,6 +54,17 @@ fragment ProjectFields on Project {
   status
 }
 
+fragment UserFields on User {
+  id
+  name
+  firstname
+  lastname
+  email
+  avatarColor
+  role
+  status
+}
+
 mutation CaptureEmail($email: String!) {
   captureEmail(email: $email) {
     id
@@ -122,14 +133,13 @@ query GetTeam {
 
 query GetUser($id: String) {
   getUser(id: $id) {
-    id
-    name
-    firstname
-    lastname
-    email
-    avatarColor
-    role
-    status
+    ...UserFields
+  }
+}
+
+query GetUsers {
+  getUsers {
+    ...UserFields
   }
 }
 
