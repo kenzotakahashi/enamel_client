@@ -261,6 +261,25 @@ ul.tree {
   }
 }
 
+.group-list-item {
+  box-sizing: border-box;
+  height: 32px;
+  display: flex;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.group-list-item:hover {
+  background-color: $hover;  
+}
+
+.group-list-item > span {
+  display: flex;
+  align-items: center;
+}
+
+
 .picker-item {
   display: block;
   height: 48px;
@@ -305,4 +324,8 @@ ul.tree {
                                          rgba(0, 0, 0, 0.9) 48%, 
                                          rgba(0, 0, 0, 0.9) 52%,  
                                          transparent 52%),
+}
+
+.user-container {
+  display: flex;
 }

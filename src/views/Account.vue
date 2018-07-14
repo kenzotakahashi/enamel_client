@@ -11,35 +11,53 @@
           <div class="column-header">
             <div>
               <!-- <i class="fas fa-search"></i> -->
-              <span class="title">Groups<span class="normal-weight">({{getGroups.length}})</span></span>
+              <span class="title">Groups<span class="count-title">({{getGroups.length}})</span></span>
               <span class="create-group-button" @click="openGroupForm">
                 <i class="fas fa-plus-circle"></i>                
               </span>
             </div>
           </div>
 
-          <div v-for="(group, index) in groups" :key="index" v-bind:class="{selected: selected === index}">
-            <span>{{group.name}}</span>
+          <div v-for="(group, index) in groups" :key="index"
+            class="group-list-item" v-bind:class="{selected: selected === index}"
+            @click="changeView(index)">
+            <span class="name">{{group.name}}</span>
+            <span class="member-count">{{index ? ungroupedUsers.length : getUsers.length}}</span>
+          </div>
+          <div v-for="(group, index) in getGroups" :key="index+2"
+            class="group-list-item" v-bind:class="{selected: selected === index+2}"
+            @click="changeView(index+2)">
+            <Avatar class="avatar" :manual="group" :size="24"></Avatar>
+            <span class="name">{{group.name}}</span>
+            <span class="member-count">{{group.users.length}}</span>
           </div>
         </el-col>
 
         <el-col :span="17" class="account-main-container">
           <div class="column-header">
             <div>
-              <span class="title">{{groups[selected].name}}<span class="normal-weight">()</span></span>
-              <el-button @click="" type="text">+ Add users</el-button>
+              <span class="title">{{groupName}}<span class="count-title">({{users.length}})</span></span>
+              <el-button v-show="selected !== 1" type="text" class="add-user-button"
+                @click="">+ Add users</el-button>
+              <el-button v-show="selected >= 2" type="text" class="add-user-button"
+                @click="">
+                <!-- <i class="fas fa-sliders-h"></i> -->
+                <i class="fas fa-cog"></i>
+                 Group settings
+               </el-button>
             </div>
           </div>
           <div class="users-overview-items">
             <div class="users-overview-item" v-for="overview in usersOverviews">
               <div class="users-overview-count">
-                {{getUsers.filter(o => overview.filter.includes(o.role)).length}}
+                {{users.filter(o => overview.filter.includes(o.role)).length}}
               </div>
               <div class="users-overview-role">{{overview.name}}</div>
             </div>
           </div>
           <el-table
-            :data="getUsers"
+            :data="users"
+            empty-text="No users"
             style="width: 100%">
             <el-table-column
               type="selection">
@@ -49,8 +67,8 @@
               sortable
               width="180">
               <template slot-scope="scope">
-                <div>
-                  <Avatar :user="scope.row" :size="24"></Avatar>
+                <div class="user-container">
+                  <Avatar class="avatar" :user="scope.row" :size="24"></Avatar>
                   {{scope.row.name}}
                 </div>
               </template>
@@ -142,12 +160,37 @@ export default {
       query: GetUsers
     },
     getGroups: {
-      query: GetGroups
+      query: GetGroups,
+      // result({data: {getGroups}}) {
+      //   this.groups = this.groups.concat(getGroups)
+      // },
     }
+  },
+  computed: {
+    users() {
+      if (this.selected === 0) {
+        return this.getUsers
+      } else if (this.selected === 1) {
+        return this.ungroupedUsers
+      } else {
+        return this.getUsers.filter(o => this.getGroups[this.selected-2].users.includes(o.id))
+      }
+    },
+    ungroupedUsers() {
+      const members = [].concat(...this.getGroups.map(o => o.users))
+      return this.getUsers.filter(o => !members.includes(o.id))
+    },
+    groupName() {
+      const group = this.selected < 2 ? this.groups[this.selected] : this.getGroups[this.selected-2]
+      return group.name
+    },
   },
   methods: {
     openGroupForm() {
       this.showGroupForm = true
+    },
+    changeView(index) {
+      this.selected = index
     }
   }
 }
@@ -162,7 +205,7 @@ export default {
   margin-bottom: 15px;
 }
 
-.selected {
+.selected, .selected:hover {
   background-color: rgba(68, 136, 255, 0.16);
 }
 
@@ -171,12 +214,32 @@ export default {
   font-weight: 600;
 }
 
-.normal-weight {
+.count-title {
+  color: #50596c;
+  margin-left: 4px;
   font-weight: 400;
 }
 
 .account-main-container {
   padding: 0 32px;
+}
+
+.add-user-button {
+  padding: 0;
+  margin-left: 16px;
+}
+
+.avatar {
+  margin-right: 8px;
+}
+
+.name {
+  flex-grow: 1;
+}
+
+.member-count {
+  width: 5px;
+  color: rgba(0, 0, 0, 0.32);
 }
 
 .users-overview-items {
@@ -191,7 +254,6 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.16);
   border-radius: 2px;
   -webkit-font-smoothing: antialiased;
-  /* font: 400 14px/ 1.57142857; */
   cursor: pointer;
   user-select: none;
 }

@@ -5,8 +5,10 @@
         <span v-if="isParent" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
         <router-link :to="{name: 'task', params: {taskId: model.id}}">
           <span class="task">
-            <Avatar :size="24"></Avatar>
-            {{ model.name }}
+            <div class="user-container">
+              <Avatar :size="24" class="avatar"></Avatar>
+              {{ model.name }}              
+            </div>
           </span>
         </router-link>
       </el-col>
@@ -74,5 +76,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.avatar {
+  margin-right: 8px;
+}
 </style>

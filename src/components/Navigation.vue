@@ -5,10 +5,12 @@
     </el-col>
     <el-col :span="17"></el-col>
     <el-col :span="5">
-      <div>
+      <div class="user-container">
         <Avatar :user="getUser" :size="32"></Avatar>
-        <span class="name">{{getUser.name}}</span>
-        <i class="fas fa-angle-down"></i>
+        <span class="name">
+          {{getUser.name}}
+          <i class="fas fa-angle-down"></i>
+        </span>
       </div>
     </el-col>
   </el-row>
@@ -45,3 +47,14 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.name {
+  display: flex;
+  align-items: center;
+}
+
+.fa-angle-down {
+  padding-left: 10px;
+}
+</style>
