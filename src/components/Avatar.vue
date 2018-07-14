@@ -1,5 +1,5 @@
 <template>
-  <span class="avatar-top" @click="$emit('avatar-click')">
+  <span class="avatar-top" @click="$emit('click')">
     <span v-if="user && user.avatarColor" class="avatar-core" v-bind:style="{
       backgroundColor: `#${user.avatarColor}`,
       height: size + 'px',

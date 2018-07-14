@@ -81,6 +81,12 @@ mutation CaptureEmail($email: String!) {
   }
 }
 
+mutation Invite($emails: [String], $groups: [String], $role: String) {
+  invite(emails: $emails, groups: $groups, role: $role) {
+    ...UserFields
+  }
+}
+
 mutation Signup($id: String!, $firstname: String!, $lastname: String!, $password: String!) {
   signup(id: $id, firstname: $firstname, lastname: $lastname, password: $password) {
     token

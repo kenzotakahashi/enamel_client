@@ -182,7 +182,7 @@ ul.tree {
 
 .modal-mask {
   position: fixed;
-  z-index: 9990;
+  z-index: 2000;
   top: 0;
   left: 0;
   width: 100%;
@@ -227,30 +227,30 @@ ul.tree {
 }
 
 .tooltip .tooltip-content {
-    /*padding: 5px 0;*/
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.16);
 
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 50px;
-    z-index: 10000;
+  /* Position the tooltip */
+  position: absolute;
+  bottom: 50px;
+  z-index: 10000;
 }
 
 .tooltip .tooltip-content::after {
-    content: " ";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 8px;
-    border-style: solid;
-    border-color: #fff transparent transparent transparent;
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
 }
 
 .account {
-  padding: 60px 60px 0;
+  padding: 30px 60px 0;
 }
 
 .contact-picker-item {
@@ -311,6 +311,15 @@ ul.tree {
 
 .picker-avatar {
   margin-right: 8px;
+}
+
+.cross-wrapper {
+  padding: 6px 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .cross {

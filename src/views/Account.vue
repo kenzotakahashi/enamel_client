@@ -12,7 +12,7 @@
             <div>
               <!-- <i class="fas fa-search"></i> -->
               <span class="title">Groups<span class="count-title">({{getGroups.length}})</span></span>
-              <span class="create-group-button" @click="openGroupForm">
+              <span class="create-group-button" @click="showGroupForm = true">
                 <i class="fas fa-plus-circle"></i>                
               </span>
             </div>
@@ -37,9 +37,9 @@
           <div class="column-header">
             <div>
               <span class="title">{{groupName}}<span class="count-title">({{users.length}})</span></span>
-              <el-button v-show="selected !== 1" type="text" class="add-user-button"
-                @click="">+ Add users</el-button>
-              <el-button v-show="selected >= 2" type="text" class="add-user-button"
+              <el-button v-show="selected !== 1" type="text" class="text-button"
+                @click="openInviteUserForm">+ Add users</el-button>
+              <el-button v-show="selected >= 2" type="text" class="text-button"
                 @click="">
                 <!-- <i class="fas fa-sliders-h"></i> -->
                 <i class="fas fa-cog"></i>
@@ -93,7 +93,9 @@
         </el-col>
       </el-row>
 
-      <GroupForm v-if="showGroupForm" :team="modalConfig" @close="showGroupForm = false"></GroupForm>
+      <GroupForm v-if="showGroupForm" :users="getUsers" @close="showGroupForm = false"></GroupForm>
+      <InviteUserForm v-if="showInviteUserForm" :groups="getGroups"
+        @close="showInviteUserForm = false"></InviteUserForm>
 
     </el-main>
 
@@ -105,19 +107,21 @@
 import Navigation from '@/components/Navigation'
 import Avatar from '@/components/Avatar'
 import GroupForm from '@/components/GroupForm'
+import InviteUserForm from '@/components/InviteUserForm'
 import { GetUsers, GetGroups } from '../constants/query.gql'
 
 export default {
   components: {
     Navigation,
     Avatar,
-    GroupForm
+    GroupForm,
+    InviteUserForm
   },
   data() {
     return {
       selected: 0,
       showGroupForm: false,
-      modalConfig: {},
+      showInviteUserForm: false,
       groups: [
         {
           name: 'All users'
@@ -186,8 +190,8 @@ export default {
     },
   },
   methods: {
-    openGroupForm() {
-      this.showGroupForm = true
+    openInviteUserForm() {
+      this.showInviteUserForm = true
     },
     changeView(index) {
       this.selected = index
@@ -224,7 +228,7 @@ export default {
   padding: 0 32px;
 }
 
-.add-user-button {
+.text-button {
   padding: 0;
   margin-left: 16px;
 }

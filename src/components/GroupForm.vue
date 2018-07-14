@@ -24,7 +24,7 @@
           <div class="avatarcolor-container">
             <Avatar v-for="avatarColor in colors" :key="avatarColor"
               class="color-avatar" 
-              @avatar-click="selectAvatarColor(avatarColor)"
+              @click="selectAvatarColor(avatarColor)"
               :manual="{initials: form.initials, avatarColor}" :size="32"
               :selected="form.avatarColor === avatarColor">
             </Avatar>
@@ -62,11 +62,7 @@
               <div v-if="form.users.length > 0" class="add-additional">
                 <Avatar v-for="user in form.users" :key="user.id" 
                   class="member-avatar" :user="user" :size="32">
-                  <div class="remove-button" @click="removeMemberFromGroup(user.id)">
-                    <svg fill="currentColor" height="16" width="16" viewBox="0 0 16 16">
-                      <path d="M8.844 8l2.981-2.973a.593.593 0 0 0 0-.84.599.599 0 0 0-.844 0l-2.977 2.97L5.03 4.173a.593.593 0 0 0-.84 0 .598.598 0 0 0 0 .845l2.97 2.977-2.985 2.977a.592.592 0 0 0 0 .84c.232.233.61.233.844 0L8 8.84l2.977 2.985a.592.592 0 0 0 .84 0 .599.599 0 0 0 0-.843L8.844 8z" fill-rule="evenodd"></path>
-                    </svg>
-                  </div>
+                  <RemoveButton @click="removeMemberFromGroup(user.id)"></RemoveButton>
                 </Avatar>
                 <div class="cross-wrapper">
                   <span slot="reference" class="cross"
@@ -83,7 +79,7 @@
 
         <section>
           <el-button type="primary" @click="createGroup">Create</el-button>
-          <el-button type="" @click="$emit('close')">Cancel</el-button>          
+          <el-button type="text" @click="$emit('close')">Cancel</el-button>          
         </section>
 
       </div>
@@ -92,15 +88,18 @@
 </template>
 
 <script>
-import { GetUsers, CreateGroup, GetGroups } from '../constants/query.gql'
+import { CreateGroup, GetGroups } from '../constants/query.gql'
 import Avatar from './Avatar.vue'
+import RemoveButton from './RemoveButton.vue'
 import { mapState } from 'vuex'
 import { randomChoice } from '@/helpers/helpers'
 
 export default {
   components: {
-    Avatar
+    Avatar,
+    RemoveButton
   },
+  props: ['users'],
   data() {
     return {
       visibleAddMembers: false,
@@ -110,7 +109,6 @@ export default {
         "80DEEA","4DD0E1","00ACC1","9FA8DA","7986CB","3949AB","8E24AA","BA68C8","CE93D8"
       ],
       searchUser: '',
-      getUsers: [],
       form: {
         name: '',
         initials: '',       
@@ -119,16 +117,11 @@ export default {
       },
     }
   },
-  apollo: {
-    getUsers: {
-      query: GetUsers
-    },
-  },
   computed: {
     filteredUsers() {
       const s = this.searchUser.toLowerCase()
       const users = this.form.users.map(o => o.id)
-      return this.getUsers.filter(o => !users.includes(o.id)
+      return this.users.filter(o => !users.includes(o.id)
         && (o.name.toLowerCase().includes(s) || o.email.toLowerCase().includes(s)))
     },
     ...mapState(['activeDropdown'])
@@ -178,16 +171,11 @@ export default {
           users: users.map(o => o.id)
         },
         update: (store, { data: { createGroup } }) => {
-          const variables = parent ? { parent } : {}
           try {
-            const data = store.readQuery({
-              query: GetGroups,
-              variables
-            })
+            const data = store.readQuery({query: GetGroups})
             data.getGroups.unshift(createGroup)
             store.writeQuery({
               query: GetGroups,
-              variables,
               data
             })
           } catch(err) {
@@ -253,33 +241,7 @@ section {
   visibility: visible;
 }
 
-.remove-button {
-  visibility: hidden;
-  display: block;
-  width: 12px;
-  height: 12px;
-  position: absolute;
-  right: -4px;
-  top: -4px;
-  padding: 1px;
-  background-color: rgba(0, 0, 0, 0.9);
-  border: 2px solid white;
-  border-radius: 50%;
-  color: #fff;
-  transition: all 0.1s ease-out;
-  cursor: pointer;
-  z-index: 1;
-}
-
-.remove-button svg {
-  color: #fff;
-  display: block;
-  width: 12px;
-  height: 12px;
-}
-
 .tooltip .tooltip-content {
-  box-sizing: border-box;
   width: 278px;
   left: 50%; 
   margin-left: -139px;
@@ -303,15 +265,6 @@ section {
 .add-additional {
   display: flex;
   flex-direction: row;
-}
-
-.cross-wrapper {
-  padding: 6px 0;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
 }
 
 </style>
