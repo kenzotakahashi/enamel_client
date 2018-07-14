@@ -27,21 +27,21 @@
       </tree>
     </ul>
 
-    <Modal v-if="showModal" :config="modalConfig" @close="showModal = false"></Modal>
+    <FolderForm v-if="showModal" :config="modalConfig" @close="showModal = false"></FolderForm>
   </li>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
-import Modal from './Modal'
+import FolderForm from './FolderForm'
 import { GetFolders, DeleteFolder } from '../constants/query.gql'
 
 export default {
   name: 'tree',
   components: {
     'tree': FolderTree,
-    Modal
+    FolderForm
   },
   props: ['model', 'team'],
   data() {

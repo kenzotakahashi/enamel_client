@@ -65,6 +65,15 @@ fragment UserFields on User {
   status
 }
 
+fragment GroupFields on Group {
+  id
+  team
+  name
+  initials
+  avatarColor
+  users
+}
+
 mutation CaptureEmail($email: String!) {
   captureEmail(email: $email) {
     id
@@ -114,8 +123,10 @@ mutation CreateFolder($parent: String, $name: String!, $shareWith: [ShareInput])
   }
 }
 
-mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput], $owners: [String], $startDate: Date, $finishDate: Date) {
-  createProject(parent: $parent, name: $name, shareWith: $shareWith, owners: $owners, startDate: $startDate, finishDate: $finishDate) {
+mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput],
+                       $owners: [String], $startDate: Date, $finishDate: Date) {
+  createProject(parent: $parent, name: $name, shareWith: $shareWith,
+                owners: $owners, startDate: $startDate, finishDate: $finishDate) {
     ...FolderFields
   }
 }
@@ -123,6 +134,13 @@ mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput]
 mutation DeleteFolder($id: String!) {
   deleteFolder(id: $id)
 }
+
+mutation CreateGroup($name: String, $initials: String, $avatarColor: String, $users: [String]) {
+  createGroup(name: $name, initials: $initials, avatarColor: $avatarColor, users: $users) {
+    ...GroupFields
+  }
+}
+
 
 query GetTeam {
   getTeam {
@@ -145,12 +163,7 @@ query GetUsers {
 
 query GetGroups {
   getGroups {
-    id
-    team
-    name
-    initials
-    avatarColor
-    users
+    ...GroupFields
   }
 }
 

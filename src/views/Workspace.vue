@@ -29,7 +29,7 @@
         <router-view></router-view>
       </el-main>
 
-      <Modal v-if="showModal" :config="modalConfig" @close="showModal = false"></Modal>
+      <FolderForm v-if="showModal" :config="modalConfig" @close="showModal = false"></FolderForm>
     </el-container>
 
   </el-container>
@@ -40,7 +40,7 @@
 import { mapState } from  'vuex'
 import Tree from '@/components/FolderTree'
 import Avatar from '@/components/Avatar'
-import Modal from '@/components/Modal'
+import FolderForm from '@/components/FolderForm'
 import Navigation from '@/components/Navigation'
 import { GetFolders, GetTeam } from '../constants/query.gql'
 
@@ -48,7 +48,7 @@ export default {
   components: {
     Tree,
     Avatar,
-    Modal,
+    FolderForm,
     Navigation
   },
   computed: mapState(['activeDropdown']),

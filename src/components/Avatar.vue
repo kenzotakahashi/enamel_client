@@ -1,32 +1,40 @@
 <template>
-  <span>
-    <span v-if="user" class="avatar" v-bind:style="{
+  <span class="avatar-top" @click="$emit('avatar-click')">
+    <span v-if="user && user.avatarColor" class="avatar-core" v-bind:style="{
       backgroundColor: `#${user.avatarColor}`,
       height: size + 'px',
       width: size + 'px',
-      lineHeight: size + 'px'
+      fontSize: size * 0.4375 + 'px'
     }">
       {{getInitials}}
     </span>
-    <span v-else class="avatar" v-bind:style="{
+    <span v-else-if="manual" class="avatar-core" v-bind:class="{selectedColor: selected}" v-bind:style="{
+      backgroundColor: `#${manual.avatarColor}`,
+      height: size + 'px',
+      width: size + 'px',
+      fontSize: size * 0.4375 + 'px',
+    }">
+      {{manual.initials}}
+    </span>
+    <span v-else class="avatar-core" v-bind:style="{
       backgroundColor: '#f2f7ff',
       height: size + 'px',
       width: size + 'px',
-      lineHeight: size + 'px'
     }">
       <svg viewBox="0 0 14 9" width="14px">
         <path fill-rule="evenodd" stroke="none" fill="#bcd4ff"
           d="M9,4 C10.11,4 11,3.1 11,2 C11,0.9 10.11,0 9,0 C7.9,0 7,0.9 7,2 C7,3.1 7.9,4 9,4 L9,4 Z M9,5.2 C7.33,5.2 4,6.03 4,7.7 L4,9 L14,9 L14,7.7 C14,6.03 10.67,5.2 9,5.2 L9,5.2 Z M5,3 L3,3 L3,1 L2,1 L2,3 L0,3 L0,4 L2,4 L2,6 L3,6 L3,4 L5,4 L5,3 L5,3 Z">
         </path>
-      </svg>
+      </svg>      
     </span>
+    <slot></slot>
   </span>
 </template>
 
 <script>
 
 export default {
-  props: ['user', 'size'],
+  props: ['user', 'manual', 'size', 'selected'],
   computed: {
     getInitials() {
       const {firstname, lastname} = this.user
@@ -39,13 +47,24 @@ export default {
 
 
 <style scoped>
-.avatar {
-  text-align: center;
+.avatar-top {
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar-core {
+  color: #fff;
   border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-  font-family: Roboto;
-  font-size: 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   letter-spacing: 1px;
+}
+
+.selectedColor {
+  border: 1px solid white;
+  box-shadow: 0px 0px 0px 2px #48f;
 }
 </style>

@@ -10,9 +10,11 @@
         <el-col :span="7">
           <div class="column-header">
             <div>
-              <i class="fas fa-search"></i>
+              <!-- <i class="fas fa-search"></i> -->
               <span class="title">Groups<span class="normal-weight">({{getGroups.length}})</span></span>
-              <i class="fas fa-plus-circle"></i>
+              <span class="create-group-button" @click="openGroupForm">
+                <i class="fas fa-plus-circle"></i>                
+              </span>
             </div>
           </div>
 
@@ -25,7 +27,7 @@
           <div class="column-header">
             <div>
               <span class="title">{{groups[selected].name}}<span class="normal-weight">()</span></span>
-              <el-button @click="openForm" type="text">+ Add users</el-button>
+              <el-button @click="" type="text">+ Add users</el-button>
             </div>
           </div>
           <div class="users-overview-items">
@@ -48,7 +50,7 @@
               width="180">
               <template slot-scope="scope">
                 <div>
-                  <Avatar :size="24"></Avatar>
+                  <Avatar :user="scope.row" :size="24"></Avatar>
                   {{scope.row.name}}
                 </div>
               </template>
@@ -72,6 +74,9 @@
           </el-table>
         </el-col>
       </el-row>
+
+      <GroupForm v-if="showGroupForm" :team="modalConfig" @close="showGroupForm = false"></GroupForm>
+
     </el-main>
 
   </el-container>
@@ -81,17 +86,19 @@
 <script>
 import Navigation from '@/components/Navigation'
 import Avatar from '@/components/Avatar'
+import GroupForm from '@/components/GroupForm'
 import { GetUsers, GetGroups } from '../constants/query.gql'
 
 export default {
   components: {
     Navigation,
-    Avatar
+    Avatar,
+    GroupForm
   },
   data() {
     return {
       selected: 0,
-      showModal: false,
+      showGroupForm: false,
       modalConfig: {},
       groups: [
         {
@@ -139,8 +146,8 @@ export default {
     }
   },
   methods: {
-    openForm() {
-
+    openGroupForm() {
+      this.showGroupForm = true
     }
   }
 }
@@ -189,6 +196,11 @@ export default {
   user-select: none;
 }
 
+.users-overview-item:hover, .users-overview-item:hover .users-overview-role {
+  color: #409EFF;
+  border-color: #409EFF;
+}
+
 .users-overview-count {
   font-weight: 600;
 }
@@ -198,6 +210,11 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.create-group-button {
+  float: right;
+  cursor: pointer;
 }
 
 </style>

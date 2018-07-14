@@ -6,3 +6,6 @@ export const formatDate = (date) => {
   return today === day ? moment(date).format('HH:mm') : day
 }
 
+export function randomChoice(arr) {
+  return arr[Math.floor(arr.length * Math.random())]
+}
