@@ -143,6 +143,17 @@ query GetUsers {
   }
 }
 
+query GetGroups {
+  getGroups {
+    id
+    team
+    name
+    initials
+    avatarColor
+    users
+  }
+}
+
 query GetFolders($parent: String) {
   getFolders(parent: $parent) {
     ...FolderFields
