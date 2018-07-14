@@ -37,14 +37,28 @@
           <div class="column-header">
             <div>
               <span class="title">{{groupName}}<span class="count-title">({{users.length}})</span></span>
-              <el-button v-show="selected !== 1" type="text" class="text-button"
+              <el-button v-show="selected === 0" type="text" class="text-button"
                 @click="openInviteUserForm">+ Add users</el-button>
-              <el-button v-show="selected >= 2" type="text" class="text-button"
-                @click="">
-                <!-- <i class="fas fa-sliders-h"></i> -->
-                <i class="fas fa-cog"></i>
-                 Group settings
-               </el-button>
+              <span v-show="selected >= 2">
+                <el-popover
+                  popper-class="popover-menu"
+                  :visible-arrow="false"
+                  placement="bottom"
+                  width="175"
+                  trigger="click">
+                  <div class="group-view">
+                    <div class="menu-item" @click="">Add from account</div>
+                    <div class="menu-item" @click="openInviteUserForm">Invite by email</div>                    
+                  </div>
+                  <el-button type="text" class="text-button" slot="reference">+ Add users</el-button>
+                </el-popover>
+                <el-button type="text" class="text-button"
+                  @click="">
+                  <!-- <i class="fas fa-sliders-h"></i> -->
+                  <i class="fas fa-cog"></i>
+                   Group settings
+                 </el-button>
+              </span>
             </div>
           </div>
           <div class="users-overview-items">
@@ -164,10 +178,7 @@ export default {
       query: GetUsers
     },
     getGroups: {
-      query: GetGroups,
-      // result({data: {getGroups}}) {
-      //   this.groups = this.groups.concat(getGroups)
-      // },
+      query: GetGroups
     }
   },
   computed: {
@@ -201,6 +212,7 @@ export default {
 </script>
 
 <style scoped>
+
 .column-header {
   margin-bottom: 15px;
 }

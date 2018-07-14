@@ -85,14 +85,14 @@ export default {
     Avatar,
     RemoveButton
   },
-  props: ['groups'],
+  props: ['groups', 'targetGroup'],
   data() {
     return {
       visibleAddToGroup: false,
       searchGroup: '',
       form: {
         emails: ['','',''],
-        groups: [],
+        groups: this.targetGroup ? [this,targetGroup] : [],
         role: 'Regular User'
       },
     }
@@ -152,6 +152,7 @@ export default {
           }
         }
       }).then(() => {
+        // TODO: alert email addresses that already exist
         this.$emit('close')
       }).catch((error) => {
         console.log(error)

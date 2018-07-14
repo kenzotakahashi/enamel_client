@@ -338,3 +338,26 @@ ul.tree {
 .user-container {
   display: flex;
 }
+
+.group-view {
+  padding: 12px 0;
+}
+
+.popover-menu {
+  padding: 0;
+}
+
+.menu-item {
+  cursor: pointer;
+  display: block;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 42px 0 24px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.menu-item:hover {
+  background-color: $hover;
+}
+
