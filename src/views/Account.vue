@@ -77,7 +77,8 @@
               <div class="users-overview-role">{{overview.name}}</div>
             </div>
           </div>          
-          <el-table :data="filteredUsers" empty-text="No users" style="width: 100%">
+          <el-table :data="filteredUsers" empty-text="No users" style="width: 100%"
+            @row-click="openUserDetail">
             <el-table-column label="NAME" sortable width="180">
               <template slot-scope="scope">
                 <div class="user-container">
@@ -107,6 +108,8 @@
       <AddUsersToGroupForm v-if="showAddUsersToGroupForm"
         :group="selectedGroup" :users="getUsers"
         @close="showAddUsersToGroupForm = false"></AddUsersToGroupForm>
+      <UserDetail v-if="selectedUser" :user="selectedUser"
+        @close="selectedUser = null"></UserDetail>
     </el-main>
 
   </el-container>
@@ -121,6 +124,7 @@ import GroupForm from '@/components/GroupForm'
 import GroupUpdateForm from '@/components/GroupUpdateForm'
 import InviteUserForm from '@/components/InviteUserForm'
 import AddUsersToGroupForm from '@/components/AddUsersToGroupForm'
+import UserDetail from '@/components/UserDetail'
 import CloseButton from '@/components/CloseButton'
 import { GetUsers, GetGroups, RemoveUsersFromGroup } from '../constants/query.gql'
 
@@ -132,12 +136,14 @@ export default {
     GroupUpdateForm,
     InviteUserForm,
     AddUsersToGroupForm,
+    UserDetail,
     CloseButton
   },
   data() {
     return {
       selected: 0,
       selectedRole: null,
+      selectedUser: null,
       showGroupForm: false,
       showGroupUpdateForm: false,
       showInviteUserForm: false,
@@ -214,6 +220,9 @@ export default {
   methods: {
     openInviteUserForm(type) {
       this.showInviteUserForm = type
+    },
+    openUserDetail(user) {
+      this.selectedUser = user
     },
     changeView(index) {
       this.selected = index
