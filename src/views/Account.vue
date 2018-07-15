@@ -67,15 +67,17 @@
             </div>
           </div>
           <div class="users-overview-items">
-            <div class="users-overview-item" v-for="overview in usersOverviews">
+            <div class="users-overview-item"
+              v-bind:class="{active: selectedRole && selectedRole.name === overview.name}"
+              v-for="overview in usersOverviews" :key="overview.name"
+              @click="changeRoleFilter(overview)">
               <div class="users-overview-count">
-                {{users.filter(o => overview.filter.includes(o.role)).length}}
+                {{ users.filter(o => overview.filter.includes(o.role)).length }}
               </div>
               <div class="users-overview-role">{{overview.name}}</div>
             </div>
-          </div>
-          <el-table :data="users" empty-text="No users" style="width: 100%">
-            <el-table-column type="selection"></el-table-column>
+          </div>          
+          <el-table :data="filteredUsers" empty-text="No users" style="width: 100%">
             <el-table-column label="NAME" sortable width="180">
               <template slot-scope="scope">
                 <div class="user-container">
@@ -87,6 +89,11 @@
             <el-table-column prop="email" label="EMAIL" sortable width="180"></el-table-column>
             <el-table-column prop="role" label="ROLE" sortable></el-table-column>
             <el-table-column prop="status" label="STATUS" sortable></el-table-column>
+            <el-table-column label="" width="40">
+              <template v-if="selected >= 2" slot-scope="scope">
+                <CloseButton @click="removeUsersFromGroup(scope.row.id)"></CloseButton>
+              </template>
+            </el-table-column>
           </el-table>
         </el-col>
       </el-row>
@@ -111,7 +118,8 @@ import Avatar from '@/components/Avatar'
 import GroupForm from '@/components/GroupForm'
 import InviteUserForm from '@/components/InviteUserForm'
 import AddUsersToGroupForm from '@/components/AddUsersToGroupForm'
-import { GetUsers, GetGroups } from '../constants/query.gql'
+import CloseButton from '@/components/CloseButton'
+import { GetUsers, GetGroups, RemoveUsersFromGroup } from '../constants/query.gql'
 
 export default {
   components: {
@@ -119,11 +127,13 @@ export default {
     Avatar,
     GroupForm,
     InviteUserForm,
-    AddUsersToGroupForm
+    AddUsersToGroupForm,
+    CloseButton
   },
   data() {
     return {
       selected: 0,
+      selectedRole: null,
       showGroupForm: false,
       showInviteUserForm: false,
       showAddUsersToGroupForm: false,
@@ -182,6 +192,11 @@ export default {
         return this.getUsers.filter(o => this.getGroups[this.selected-2].users.includes(o.id))
       }
     },
+    filteredUsers() {
+      return this.selectedRole
+        ? this.users.filter(o => this.selectedRole.filter.includes(o.role))
+        : this.users
+    },
     ungroupedUsers() {
       const members = [].concat(...this.getGroups.map(o => o.users))
       return this.getUsers.filter(o => !members.includes(o.id))
@@ -197,6 +212,23 @@ export default {
     },
     changeView(index) {
       this.selected = index
+    },
+    changeRoleFilter(overview) {
+      this.selectedRole = !this.selectedRole || this.selectedRole.name !== overview.name
+        ? overview : null 
+    },
+    removeUsersFromGroup(userId) {
+      this.$apollo.mutate({
+        mutation: RemoveUsersFromGroup,
+        variables: {
+          id: this.selectedGroup.id,
+          users: [userId]
+        }
+      }).then(() => {
+        this.$emit('close')
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
@@ -265,7 +297,8 @@ export default {
   user-select: none;
 }
 
-.users-overview-item:hover, .users-overview-item:hover .users-overview-role {
+.users-overview-item:hover, .users-overview-item:hover .users-overview-role,
+.users-overview-item.active, .users-overview-item.active .users-overview-role {
   color: #409EFF;
   border-color: #409EFF;
 }

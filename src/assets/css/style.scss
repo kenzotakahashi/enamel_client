@@ -1,11 +1,11 @@
 $hover-inverse: #526477;
 $hover: #F0F0F0;
+$blue: #409EFF;
 
 body {
   color: #fff;
   margin: 0;
   background-color: #4A4090;
-  /*font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;*/
   font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN","Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
 }
 
@@ -37,12 +37,15 @@ a, a:visited, a:hover, a:active, a:focus {
   cursor: pointer;
 }
 
+.el-table__row:hover .close-button {
+  visibility: visible;
+}
+
 .nav > .el-col {
   overflow: hidden;
   padding: 10px 10px;
   cursor: pointer;
   text-align: center;
-  /*margin:auto;*/
 }
 
 .space {

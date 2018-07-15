@@ -153,6 +153,11 @@ mutation AddUsersToGroup($id: String!, $users: [String]) {
   }
 }
 
+mutation RemoveUsersFromGroup($id: String!, $users: [String]) {
+  removeUsersFromGroup(id: $id, users: $users) {
+    ...GroupFields
+  }
+}
 
 query GetTeam {
   getTeam {
