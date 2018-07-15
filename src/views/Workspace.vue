@@ -5,7 +5,7 @@
     </el-header>
 
     <el-container :style="styleObj">
-      <el-aside width="220px">
+      <el-aside class="tree-root" width="220px">
         <div v-if="getTeam.id">
           <div class="tree-item dropdown"
               @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${getTeam.id}`)"

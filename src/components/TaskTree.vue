@@ -1,6 +1,6 @@
 <template name="tree">
   <li>
-    <el-row>
+    <el-row class="tree-item white">
       <el-col :span="19">
         <span v-if="isParent" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
         <router-link :to="{name: 'task', params: {taskId: model.id}}">
@@ -19,7 +19,7 @@
 
     <ul class="tree" v-show="open" v-if="isParent">
       <tree
-        class="tree-item"
+        class=""
         v-for="task in getTasks"
         :key="task.id"
         :model="task">

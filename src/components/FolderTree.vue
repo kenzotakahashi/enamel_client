@@ -3,20 +3,23 @@
     <div class="tree-item dropdown"
         @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${model.id}`)"
         @click.left.stop="$router.push({name: 'folder', params: {id: model.id}})">
-      <span v-if="isFolder" @click="toggle" class="fold-button invrese">[{{ open ? '-' : '+' }}]</span>
-      <span class="folder no-select-color">{{ model.name }}</span>
+      <span v-if="isFolder" @click="toggle" class="fold-button inverse">[{{ open ? '-' : '+' }}]</span>
+      <div class="tree-plate">
+        <span class="folder no-select-color">{{ model.name }}</span>
 
-      <div class="dropdown-content left" v-show="activeWidget === `folder${model.id}`">
-        <div @click="openModal('folder')">Add Folder</div>
-        <div @click="openModal('project')">Add Project</div>
-        <div>Share</div>
-        <div>Rename</div>
-        <div @click="deleteFolder">Delete</div>
-        <div>Duplicate</div>
-        <hr></hr>
-        <div>Turn into Project</div>
+        <div class="dropdown-content left" v-show="activeWidget === `folder${model.id}`">
+          <div @click="openModal('folder')">Add Folder</div>
+          <div @click="openModal('project')">Add Project</div>
+          <div>Share</div>
+          <div>Rename</div>
+          <div @click="deleteFolder">Delete</div>
+          <div>Duplicate</div>
+          <hr></hr>
+          <div>Turn into Project</div>
+        </div>
       </div>
     </div>
+
     <ul class="tree" v-show="open" v-if="isFolder">
       <tree
         class=""

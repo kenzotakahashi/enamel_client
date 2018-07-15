@@ -16,6 +16,7 @@ h1, h2, h3, h4, h5, h6 {
 
 ul, li {
   list-style-type: none;
+  margin: 0;
 }
 
 button {
@@ -102,12 +103,6 @@ input.no-outline {
   font-size: 11px;
 }
 
-.task-list-group {
-  width: 100%;
-  display: block;
-  padding: 5px 0;
-}
-
 .folder-tag {
   padding: 2px 5px;
   border: 1px solid;
@@ -120,20 +115,57 @@ ul.tree {
 }
 
 .folder, .task {
-  position: relative;
-  left: 25px;
+  /*padding-left: 18px;*/
 }
 
 .fold-button {
-  position: absolute;
+  /*position: relative;*/
+  /*left: -3px;*/
+  width: 36px;
+  z-index: 5;
+  /*display: block;*/
 }
 
-.folder:hover, .fold-button.inverse:hover {
+.fold-button.inverse:hover {
   background-color: $hover-inverse;
+}
+
+.tree-root {
+  position: relative;
 }
 
 .tree-item {
   cursor: pointer;
+  width: 100%;
+  line-height: 30px;
+  display: flex;
+  flex-direction: row;
+}
+
+.tree-plate {
+  display: block;
+  position: static;
+  width: 100%;
+  height: auto;
+}
+
+.tree-plate:before {
+  border-radius: 0 3px 3px 0;
+  /*background-color: #48f;*/
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 4px;
+  height: 30px;
+  z-index: -1;  
+}
+
+.tree-plate:hover:before {
+  background-color: $hover-inverse;
+}
+
+.tree-item.white:hover {
+  background-color: $hover;
 }
 
 .no-select-color::-moz-selection {
@@ -169,8 +201,8 @@ ul.tree {
 /* ========= dropdown ============*/
 
 .dropdown {
-  position: relative;
-  display: inline-block;
+  /*position: relative;*/
+  /*display: inline-block;*/
 }
 
 .dropdown-content {

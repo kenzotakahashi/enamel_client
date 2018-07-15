@@ -16,7 +16,7 @@
         <TaskForm></TaskForm>
         <hr>
         <TaskTree
-          v-for="task in getTasks" :key="task.id" class="tree-item task-list-group"
+          v-for="task in getTasks" :key="task.id"
           :model="task">
         </TaskTree>
       </div>

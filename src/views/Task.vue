@@ -29,7 +29,6 @@
       </el-col>
     </el-row>
     <TaskTree
-      class="tree-item task-list-group"
       v-for="model in subtasks" :key="model.id" :model="model">
     </TaskTree>
     <TaskForm :parentId="taskId"></TaskForm>

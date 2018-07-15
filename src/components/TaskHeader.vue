@@ -54,7 +54,7 @@ export default {
   computed: mapState(['activeWidget']),
   data() {
     return {
-      taskName: ''
+      taskName: this.task.name
     }
   },
   watch: {
