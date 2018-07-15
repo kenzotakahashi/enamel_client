@@ -76,6 +76,8 @@
               </div>
               <div class="users-overview-role">{{overview.name}}</div>
             </div>
+          </div>
+
           </div>          
           <el-table :data="filteredUsers" empty-text="No users" style="width: 100%"
             @row-click="openUserDetail">
@@ -108,8 +110,9 @@
       <AddUsersToGroupForm v-if="showAddUsersToGroupForm"
         :group="selectedGroup" :users="getUsers"
         @close="showAddUsersToGroupForm = false"></AddUsersToGroupForm>
-      <UserDetail v-if="selectedUser" :user="selectedUser"
-        @close="selectedUser = null"></UserDetail>
+      <UserDetail v-if="activeWidget === 'userDetail'"
+        :user="selectedUser" :groups="getGroups">
+      </UserDetail>
     </el-main>
 
   </el-container>
@@ -218,11 +221,16 @@ export default {
     ...mapState(['activeWidget'])
   },
   methods: {
+    changeActiveWidget(key) {
+      this.$store.dispatch('changeActiveWidget', key)
+    },
     openInviteUserForm(type) {
       this.showInviteUserForm = type
     },
-    openUserDetail(user) {
+    openUserDetail(user, e) {
+      this.changeActiveWidget('userDetail')
       this.selectedUser = user
+      e.stopPropagation()
     },
     changeView(index) {
       this.selected = index

@@ -60,9 +60,11 @@ fragment UserFields on User {
   firstname
   lastname
   email
+  jobTitle
   avatarColor
   role
   status
+  createdAt
 }
 
 fragment GroupFields on Group {
