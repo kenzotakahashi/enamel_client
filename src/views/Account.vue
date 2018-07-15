@@ -45,8 +45,8 @@
                 <div class="tooltip">
                   <div v-show="activeDropdown === 'addUsersToGroupTooltip'"
                     class="tooltip-content bottom group-view">
-                    <div class="menu-item" @click="">Add from account</div>
-                    <div class="menu-item" @click="openInviteUserForm('group')">Invite by email</div>                    
+                    <div class="menu-item" @click="showAddUsersToGroupForm = true">Add from account</div>
+                    <div class="menu-item" @click="openInviteUserForm('group')">Invite by email</div>        
                   </div>
 
                   <div class="contact-field">
@@ -74,17 +74,9 @@
               <div class="users-overview-role">{{overview.name}}</div>
             </div>
           </div>
-          <el-table
-            :data="users"
-            empty-text="No users"
-            style="width: 100%">
-            <el-table-column
-              type="selection">
-            </el-table-column>
-            <el-table-column
-              label="NAME"
-              sortable
-              width="180">
+          <el-table :data="users" empty-text="No users" style="width: 100%">
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column label="NAME" sortable width="180">
               <template slot-scope="scope">
                 <div class="user-container">
                   <Avatar class="avatar" :user="scope.row" :size="24"></Avatar>
@@ -92,22 +84,9 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="email"
-              label="EMAIL"
-              sortable
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="role"
-              label="ROLE"
-              sortable>
-            </el-table-column>
-            <el-table-column
-              prop="status"
-              label="STATUS"
-              sortable>
-            </el-table-column>
+            <el-table-column prop="email" label="EMAIL" sortable width="180"></el-table-column>
+            <el-table-column prop="role" label="ROLE" sortable></el-table-column>
+            <el-table-column prop="status" label="STATUS" sortable></el-table-column>
           </el-table>
         </el-col>
       </el-row>
@@ -116,7 +95,9 @@
       <InviteUserForm v-if="!!showInviteUserForm" :groups="getGroups"
         :targetGroup="showInviteUserForm === 'group' ? selectedGroup : null"
         @close="showInviteUserForm = false"></InviteUserForm>
-
+      <AddUsersToGroupForm v-if="showAddUsersToGroupForm"
+        :group="selectedGroup" :users="getUsers"
+        @close="showAddUsersToGroupForm = false"></AddUsersToGroupForm>
     </el-main>
 
   </el-container>
@@ -129,6 +110,7 @@ import Navigation from '@/components/Navigation'
 import Avatar from '@/components/Avatar'
 import GroupForm from '@/components/GroupForm'
 import InviteUserForm from '@/components/InviteUserForm'
+import AddUsersToGroupForm from '@/components/AddUsersToGroupForm'
 import { GetUsers, GetGroups } from '../constants/query.gql'
 
 export default {
@@ -136,13 +118,15 @@ export default {
     Navigation,
     Avatar,
     GroupForm,
-    InviteUserForm
+    InviteUserForm,
+    AddUsersToGroupForm
   },
   data() {
     return {
       selected: 0,
       showGroupForm: false,
       showInviteUserForm: false,
+      showAddUsersToGroupForm: false,
       groups: [
         {
           name: 'All users'

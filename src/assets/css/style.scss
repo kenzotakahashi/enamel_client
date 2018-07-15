@@ -198,6 +198,8 @@ ul.tree {
 }
 
 .modal-container {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   margin: 0px auto;
   padding: 20px 30px;

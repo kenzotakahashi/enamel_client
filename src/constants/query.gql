@@ -147,6 +147,12 @@ mutation CreateGroup($name: String, $initials: String, $avatarColor: String, $us
   }
 }
 
+mutation AddUsersToGroup($id: String!, $users: [String]) {
+  addUsersToGroup(id: $id, users: $users) {
+    ...GroupFields
+  }
+}
+
 
 query GetTeam {
   getTeam {

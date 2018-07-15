@@ -88,7 +88,6 @@ export default {
   props: ['groups', 'targetGroup'],
   data() {
     return {
-      visibleAddToGroup: false,
       searchGroup: '',
       form: {
         emails: ['','',''],
@@ -174,27 +173,9 @@ section {
   padding: 24px;
 }
 
-.groupname-initials-section {
-  display: flex;
-}
-
-.avatarcolor-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .field-title {
   margin-bottom: 8px;
   font-size: 12px;
-}
-
-.name-form {
-  flex-grow: 1;
-}
-
-.initials-form {
-  width: 56px;
-  padding-left: 8px;
 }
 
 .member-avatar {
