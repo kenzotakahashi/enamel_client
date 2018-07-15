@@ -1,12 +1,12 @@
 <template name="tree">
   <li>
     <div class="tree-item dropdown"
-        @click.right.stop.prevent="$store.dispatch('changeActiveDropdown', `folder${model.id}`)"
+        @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${model.id}`)"
         @click.left.stop="$router.push({name: 'folder', params: {id: model.id}})">
       <span v-if="isFolder" @click="toggle" class="fold-button invrese">[{{ open ? '-' : '+' }}]</span>
       <span class="folder no-select-color">{{ model.name }}</span>
 
-      <div class="dropdown-content left" v-show="activeDropdown === `folder${model.id}`">
+      <div class="dropdown-content left" v-show="activeWidget === `folder${model.id}`">
         <div @click="openModal('folder')">Add Folder</div>
         <div @click="openModal('project')">Add Project</div>
         <div>Share</div>
@@ -58,7 +58,7 @@ export default {
     isFolder: function () {
       return this.getFolders.length > 0
     },
-    ...mapState(['activeDropdown'])
+    ...mapState(['activeWidget'])
   },
   apollo: {
     getFolders: {
@@ -78,7 +78,7 @@ export default {
       }
     },
     openModal(mode) {
-      this.$store.dispatch('changeActiveDropdown', null)
+      this.$store.dispatch('changeActiveWidget', null)
       this.showModal = true
       this.modalConfig = {
         mode,

@@ -43,7 +43,7 @@
                 @click="openInviteUserForm('all')">+ Add users</el-button>
               <span v-show="selected >= 2">
                 <div class="tooltip">
-                  <div v-show="activeDropdown === 'addUsersToGroupTooltip'"
+                  <div v-show="activeWidget === 'addUsersToGroupTooltip'"
                     class="tooltip-content bottom group-view">
                     <div class="menu-item" @click="showAddUsersToGroupForm = true">Add from account</div>
                     <div class="menu-item" @click="openInviteUserForm('group')">Invite by email</div>        
@@ -51,7 +51,7 @@
 
                   <div class="contact-field">
                     <el-button type="text" class="text-button"
-                      @click.stop="$store.dispatch('changeActiveDropdown', 'addUsersToGroupTooltip')">
+                      @click.stop="$store.dispatch('changeActiveWidget', 'addUsersToGroupTooltip')">
                       + Add users
                     </el-button>
                   </div>
@@ -215,7 +215,7 @@ export default {
     selectedGroup() {
       return this.selected < 2 ? this.groups[this.selected] : this.getGroups[this.selected-2]
     },
-    ...mapState(['activeDropdown'])
+    ...mapState(['activeWidget'])
   },
   methods: {
     openInviteUserForm(type) {

@@ -82,7 +82,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeDropdown'])
+    ...mapState(['activeWidget'])
   },
   methods: {
     inputInitials() {
@@ -107,8 +107,8 @@ export default {
     selectAvatarColor(color) {
       this.form.avatarColor = color
     },
-    changeActiveDropdown(key) {
-      this.$store.dispatch('changeActiveDropdown', key)
+    changeActiveWidget(key) {
+      this.$store.dispatch('changeActiveWidget', key)
     },
     updateGroup() {
       const { name, initials, avatarColor } = this.form

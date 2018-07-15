@@ -25,9 +25,9 @@
       <span class="icon">
         <i class="fas fa-link"></i>
       </span>
-      <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveDropdown', 'task-menu')">
+      <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveWidget', 'task-menu')">
         <i class="fas fa-ellipsis-h"></i>
-        <div class="dropdown-content right" v-show="activeDropdown === 'task-menu'">
+        <div class="dropdown-content right" v-show="activeWidget === 'task-menu'">
           <div>Make reccurent</div>
           <div>Duplicate task</div>
           <div>Request status update</div>
@@ -51,7 +51,7 @@ import { UpdateTask, DeleteTask, GetTasks } from '../constants/query.gql'
 
 export default {
   props: ['task'],
-  computed: mapState(['activeDropdown']),
+  computed: mapState(['activeWidget']),
   data() {
     return {
       taskName: ''

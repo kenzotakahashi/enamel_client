@@ -5,16 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    activeDropdown: null
+    activeWidget: null
   },
   mutations: {
-    changeActiveDropdown(state, key) {
-      state.activeDropdown = key
+    changeActiveWidget(state, key) {
+      state.activeWidget = key
     }
   },
   actions: {
-    changeActiveDropdown({state, commit}, key) {
-      commit('changeActiveDropdown', key)
+    changeActiveWidget({state, commit}, key) {
+      commit('changeActiveWidget', key)
     }
   }
 })

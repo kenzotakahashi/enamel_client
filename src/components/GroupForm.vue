@@ -34,11 +34,11 @@
         <section>
           <div class="field-title">Members</div>
           <div class="tooltip">
-            <div v-show="activeDropdown === 'addGroupTooltip'" class="tooltip-content top" @click.stop="">
+            <div v-show="activeWidget === 'addGroupTooltip'" class="tooltip-content top" @click.stop="">
               <div>
                 <div class="search-user-input">
                   <el-input type="text" v-model="searchUser" placeholder="Search contact"
-                    @keyup.esc="changeActiveDropdown(null)">
+                    @keyup.esc="changeActiveWidget(null)">
                   </el-input>                
                 </div>
               </div>
@@ -66,12 +66,12 @@
                 </Avatar>
                 <div class="cross-wrapper">
                   <span slot="reference" class="cross"
-                    @click.stop="changeActiveDropdown('addGroupTooltip')">
+                    @click.stop="changeActiveWidget('addGroupTooltip')">
                   </span>
                 </div>
               </div>
               <el-button v-else type="text"
-                @click.stop="changeActiveDropdown('addGroupTooltip')">
+                @click.stop="changeActiveWidget('addGroupTooltip')">
                 Add members</el-button>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default {
       return this.users.filter(o => !users.includes(o.id)
         && (o.name.toLowerCase().includes(s) || o.email.toLowerCase().includes(s)))
     },
-    ...mapState(['activeDropdown'])
+    ...mapState(['activeWidget'])
   },
   methods: {
     inputInitials() {
@@ -154,8 +154,8 @@ export default {
     selectAvatarColor(color) {
       this.form.avatarColor = color
     },
-    changeActiveDropdown(key) {
-      this.$store.dispatch('changeActiveDropdown', key)
+    changeActiveWidget(key) {
+      this.$store.dispatch('changeActiveWidget', key)
     },
     createGroup() {
       const { name, initials, avatarColor, users } = this.form

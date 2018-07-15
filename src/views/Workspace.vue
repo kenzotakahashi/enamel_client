@@ -8,11 +8,11 @@
       <el-aside width="220px">
         <div v-if="getTeam.id">
           <div class="tree-item dropdown"
-              @click.right.stop.prevent="$store.dispatch('changeActiveDropdown', `folder${getTeam.id}`)"
+              @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${getTeam.id}`)"
               @click.left.stop="$router.push({name: 'folder', params: {id: getTeam.id}})">
             <span class="folder no-select-color">{{ getTeam.name }}</span>
           </div>
-          <div class="dropdown-content left" v-show="activeDropdown === `folder${getTeam.id}`">
+          <div class="dropdown-content left" v-show="activeWidget === `folder${getTeam.id}`">
             <div @click="openModal('folder')">Add Folder</div>
             <div @click="openModal('project')">Add Project</div>
           </div>
@@ -51,7 +51,7 @@ export default {
     FolderForm,
     Navigation
   },
-  computed: mapState(['activeDropdown']),
+  computed: mapState(['activeWidget']),
   data() {
     return {
       showModal: false,
@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     openModal(mode) {
-      this.$store.dispatch('changeActiveDropdown', null)
+      this.$store.dispatch('changeActiveWidget', null)
       this.showModal = true
       this.modalConfig = {
         mode,

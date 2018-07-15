@@ -25,7 +25,7 @@ export default {
   components: {
     Avatar,
   },
-  computed: mapState(['activeDropdown']),
+  computed: mapState(['activeWidget']),
   data() {
     return {
       modalConfig: {},

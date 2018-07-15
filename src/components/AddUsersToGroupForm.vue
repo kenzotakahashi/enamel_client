@@ -13,7 +13,7 @@
               </Avatar>
               <div class="cross-wrapper">
                 <span slot="reference" class="cross"
-                  @click.stop="changeActiveDropdown('addGroupTooltip')">
+                  @click.stop="changeActiveWidget('addGroupTooltip')">
                 </span>
               </div>
             </div>
@@ -25,7 +25,7 @@
           <div>
             <div class="search-user-input">
               <el-input type="text" v-model="searchUser" placeholder="Search contact"
-                @keyup.esc="changeActiveDropdown(null)">
+                @keyup.esc="changeActiveWidget(null)">
               </el-input>
             </div>
           </div>
@@ -86,11 +86,11 @@ export default {
       return this.targetUsers.filter(o => !users.includes(o.id)
         && (o.name.toLowerCase().includes(s) || o.email.toLowerCase().includes(s)))
     },
-    ...mapState(['activeDropdown'])
+    ...mapState(['activeWidget'])
   },
   methods: {
-    changeActiveDropdown(key) {
-      this.$store.dispatch('changeActiveDropdown', key)
+    changeActiveWidget(key) {
+      this.$store.dispatch('changeActiveWidget', key)
     },
     addMemberToGroup(user) {
       this.form.users.push(user)

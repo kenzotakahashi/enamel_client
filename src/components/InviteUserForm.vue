@@ -7,17 +7,17 @@
         <section>
           <el-input v-for="(email, index) in form.emails" :key="index"
             type="email" v-model="form.emails[index]" placeholder="Enter email address"
-            @keyup.esc="changeActiveDropdown(null)">
+            @keyup.esc="changeActiveWidget(null)">
           </el-input>
         </section>
 
         <section>
           <div class="tooltip">
-            <div v-show="activeDropdown === 'addGroupTooltip'" class="tooltip-content top" @click.stop="">
+            <div v-show="activeWidget === 'addGroupTooltip'" class="tooltip-content top" @click.stop="">
               <div>
                 <div class="search-user-input">
                   <el-input type="text" v-model="searchGroup" placeholder="Search group"
-                    @keyup.esc="changeActiveDropdown(null)">
+                    @keyup.esc="changeActiveWidget(null)">
                   </el-input>                
                 </div>
               </div>
@@ -44,12 +44,12 @@
                 </Avatar>
                 <div class="cross-wrapper">
                   <span slot="reference" class="cross"
-                    @click.stop="changeActiveDropdown('addGroupTooltip')">
+                    @click.stop="changeActiveWidget('addGroupTooltip')">
                   </span>
                 </div>
               </div>
               <el-button v-else type="text" slot="reference"
-                @click.stop="changeActiveDropdown('addGroupTooltip')">
+                @click.stop="changeActiveWidget('addGroupTooltip')">
                 Add to group</el-button>
             </div>
           </div>
@@ -102,11 +102,11 @@ export default {
       const groups = this.form.groups.map(o => o.id)
       return this.groups.filter(o => !groups.includes(o.id) && o.name.toLowerCase().includes(s))
     },
-    ...mapState(['activeDropdown'])
+    ...mapState(['activeWidget'])
   },
   methods: {
-    changeActiveDropdown(key) {
-      this.$store.dispatch('changeActiveDropdown', key)
+    changeActiveWidget(key) {
+      this.$store.dispatch('changeActiveWidget', key)
     },
     addMemberToGroup(group) {
       this.form.groups.push(group)
