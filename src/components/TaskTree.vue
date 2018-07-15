@@ -30,7 +30,7 @@
 
 <script>
 import TaskTree from './TaskTree'
-import Avatar from './Avatar'
+import Avatar from './icons/Avatar'
 import { GetTasks } from '../constants/query.gql'
 
 export default {

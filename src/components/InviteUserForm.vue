@@ -76,8 +76,8 @@
 
 <script>
 import { Invite, GetUsers, GetGroups } from '../constants/query.gql'
-import Avatar from './Avatar.vue'
-import RemoveButton from './RemoveButton.vue'
+import Avatar from './icons/Avatar'
+import RemoveButton from './icons/RemoveButton'
 import { mapState } from 'vuex'
 
 export default {

@@ -122,13 +122,13 @@
 <script>
 import { mapState } from 'vuex'
 import Navigation from '@/components/Navigation'
-import Avatar from '@/components/Avatar'
+import Avatar from '@/components/icons/Avatar'
 import GroupForm from '@/components/GroupForm'
 import GroupUpdateForm from '@/components/GroupUpdateForm'
 import InviteUserForm from '@/components/InviteUserForm'
 import AddUsersToGroupForm from '@/components/AddUsersToGroupForm'
 import UserDetail from '@/components/UserDetail'
-import CloseButton from '@/components/CloseButton'
+import CloseButton from '@/components/icons/CloseButton'
 import { GetUsers, GetGroups, RemoveUsersFromGroup } from '../constants/query.gql'
 
 export default {

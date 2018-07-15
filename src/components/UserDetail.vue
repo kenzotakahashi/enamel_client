@@ -59,18 +59,18 @@
           </div>
         </div>
 
-        <section v-show="user.role !== 'Owner' && activeTab === 'settings'">
+<!--         <section v-show="user.role !== 'Owner' && activeTab === 'settings'">
           <div class="user-operations-section">
             <div class="user-operations-section-title">Delete User</div>
             <div class="user-operations-description">
               Once a user is deleted they won't be able to access their account and you won't be able to restore them. 
             </div>
-<!--             <div class="user-operations-notify">
+            <div class="user-operations-notify">
               <el-checkbox v-model="notify">Notify user by email</el-checkbox>              
-            </div> -->
+            </div>
             <el-button >Delete user</el-button>            
           </div>
-        </section>
+        </section> -->
 
       </div>
       <CloseButton :size="24" @click="$store.dispatch('changeActiveWidget', null)"></CloseButton>
@@ -79,8 +79,8 @@
 </template>
 
 <script>
-import Avatar from './Avatar'
-import CloseButton from './CloseButton'
+import Avatar from './icons/Avatar'
+import CloseButton from './icons/CloseButton'
 import moment from 'moment'
 
 export default {

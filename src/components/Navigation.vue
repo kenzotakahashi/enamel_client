@@ -18,7 +18,7 @@
 
 <script>
 import { mapState } from  'vuex'
-import Avatar from '@/components/Avatar'
+import Avatar from '@/components/icons/Avatar'
 import { GetTeam, GetUser } from '../constants/query.gql'
 
 export default {

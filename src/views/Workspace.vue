@@ -39,7 +39,7 @@
 <script>
 import { mapState } from  'vuex'
 import Tree from '@/components/FolderTree'
-import Avatar from '@/components/Avatar'
+import Avatar from '@/components/icons/Avatar'
 import FolderForm from '@/components/FolderForm'
 import Navigation from '@/components/Navigation'
 import { GetFolders, GetTeam } from '../constants/query.gql'

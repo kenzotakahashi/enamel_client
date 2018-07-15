@@ -52,9 +52,9 @@
 
 <script>
 import { UpdateGroup, DeleteGroup, GetGroups } from '../constants/query.gql'
-import Avatar from './Avatar.vue'
-import RemoveButton from './RemoveButton.vue'
-import CloseButton from './CloseButton.vue'
+import Avatar from './icons/Avatar'
+import RemoveButton from './icons/RemoveButton'
+import CloseButton from './icons/CloseButton'
 import { mapState } from 'vuex'
 import { randomChoice } from '@/helpers/helpers'
 
