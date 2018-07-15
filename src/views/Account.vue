@@ -36,22 +36,27 @@
         <el-col :span="17" class="account-main-container">
           <div class="column-header">
             <div>
-              <span class="title">{{groupName}}<span class="count-title">({{users.length}})</span></span>
+              <span class="title">{{selectedGroup.name}}
+                <span class="count-title">({{users.length}})</span>
+              </span>
               <el-button v-show="selected === 0" type="text" class="text-button"
-                @click="openInviteUserForm">+ Add users</el-button>
+                @click="openInviteUserForm('all')">+ Add users</el-button>
               <span v-show="selected >= 2">
-                <el-popover
-                  popper-class="popover-menu"
-                  :visible-arrow="false"
-                  placement="bottom"
-                  width="175"
-                  trigger="click">
-                  <div class="group-view">
+                <div class="tooltip">
+                  <div v-show="activeDropdown === 'addUsersToGroupTooltip'"
+                    class="tooltip-content bottom group-view">
                     <div class="menu-item" @click="">Add from account</div>
-                    <div class="menu-item" @click="openInviteUserForm">Invite by email</div>                    
+                    <div class="menu-item" @click="openInviteUserForm('group')">Invite by email</div>                    
                   </div>
-                  <el-button type="text" class="text-button" slot="reference">+ Add users</el-button>
-                </el-popover>
+
+                  <div class="contact-field">
+                    <el-button type="text" class="text-button"
+                      @click.stop="$store.dispatch('changeActiveDropdown', 'addUsersToGroupTooltip')">
+                      + Add users
+                    </el-button>
+                  </div>
+                </div>
+
                 <el-button type="text" class="text-button"
                   @click="">
                   <!-- <i class="fas fa-sliders-h"></i> -->
@@ -108,7 +113,8 @@
       </el-row>
 
       <GroupForm v-if="showGroupForm" :users="getUsers" @close="showGroupForm = false"></GroupForm>
-      <InviteUserForm v-if="showInviteUserForm" :groups="getGroups"
+      <InviteUserForm v-if="!!showInviteUserForm" :groups="getGroups"
+        :targetGroup="showInviteUserForm === 'group' ? selectedGroup : null"
         @close="showInviteUserForm = false"></InviteUserForm>
 
     </el-main>
@@ -118,6 +124,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Navigation from '@/components/Navigation'
 import Avatar from '@/components/Avatar'
 import GroupForm from '@/components/GroupForm'
@@ -195,14 +202,14 @@ export default {
       const members = [].concat(...this.getGroups.map(o => o.users))
       return this.getUsers.filter(o => !members.includes(o.id))
     },
-    groupName() {
-      const group = this.selected < 2 ? this.groups[this.selected] : this.getGroups[this.selected-2]
-      return group.name
+    selectedGroup() {
+      return this.selected < 2 ? this.groups[this.selected] : this.getGroups[this.selected-2]
     },
+    ...mapState(['activeDropdown'])
   },
   methods: {
-    openInviteUserForm() {
-      this.showInviteUserForm = true
+    openInviteUserForm(type) {
+      this.showInviteUserForm = type
     },
     changeView(index) {
       this.selected = index

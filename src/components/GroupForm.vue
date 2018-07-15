@@ -34,7 +34,7 @@
         <section>
           <div class="field-title">Members</div>
           <div class="tooltip">
-            <div v-show="activeDropdown === 'addGroupTooltip'" class="tooltip-content" @click.stop="">
+            <div v-show="activeDropdown === 'addGroupTooltip'" class="tooltip-content top" @click.stop="">
               <div>
                 <div class="search-user-input">
                   <el-input type="text" v-model="searchUser" placeholder="Search contact"
@@ -70,7 +70,7 @@
                   </span>
                 </div>
               </div>
-              <el-button v-else type="text" slot="reference"
+              <el-button v-else type="text"
                 @click.stop="changeActiveDropdown('addGroupTooltip')">
                 Add members</el-button>
             </div>

@@ -234,11 +234,18 @@ ul.tree {
 
   /* Position the tooltip */
   position: absolute;
-  bottom: 50px;
   z-index: 10000;
 }
 
-.tooltip .tooltip-content::after {
+.tooltip .tooltip-content.top {
+  bottom: 50px;  
+}
+
+.tooltip .tooltip-content.bottom {
+  top: 30px;  
+}
+
+.tooltip .tooltip-content.top::after {
   content: " ";
   position: absolute;
   top: 100%;
@@ -341,6 +348,9 @@ ul.tree {
 
 .group-view {
   padding: 12px 0;
+  width: 174px;
+  left: 50%; 
+  margin-left: -87px;
 }
 
 .popover-menu {
@@ -348,6 +358,7 @@ ul.tree {
 }
 
 .menu-item {
+  font-size: 14px;
   cursor: pointer;
   display: block;
   height: 32px;

@@ -13,7 +13,7 @@
 
         <section>
           <div class="tooltip">
-            <div v-show="activeDropdown === 'addGroupTooltip'" class="tooltip-content" @click.stop="">
+            <div v-show="activeDropdown === 'addGroupTooltip'" class="tooltip-content top" @click.stop="">
               <div>
                 <div class="search-user-input">
                   <el-input type="text" v-model="searchGroup" placeholder="Search group"
@@ -92,7 +92,7 @@ export default {
       searchGroup: '',
       form: {
         emails: ['','',''],
-        groups: this.targetGroup ? [this,targetGroup] : [],
+        groups: this.targetGroup ? [this.targetGroup] : [],
         role: 'Regular User'
       },
     }
