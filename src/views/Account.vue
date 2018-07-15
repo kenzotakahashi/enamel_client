@@ -58,7 +58,7 @@
                 </div>
 
                 <el-button type="text" class="text-button"
-                  @click="">
+                  @click="showGroupUpdateForm = true">
                   <!-- <i class="fas fa-sliders-h"></i> -->
                   <i class="fas fa-cog"></i>
                    Group settings
@@ -91,7 +91,7 @@
             <el-table-column prop="status" label="STATUS" sortable></el-table-column>
             <el-table-column label="" width="40">
               <template v-if="selected >= 2" slot-scope="scope">
-                <CloseButton @click="removeUsersFromGroup(scope.row.id)"></CloseButton>
+                <CloseButton :hidden="true" @click="removeUsersFromGroup(scope.row.id)"></CloseButton>
               </template>
             </el-table-column>
           </el-table>
@@ -99,6 +99,8 @@
       </el-row>
 
       <GroupForm v-if="showGroupForm" :users="getUsers" @close="showGroupForm = false"></GroupForm>
+      <GroupUpdateForm v-if="showGroupUpdateForm" :group="selectedGroup"
+        @close="showGroupUpdateForm = false"></GroupUpdateForm>
       <InviteUserForm v-if="!!showInviteUserForm" :groups="getGroups"
         :targetGroup="showInviteUserForm === 'group' ? selectedGroup : null"
         @close="showInviteUserForm = false"></InviteUserForm>
@@ -116,6 +118,7 @@ import { mapState } from 'vuex'
 import Navigation from '@/components/Navigation'
 import Avatar from '@/components/Avatar'
 import GroupForm from '@/components/GroupForm'
+import GroupUpdateForm from '@/components/GroupUpdateForm'
 import InviteUserForm from '@/components/InviteUserForm'
 import AddUsersToGroupForm from '@/components/AddUsersToGroupForm'
 import CloseButton from '@/components/CloseButton'
@@ -126,6 +129,7 @@ export default {
     Navigation,
     Avatar,
     GroupForm,
+    GroupUpdateForm,
     InviteUserForm,
     AddUsersToGroupForm,
     CloseButton
@@ -135,6 +139,7 @@ export default {
       selected: 0,
       selectedRole: null,
       showGroupForm: false,
+      showGroupUpdateForm: false,
       showInviteUserForm: false,
       showAddUsersToGroupForm: false,
       groups: [

@@ -50,6 +50,7 @@
           <el-button type="text" @click="$emit('close')">Cancel</el-button>          
         </section>
 
+        <CloseButton class="close" :hidden="false" @click="$emit('close')"></CloseButton>
       </div>
     </div>
   </div>
@@ -59,12 +60,14 @@
 import { AddUsersToGroup, GetUsers, GetGroups } from '../constants/query.gql'
 import Avatar from './Avatar.vue'
 import RemoveButton from './RemoveButton.vue'
+import CloseButton from './CloseButton.vue'
 import { mapState } from 'vuex'
 
 export default {
   components: {
     Avatar,
-    RemoveButton
+    RemoveButton,
+    CloseButton
   },
   props: ['group', 'users'],
   data() {

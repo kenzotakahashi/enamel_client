@@ -159,6 +159,16 @@ mutation RemoveUsersFromGroup($id: String!, $users: [String]) {
   }
 }
 
+mutation UpdateGroup($id: String!, $name: String, $initials: String, $avatarColor: String) {
+  updateGroup(id: $id, name: $name, initials: $initials, avatarColor: $avatarColor) {
+    ...GroupFields
+  }
+}
+
+mutation DeleteGroup($id: String!) {
+  deleteGroup(id: $id)
+}
+
 query GetTeam {
   getTeam {
     id

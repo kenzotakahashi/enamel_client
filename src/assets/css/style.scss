@@ -25,6 +25,10 @@ a, a:visited, a:hover, a:active, a:focus {
   box-shadow: none;
 }
 
+.black-text-button {
+  color: rgba(0, 0, 0, 0.9)
+}
+
 .el-header {
   padding: 0;
 }
@@ -37,7 +41,7 @@ a, a:visited, a:hover, a:active, a:focus {
   cursor: pointer;
 }
 
-.el-table__row:hover .close-button {
+.el-table__row:hover .close-button.hidden {
   visibility: visible;
 }
 
@@ -202,6 +206,7 @@ ul.tree {
 
 .modal-container {
   display: flex;
+  position: relative;
   flex-direction: column;
   box-sizing: border-box;
   margin: 0px auto;
@@ -210,6 +215,20 @@ ul.tree {
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
+}
+
+.modal-container > .close-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  color: black;
+  top: 0;
+  right: 0;
+  opacity: .7;
 }
 
 .modal-header h3 {
