@@ -135,9 +135,7 @@ ul.tree {
   margin: 0 9px;
   z-index: 5;
   text-align: center;
-/*  position: relative;
-  left: -3px;
-*/}
+}
 
 .fold-button.inverse:hover {
   background-color: $hover-inverse;
@@ -152,7 +150,6 @@ ul.tree {
   width: 100%;
   line-height: 30px;
   display: flex;
-  flex-direction: row;
   box-sizing: border-box;
 }
 
@@ -169,7 +166,7 @@ ul.tree {
   content: '';
   position: absolute;
   left: 0;
-  right: 4px;
+  right: 0px;
   height: 30px;
   z-index: -1;  
 }
