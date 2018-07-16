@@ -3,7 +3,9 @@
     <div class="tree-item dropdown"
         @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${model.id}`)"
         @click.left.stop="$router.push({name: 'folder', params: {id: model.id}})">
-      <span v-if="isFolder" @click="toggle" class="fold-button inverse">[{{ open ? '-' : '+' }}]</span>
+      <span v-if="isFolder" @click="toggle" class="fold-button inverse">
+        <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
+      </span>
       <div class="tree-plate">
         <span class="folder no-select-color">{{ model.name }}</span>
 

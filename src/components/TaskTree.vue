@@ -1,8 +1,10 @@
 <template name="tree">
   <li>
-    <el-row class="tree-item white">
-      <el-col :span="19">
-        <span v-if="isParent" @click="toggle" class="fold-button">[{{ open ? '-' : '+' }}]</span>
+    <div class="tree-item">
+      <span v-if="isParent" @click="toggle" class="fold-button inverse">
+        <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
+      </span>
+      <div class="tree-plate">
         <router-link :to="{name: 'task', params: {taskId: model.id}}">
           <span class="task">
             <div class="user-container">
@@ -11,11 +13,9 @@
             </div>
           </span>
         </router-link>
-      </el-col>
-      <el-col :span="5">
-        {{ model.status }}
-      </el-col>
-    </el-row>
+        <!-- <span>{{ model.status }}</span> -->
+      </div>
+    </div>
 
     <ul class="tree" v-show="open" v-if="isParent">
       <tree

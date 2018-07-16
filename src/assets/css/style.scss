@@ -80,6 +80,10 @@ a, a:visited, a:hover, a:active, a:focus {
   padding: 10px;
 }
 
+.fa-angle-down, .fa-angle-right {
+  font-size: 12px;
+}
+
 .work-space-center {
   padding-top: 0;
 }
@@ -127,12 +131,13 @@ ul.tree {
 }
 
 .fold-button {
-  /*position: relative;*/
-  /*left: -3px;*/
-  width: 36px;
+  width: 18px;
+  margin: 0 9px;
   z-index: 5;
-  /*display: block;*/
-}
+  text-align: center;
+/*  position: relative;
+  left: -3px;
+*/}
 
 .fold-button.inverse:hover {
   background-color: $hover-inverse;
@@ -148,6 +153,7 @@ ul.tree {
   line-height: 30px;
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
 }
 
 .tree-plate {
