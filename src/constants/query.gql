@@ -117,8 +117,8 @@ mutation CreateTask($folder: String, $parent: String, $name: String!) {
   }
 }
 
-mutation UpdateTask($id: String!, $name: String) {
-  updateTask(id: $id, name: $name) {
+mutation UpdateTask($id: String!, $input: TaskInput) {
+  updateTask(id: $id, input: $input) {
     ...TaskFields
   }
 }

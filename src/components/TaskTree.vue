@@ -124,7 +124,7 @@ export default {
 
 .task-status {
   flex-shrink: 0;
-  width: 30px;
+  width: 100px;
   max-width: 128px;
   margin: 0 8px;
   /*line-height: 16px;*/

@@ -12,7 +12,8 @@
           <span class="arrow-wrap"></span>
         </div>
         <div class="dropdown-content left" v-show="activeWidget === 'task-status-menu'">
-          <div v-for="status in statusList" :key="status" @click="changeTaskStatus(status)">
+          <div v-for="status in statusList" :key="status" @click="changeTaskStatus(status)"
+            v-bind:class="{'active-status': task.status === status }">
             <span class="status-icon" v-bind:style="{
               backgroundColor: backgroundStrongColorMap[status]
             }"></span>
@@ -61,7 +62,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { GetTask, GetTasks, GetComments } from '../constants/query.gql'
+import { GetTask, GetTasks, GetComments, UpdateTask } from '../constants/query.gql'
 import { formatDate } from '@/helpers/helpers'
 import TaskHeader from '@/components/TaskHeader'
 import TaskTree from '@/components/TaskTree'
@@ -105,8 +106,8 @@ export default {
         New: 'rgb(227, 242, 253)',
         'In Progress': '#e0f7fa',
         Completed: '#f1f8e9',
-        'On Hold': '#cacac8',
-        Cancelled: '#cacac8',
+        'On Hold': '#fafafa',
+        Cancelled: '#fafafa',
       },
       borderColorMap: {
         New: 'rgb(211, 228, 242)',
@@ -158,7 +159,19 @@ export default {
       return `${count} subtask${count > 1 ? 's' : ''}`
     },
     changeTaskStatus(status) {
-      return
+      if (this.task.status === status) return
+      console.log('called')
+      this.$apollo.mutate({
+        mutation: UpdateTask,
+        variables: {
+          id: this.task.id,
+          input: {status}
+        },
+      }).then(() => {
+        this.$store.dispatch('changeActiveWidget', null)
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
@@ -194,9 +207,6 @@ export default {
   border-style: solid;
   border-width: 1px;
   border-left: none;
-
-  /*background-color: rgb(227, 242, 253);*/
-  /*border-color: rgb(211, 228, 242);*/
 }
 
 .arrow-wrap {
@@ -215,6 +225,12 @@ export default {
   padding: 7px 32px 6px 24px;
 }
 
+.task-status-label {
+  font-size: 13px;
+  color: #111;
+  font-weight: 600;
+}
+
 .status-icon {
   box-sizing: content-box;
   display: inline-block;
@@ -222,11 +238,14 @@ export default {
   height: 10px;
   border: 1px solid #fff!important;
   border-radius: 2px;
-  /*margin-top: 3px;*/
   margin-right: 11px;
   align-self: center;
+}
 
-  /*background-color: rgb(227, 242, 253);*/
+.active-status, .active-status:hover {
+  color: #fff;
+  background-color: #48f;
+  cursor: default;
 }
 
 </style>

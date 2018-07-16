@@ -72,8 +72,8 @@ export default {
       }
       this.$apollo.mutate({
         mutation: UpdateTask,
-        variables: { id, name },
-      }).then(({ data: { createTask } }) => {
+        variables: { id, input: {name} },
+      }).then(() => {
         this.cancel(e)
       }).catch((error) => {
         console.log(error)
