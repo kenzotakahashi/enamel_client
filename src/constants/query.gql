@@ -16,6 +16,8 @@ fragment TaskFields on Task {
   creator {
     id
     name
+    firstname
+    lastname
   }
   shareWith
   startDate

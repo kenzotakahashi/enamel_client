@@ -10,22 +10,22 @@
         <span v-else>+ Add assignee</span>
       </el-col>
       <el-col :span="10">
-        <span class="small-text">by {{task.creator.name}} at {{formatDate(task.createdAt)}}</span>
+        <span class="small-text">by {{task.creator.firstname}} {{task.creator.lastname[0]}} at {{formatDate(task.createdAt)}}</span>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="6">
-        <span>Set Date</span>
+        <el-button type="text" class="black-text-button ">Set Date</el-button>
       </el-col>
       <el-col :span="6">
-        0.00
+        <el-button type="text" class="black-text-button ">0.00</el-button>
       </el-col>
       <el-col :span="6">
-        <span v-if="subtasks.length > 0">{{formatSubtaskCount(subtasks)}}</span>
-        <span v-else>Add subtask</span>
+        <el-button v-if="subtasks.length > 0" type="text">{{formatSubtaskCount(subtasks)}}</el-button>
+        <el-button v-else type="text" class="black-text-button ">Add subtask</el-button>
       </el-col>
       <el-col :span="6">
-        <span class="shared-with">{{task.shareWith.length}}</span>
+        <el-button type="text" class="black-text-button ">{{task.shareWith.length}}</el-button>
       </el-col>
     </el-row>
     <TaskTree
@@ -64,7 +64,10 @@ export default {
       formatDate,
       task: {
         parent: {},
-        creator: {},
+        creator: {
+          firstname: '',
+          lastname: '',
+        },
         folders: [],
         assignees: [],
         shareWith: []

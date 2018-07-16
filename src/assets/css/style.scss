@@ -145,6 +145,20 @@ ul.tree {
   position: relative;
 }
 
+.teamname {
+  color: #f9fbfd;
+  font-weight: 600;
+}
+
+.circle {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #f9fbfd;
+  border-radius: 50%;
+  margin: 0 13px;
+}
+
 .tree-item {
   cursor: pointer;
   width: 100%;
@@ -175,7 +189,7 @@ ul.tree {
   background-color: $hover-inverse;
 }
 
-.tree-item.white:hover {
+.tree-plate.white:hover:before {
   background-color: $hover;
 }
 
@@ -197,6 +211,19 @@ ul.tree {
   border-top: solid 1px;
   border-bottom: solid 1px;
   border-color: rgba(0,0,0,.16);
+}
+
+.task-status {
+  flex-shrink: 0;
+  width: 30px;
+  max-width: 128px;
+  margin: 0 8px;
+  line-height: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .comment-box {

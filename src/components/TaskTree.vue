@@ -1,10 +1,12 @@
 <template name="tree">
   <li>
     <div class="tree-item">
-      <span v-if="isParent" @click="toggle" class="fold-button inverse">
+      <span @click="toggle" class="fold-button inverse"
+        v-bind:style="{visibility: isParent ? 'visible' : 'hidden'}">
         <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
       </span>
-      <div class="tree-plate">
+
+      <div class="tree-plate white">
         <router-link :to="{name: 'task', params: {taskId: model.id}}">
           <span class="task">
             <div class="user-container">
@@ -13,7 +15,7 @@
             </div>
           </span>
         </router-link>
-        <!-- <span>{{ model.status }}</span> -->
+        <span class="task-status" v-bind:style="statusColor">{{ model.status }}</span>
       </div>
     </div>
 
@@ -44,15 +46,21 @@ export default {
   },
   mounted() {
   },
-  data: function () {
+  data() {
     return {
       open: false,
       getTasks: []
     }
   },
   computed: {
-    isParent: function () {
+    isParent() {
       return this.getTasks.length > 0
+    },
+    statusColor() {
+      // this.model.status
+      return {
+        color: '#1976d2'
+      }
     }
   },
   apollo: {

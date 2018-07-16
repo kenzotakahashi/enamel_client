@@ -14,10 +14,10 @@ import { GetTasks, GetTask, CreateTask } from '../constants/query.gql'
 import shortid from 'shortid'
 
 export default {
-  props: ['parentId'],
+  props: ['parentId', 'open'],
   data() {
     return {
-      isFormOpen: false,
+      isFormOpen: this.open,
       newTaskName: '',
     }
   },
