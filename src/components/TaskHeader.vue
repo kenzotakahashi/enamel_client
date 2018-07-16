@@ -11,9 +11,9 @@
       <span v-for="folder in task.folders">
         <span class="folder-tag">{{ folder.name }}</span>
       </span>
-      <span>
+<!--       <span>
         <span>+</span>
-      </span>
+      </span> -->
     </el-col>
     <el-col :span="2">
 <!--       <span class="icon">

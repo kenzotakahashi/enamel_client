@@ -9,3 +9,11 @@ export const formatDate = (date) => {
 export function randomChoice(arr) {
   return arr[Math.floor(arr.length * Math.random())]
 }
+
+export const backgroundStrongColorMap = {
+  New: '#1976d2',
+  'In Progress': '#0097a7',
+  Completed: '#689f38',
+  'On Hold': '#616161',
+  Cancelled: '#616161',
+}

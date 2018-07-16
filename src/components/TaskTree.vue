@@ -25,7 +25,8 @@
             <span class="task-title">{{ model.name }}</span>              
           </div>
         </span>
-        <span class="task-status" v-bind:style="statusColor">{{ model.status }}</span>
+        <span class="task-status" v-bind:style="{color: backgroundStrongColorMap[model.status]}">
+          {{ model.status }}</span>
       </router-link>
     </div>
 
@@ -44,6 +45,7 @@
 import TaskTree from './TaskTree'
 import Avatar from './icons/Avatar'
 import { GetTasks } from '../constants/query.gql'
+import { backgroundStrongColorMap } from '@/helpers/helpers'
 
 export default {
   name: 'tree',
@@ -59,7 +61,8 @@ export default {
   data() {
     return {
       open: false,
-      getTasks: []
+      getTasks: [],
+      backgroundStrongColorMap
     }
   },
   computed: {

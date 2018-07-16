@@ -13,7 +13,7 @@
         </div>
         <div class="dropdown-content left" v-show="activeWidget === 'task-status-menu'">
           <div v-for="status in statusList" :key="status" @click="changeTaskStatus(status)"
-            v-bind:class="{'active-status': task.status === status }">
+            v-bind:class="{ 'active-status': task.status === status }">
             <span class="status-icon" v-bind:style="{
               backgroundColor: backgroundStrongColorMap[status]
             }"></span>
@@ -22,30 +22,27 @@
 
         </div>
       </div>
-      <div>
+      <div class="state-bar-assignee">
         <span v-if="task.assignees.length > 0">TODO: Assignees</span>
         <span v-else>+ Add assignee</span>
       </div>
-      <div>
+      <div class="state-bar-creator">
         <span class="small-text">
           by {{task.creator.firstname}} {{task.creator.lastname[0]}} at {{formatDate(task.createdAt)}}
         </span>        
       </div>
     </div>
     <el-row>
-      <el-col :span="6">
+<!--       <el-col :span="6">
         <el-button type="text" class="black-text-button ">Set Date</el-button>
-      </el-col>
-      <el-col :span="6">
-        <el-button type="text" class="black-text-button ">0.00</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="6">
         <el-button v-if="subtasks.length > 0" type="text">{{formatSubtaskCount(subtasks)}}</el-button>
         <el-button v-else type="text" class="black-text-button ">Add subtask</el-button>
       </el-col>
-      <el-col :span="6">
+<!--       <el-col :span="6">
         <el-button type="text" class="black-text-button ">{{task.shareWith.length}}</el-button>
-      </el-col>
+      </el-col> -->
     </el-row>
     <TaskTree
       v-for="model in subtasks" :key="model.id" :model="model">
@@ -54,8 +51,8 @@
     <div class="description-field">
       <span class="description-text">Click to add the description</span>
     </div>
-    <Comments :comments="getComments"></Comments>
-    <CommentBox :parent="task.id" class="stick-bottom"></CommentBox>
+<!--     <Comments :comments="getComments"></Comments>
+    <CommentBox :parent="task.id" class="stick-bottom"></CommentBox> -->
   </div>
 
 </template>
@@ -63,7 +60,7 @@
 <script>
 import { mapState } from 'vuex'
 import { GetTask, GetTasks, GetComments, UpdateTask } from '../constants/query.gql'
-import { formatDate } from '@/helpers/helpers'
+import { formatDate, backgroundStrongColorMap } from '@/helpers/helpers'
 import TaskHeader from '@/components/TaskHeader'
 import TaskTree from '@/components/TaskTree'
 import TaskForm from '@/components/TaskForm'
@@ -95,13 +92,7 @@ export default {
       subtasks: [],
       comments: [],
       statusList: ['New', 'In Progress', 'Completed', 'On Hold', 'Cancelled'],
-      backgroundStrongColorMap: {
-        New: 'rgb(25, 118, 210)',
-        'In Progress': '#0097a7',
-        Completed: '#689f38',
-        'On Hold': '#616161',
-        Cancelled: '#616161',
-      },
+      backgroundStrongColorMap,
       backgroundColorMap: {
         New: 'rgb(227, 242, 253)',
         'In Progress': '#e0f7fa',
@@ -160,7 +151,6 @@ export default {
     },
     changeTaskStatus(status) {
       if (this.task.status === status) return
-      console.log('called')
       this.$apollo.mutate({
         mutation: UpdateTask,
         variables: {
@@ -246,6 +236,18 @@ export default {
   color: #fff;
   background-color: #48f;
   cursor: default;
+}
+
+.state-bar-assignee {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  padding: 0 8px;
+}
+
+.state-bar-creator {
+  display: flex;
+  align-items: center;
 }
 
 </style>

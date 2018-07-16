@@ -24,6 +24,7 @@ fragment TaskFields on Task {
   finishDate
   importance
   status
+  createdAt
 }
 
 fragment CommentFields on Comment {
