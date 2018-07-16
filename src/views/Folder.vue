@@ -3,7 +3,7 @@
     <el-col :span="12" class="max-height">
       <div class="white card max-height">
         <div class="space">
-          <h3>{{folder.name}}</h3>
+          <div>{{folder.name}}</div>
 <!--           <div>
             <span class="menu-title">LIST</span>
             <span class="menu-title">BOARD</span>
@@ -14,7 +14,6 @@
           </div> -->
         </div>
         <TaskForm></TaskForm>
-        <hr>
         <TaskTree
           v-for="task in getTasks" :key="task.id"
           :model="task">

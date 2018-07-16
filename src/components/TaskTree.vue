@@ -1,22 +1,32 @@
 <template name="tree">
   <li>
     <div class="tree-item">
-      <span @click="toggle" class="fold-button inverse"
+      <span @click="toggle" class="task-fold-button"
         v-bind:style="{visibility: isParent ? 'visible' : 'hidden'}">
         <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
       </span>
 
-      <div class="tree-plate white">
+<!--       <div class="task-info-container">
         <router-link :to="{name: 'task', params: {taskId: model.id}}">
           <span class="task">
             <div class="user-container">
-              <Avatar :size="24" class="avatar"></Avatar>
-              {{ model.name }}              
+              <Avatar :size="24" class="task-avatar"></Avatar>
+              <span class="task-title">{{ model.name }}</span>              
             </div>
           </span>
         </router-link>
         <span class="task-status" v-bind:style="statusColor">{{ model.status }}</span>
-      </div>
+      </div> -->
+      <router-link :to="{name: 'task', params: {taskId: model.id}}"
+        class="task-info-container">
+        <span class="task-info-wrapper">
+          <div class="user-container">
+            <Avatar :size="24" class="task-avatar"></Avatar>
+            <span class="task-title">{{ model.name }}</span>              
+          </div>
+        </span>
+        <span class="task-status" v-bind:style="statusColor">{{ model.status }}</span>
+      </router-link>
     </div>
 
     <ul class="tree" v-show="open" v-if="isParent">
@@ -84,8 +94,56 @@ export default {
 };
 </script>
 
-<style scoped>
-.avatar {
+<style scoped lang="scss">
+.task-avatar {
   margin-right: 8px;
+  align-self: center;
+}
+
+.task-fold-button {
+  width: 18px;
+  margin: 0 4px;
+  z-index: 5;
+  text-align: center;
+}
+
+.task-info-container {
+  display: flex;
+  position: static;
+  width: 100%;
+  height: auto;
+  // border-top: 1px solid $black;
+}
+
+.task-info-wrapper {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  width: 0;
+}
+
+.task-status {
+  flex-shrink: 0;
+  width: 30px;
+  max-width: 128px;
+  margin: 0 8px;
+  /*line-height: 16px;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tree-item {
+  line-height: 40px;
+}
+
+.tree-item:hover {
+  background-color: $hover;
+}
+
+.task-title {
+  font-size: 14px;
 }
 </style>

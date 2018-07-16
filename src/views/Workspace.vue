@@ -10,7 +10,7 @@
             @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${getTeam.id}`)"
             @click.left.stop="$router.push({name: 'folder', params: {id: getTeam.id}})">
           <div class="tree-plate">
-            <span class="circle"></span>              
+            <div class="circle"></div>              
             <span class="folder no-select-color teamname">{{ getTeam.name }}</span>
 
             <div class="dropdown-content left" v-show="activeWidget === `folder${getTeam.id}`">

@@ -1,16 +1,13 @@
-$hover-inverse: #526477;
-$hover: #F0F0F0;
-$blue: #409EFF;
-
 body {
   color: #eff2f4;
   margin: 0;
   background-color: #4A4090;
+  -webkit-font-smoothing: antialiased;
   font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN","Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
 }
 
 .white {
-  color: #50596c;
+  color: $black;
   background: #fff;
 }
 
@@ -123,7 +120,7 @@ ul.tree {
   line-height: 1.5em;
 }
 
-.folder, .task {
+.folder {
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -189,10 +186,6 @@ ul.tree {
   background-color: $hover-inverse;
 }
 
-.tree-plate.white:hover:before {
-  background-color: $hover;
-}
-
 .no-select-color::-moz-selection {
   background: none;
 }
@@ -211,19 +204,6 @@ ul.tree {
   border-top: solid 1px;
   border-bottom: solid 1px;
   border-color: rgba(0,0,0,.16);
-}
-
-.task-status {
-  flex-shrink: 0;
-  width: 30px;
-  max-width: 128px;
-  margin: 0 8px;
-  line-height: 16px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 12px;
-  font-weight: 600;
 }
 
 .comment-box {

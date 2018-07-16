@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-show="isFormOpen">
+  <div class="task-creation-form">
+    <div v-show="isFormOpen" class="task-input">
       <input @focusout="closeForm" @keyup.enter="createTask" @keyup.esc="closeForm"
         class="no-outline" ref="taskform" type="text" name="task"
         v-model="newTaskName" placeholder="Enter title for new task"></input>
@@ -72,5 +72,27 @@ export default {
 </script>
 
 <style scoped>
+.task-creation-form {
+  border: 0px solid transparent;
+  border-bottom-color: #ebebeb;
+  border-width: 1px 0;
+  border-style: solid;
+  height: 40px;
+  padding-left: 24px;
+  padding-right: 16px;
+  /*display: flex;*/
+  /*align-items: center;*/
+  box-sizing: border-box;
+}
 
+.task-input {
+  display: flex;
+  font-size: 12px;
+  height: 100%;
+}
+
+.task-input > input {
+  align-items: center;
+  display: inline-flex;
+}
 </style>
