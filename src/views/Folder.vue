@@ -2,8 +2,8 @@
   <el-row class="max-height">
     <el-col :span="12" class="max-height">
       <div class="white card max-height">
-        <div class="space">
-          <div>{{folder.name}}</div>
+        <div class="folder-header">
+          <div class="header-title">{{folder.name}}</div>
 <!--           <div>
             <span class="menu-title">LIST</span>
             <span class="menu-title">BOARD</span>
@@ -91,6 +91,12 @@ export default {
 </script>
 
 <style>
+.folder-header {
+  padding: 15px 24px 0;
+  line-height: 21px;
+  min-height: 40px;
+}
+
 .menu-title {
   margin: 0 5px;
   font-size: 12px;

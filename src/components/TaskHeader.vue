@@ -1,10 +1,10 @@
 <template>
-  <el-row class="space">
-    <el-col :span="16">
-      <div v-if="task.parent">{{task.parent.name}}</div>
+  <el-row class="task-view-header">
+    <el-col :span="22">
+      <div v-if="task.parent" class="parent-task">{{task.parent.name}}</div>
       <div>
-        <input class="no-outline" type="text" name="taskname" ref="taskname" v-model="taskName"
-          @keyup.enter="updateTask" @keyup.esc="cancel">
+        <input class="no-outline header-title task-name" type="text" name="taskname" ref="taskname"
+          v-model="taskName" @keyup.enter="updateTask" @keyup.esc="cancel">
         </input>
       </div>
 
@@ -15,7 +15,7 @@
         <span>+</span>
       </span>
     </el-col>
-    <el-col :span="8">
+    <el-col :span="2">
 <!--       <span class="icon">
         <i class="far fa-star"></i>
       </span>
@@ -119,7 +119,36 @@ export default {
 
 <style scoped>
 .task-view-header {
-  padding: 10px;
+  padding: 12px 12px 12px 24px;
+}
+
+.task-name {
+  padding: 0;
+  margin: 5px 0;
+  height: 32px;
+}
+
+.folder-tag {
+  cursor: pointer;
+  opacity: .5;
+  font-size: 12px;
+  border-radius: 2px;
+  color: #555;
+  padding: 0 6px;
+  border: 1px solid;
+  border-color: #e0e0e0;
+  margin-right: 9px;
+  margin-bottom: 3px;
+}
+
+.folder-tag:hover {
+  opacity: .75;
+}
+
+.parent-task {
+  font-size: 12px;
+  color: rgba(0,0,0,.56);
+
 }
 
 .icon {

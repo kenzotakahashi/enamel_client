@@ -5,7 +5,9 @@
         class="no-outline" ref="taskform" type="text" name="task"
         v-model="newTaskName" placeholder="Enter title for new task"></input>
     </div>
-    <el-button v-show="!isFormOpen" @click="openForm" type="text">+ New task</el-button>
+    <div v-show="!isFormOpen" @click="openForm" class="task-button">
+      <el-button type="text">+ New task</el-button>      
+    </div>
   </div>
 </template>
 
@@ -83,6 +85,12 @@ export default {
   /*display: flex;*/
   /*align-items: center;*/
   box-sizing: border-box;
+}
+
+.task-button {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 
 .task-input {

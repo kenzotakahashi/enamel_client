@@ -11,7 +11,7 @@
                 :placeholder="`${mode} name`" :autofocus="true" @keyup.esc="$emit('close')">
               </el-input>
             </div>
-            <div class="radio-group">
+<!--             <div class="radio-group">
               <el-radio v-model="mode" label="project">
                 Project
               </el-radio>
@@ -24,11 +24,12 @@
               <div class="description">
                 Use Folders as containers to organize and categorize work, making it easier to find and share information. Unlike Projects, Folders do not have attributes you can track.
               </div>
-            </div>
+            </div> -->
 
-            <el-button type="primary" @click="create(mode)">
-              Create</el-button>
-            <el-button type="" @click="$emit('close')">Cancel</el-button>
+            <div class="button-group">
+              <el-button type="primary" @click="create(mode)">Create</el-button>
+              <el-button type="" @click="$emit('close')">Cancel</el-button>              
+            </div>
 
           </el-col>
         </el-row>
@@ -141,5 +142,9 @@ export default {
   color: rgba(0, 0, 0, 0.56);
   line-height: 1.67;
   padding-bottom: 10px;
+}
+
+.button-group {
+  margin-top: 20px;
 }
 </style>

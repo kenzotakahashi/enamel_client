@@ -1,9 +1,9 @@
 <template>
   <el-row class="nav">
-    <el-col :span="2">
+    <el-col :span="3">
       <div class="logo">enamel</div>
     </el-col>
-    <el-col :span="17"></el-col>
+    <el-col :span="16"></el-col>
     <el-col :span="5">
       <div class="user-container">
         <Avatar :user="getUser" :size="32"></Avatar>

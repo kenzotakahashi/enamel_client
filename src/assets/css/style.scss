@@ -46,6 +46,11 @@ a, a:visited, a:hover, a:active, a:focus {
   box-shadow: none;
 }
 
+.header-title {
+  font-size: 18px;
+  line-height: 21px;
+}
+
 .black-text-button {
   color: rgba(0, 0, 0, 0.9)
 }
@@ -92,6 +97,8 @@ a, a:visited, a:hover, a:active, a:focus {
 
 .logo {
   font-size: 25px;
+  font-family: 'Questrial', sans-serif;
+  letter-spacing: 3px;
 }
 
 input {
@@ -107,12 +114,6 @@ input.no-outline {
 .small-text {
   color: rgba(0,0,0,.56);
   font-size: 11px;
-}
-
-.folder-tag {
-  padding: 2px 5px;
-  border: 1px solid;
-  border-color: #e0e0e0;
 }
 
 ul.tree {
@@ -199,13 +200,6 @@ ul.tree {
   border-color: rgba(0,0,0,.16);
 }
 
-.task-statebar {
-  padding: 5px 0;
-  border-top: solid 1px;
-  border-bottom: solid 1px;
-  border-color: rgba(0,0,0,.16);
-}
-
 .comment-box {
   color: rgba(0,0,0,.56);
   padding: 12px;
@@ -219,16 +213,18 @@ ul.tree {
 /* ========= dropdown ============*/
 
 .dropdown {
-  /*position: relative;*/
+  position: relative;
   /*display: inline-block;*/
 }
 
 .dropdown-content {
   position: absolute;
   background-color: #fff;
+  padding: 6px 0;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.16);
   z-index: 1;
+  font-size: 14px;
 }
 
 .dropdown-content.right {
@@ -240,6 +236,9 @@ ul.tree {
 }
 
 .dropdown-content div {
+  display: flex;
+  cursor: pointer;
+  line-height: 19px;
   color: black;
   padding: 5px 16px;
   text-decoration: none;
