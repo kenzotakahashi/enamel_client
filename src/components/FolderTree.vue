@@ -9,13 +9,12 @@
 
         <div class="dropdown-content left" v-show="activeWidget === `folder${model.id}`">
           <div @click="openModal('folder')">Add Folder</div>
-          <div @click="openModal('project')">Add Project</div>
+          <!-- <div @click="openModal('project')">Add Project</div> -->
           <div>Share</div>
           <div>Rename</div>
           <div @click="deleteFolder">Delete</div>
-          <div>Duplicate</div>
-          <hr></hr>
-          <div>Turn into Project</div>
+          <!-- <div>Duplicate</div> -->
+          <!-- <div>Turn into Project</div> -->
         </div>
       </div>
     </div>

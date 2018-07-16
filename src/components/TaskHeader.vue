@@ -16,7 +16,7 @@
       </span>
     </el-col>
     <el-col :span="8">
-      <span class="icon">
+<!--       <span class="icon">
         <i class="far fa-star"></i>
       </span>
       <span class="icon">
@@ -24,21 +24,21 @@
       </span>
       <span class="icon">
         <i class="fas fa-link"></i>
-      </span>
+      </span> -->
       <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveWidget', 'task-menu')">
         <i class="fas fa-ellipsis-h"></i>
         <div class="dropdown-content right" v-show="activeWidget === 'task-menu'">
-          <div>Make reccurent</div>
-          <div>Duplicate task</div>
-          <div>Request status update</div>
-          <div>Print</div>
-          <hr></hr>
-          <div>Enter full screeen</div>
-          <div>Open task in separate tab</div>
-          <hr></hr>
+          <!-- <div>Make reccurent</div> -->
+          <!-- <div>Duplicate task</div> -->
+          <!-- <div>Request status update</div> -->
+          <!-- <div>Print</div> -->
+          <!-- <hr></hr> -->
+          <!-- <div>Enter full screeen</div> -->
+          <!-- <div>Open task in separate tab</div> -->
+          <!-- <hr></hr> -->
           <div @click="deleteTask">Delete task</div>
-          <hr></hr>
-          <div>Close panel</div>
+          <!-- <hr></hr> -->
+          <!-- <div>Close panel</div> -->
         </div>
       </span>
     </el-col>

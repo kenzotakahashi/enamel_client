@@ -3,10 +3,15 @@ $hover: #F0F0F0;
 $blue: #409EFF;
 
 body {
-  color: #fff;
+  color: #eff2f4;
   margin: 0;
   background-color: #4A4090;
   font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN","Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
+}
+
+.white {
+  color: #50596c;
+  background: #fff;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -75,17 +80,17 @@ a, a:visited, a:hover, a:active, a:focus {
   padding: 10px;
 }
 
+.work-space-center {
+  padding-top: 0;
+}
+
 .card {
+  border-radius: 2px;
   margin: 0 5px;
 }
 
 .logo {
   font-size: 25px;
-}
-
-.white {
-  color: #50596c;
-  background: #fff;
 }
 
 input {
@@ -115,7 +120,10 @@ ul.tree {
 }
 
 .folder, .task {
-  /*padding-left: 18px;*/
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: .325px;
 }
 
 .fold-button {

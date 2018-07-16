@@ -4,14 +4,14 @@
       <div class="white card max-height">
         <div class="space">
           <h3>{{folder.name}}</h3>
-          <div>
+<!--           <div>
             <span class="menu-title">LIST</span>
             <span class="menu-title">BOARD</span>
             <span class="menu-title">TABLE</span>
             <span class="menu-title">GANTT CHART</span>
             <span class="menu-title">STREAM</span>
             <span class="menu-title">MORE</span>
-          </div>
+          </div> -->
         </div>
         <TaskForm></TaskForm>
         <hr>

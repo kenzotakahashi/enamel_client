@@ -14,7 +14,7 @@
           </div>
           <div class="dropdown-content left" v-show="activeWidget === `folder${getTeam.id}`">
             <div @click="openModal('folder')">Add Folder</div>
-            <div @click="openModal('project')">Add Project</div>
+            <!-- <div @click="openModal('project')">Add Project</div> -->
           </div>
         </div>
         <Tree
@@ -25,7 +25,7 @@
         </Tree>
       </el-aside>
 
-      <el-main>
+      <el-main class="work-space-center">
         <router-view></router-view>
       </el-main>
 
@@ -90,3 +90,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>
