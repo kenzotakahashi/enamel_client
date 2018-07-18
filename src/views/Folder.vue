@@ -3,7 +3,12 @@
     <el-col :span="12" class="max-height">
       <div class="white card max-height">
         <div class="folder-header">
-          <div class="header-title">{{folder.name}}</div>
+          <input class="no-outline header-title folder-name" type="text" name="taskname" ref="taskname"
+            v-model="folderName" @keyup.enter="updateFolder" @keyup.esc="cancel">
+          </input>
+
+          <!-- <div class="header-title">{{folder.name}}</div> -->
+
 <!--           <div>
             <span class="menu-title">LIST</span>
             <span class="menu-title">BOARD</span>
@@ -30,7 +35,7 @@
 </template>
 
 <script>
-import { GetFolder, GetTasks } from '../constants/query.gql'
+import { GetFolder, GetTasks, UpdateFolder } from '../constants/query.gql'
 import TaskTree from '@/components/TaskTree'
 import TaskForm from '@/components/TaskForm'
 import FolderDetail from './FolderDetail.vue'
@@ -53,6 +58,7 @@ export default {
   data() {
     return {
       subRoute: 'folder',
+      folderName: '',
       folder: {
         shareWith: []
       },
@@ -67,6 +73,7 @@ export default {
       },
       result ({data: { getFolder }}) {
         this.folder = getFolder
+        this.folderName = this.folder.name
       },
     },
     getTasks: {
@@ -85,6 +92,24 @@ export default {
   methods: {
     isTeam(folder) {
       return !folder.parent && folder.shareWith.length === 0
+    },
+    updateFolder(e) {
+      const name = this.folderName
+      if (name === this.folder.name) {
+        this.cancel(e)
+        return
+      }
+      this.$apollo.mutate({
+        mutation: UpdateFolder,
+        variables: { id: this.folder.id, input: {name} },
+      }).then(() => {
+        this.cancel(e)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    cancel(e) {
+      e.target.blur()
     }
   }
 }
@@ -95,6 +120,12 @@ export default {
   padding: 15px 24px 0;
   line-height: 21px;
   min-height: 40px;
+}
+
+.folder-name {
+  padding: 0;
+  margin: 5px 0;
+  height: 32px;
 }
 
 .menu-title {

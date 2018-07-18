@@ -23,6 +23,11 @@ export default {
       newTaskName: '',
     }
   },
+  mounted() {
+    if (this.open) {
+      this.$refs.taskform.focus()      
+    }
+  },
   methods: {
     openForm() {
       this.isFormOpen = true

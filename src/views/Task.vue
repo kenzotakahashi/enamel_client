@@ -26,28 +26,31 @@
         <span v-if="task.assignees.length > 0">TODO: Assignees</span>
         <span v-else>+ Add assignee</span>
       </div>
-      <div class="state-bar-creator">
-        <span class="small-text">
-          by {{task.creator.firstname}} {{task.creator.lastname[0]}} at {{formatDate(task.createdAt)}}
-        </span>        
+      <div class="state-bar-add-subtask">
+        <el-button type="text" @click="showSubtasks = !showSubtasks"
+          v-bind:class="{'black-text-button': !showSubtasks}">
+          {{subtasks.length > 0 ? formatSubtaskCount(subtasks) : 'Add subtask'}}
+        </el-button>
       </div>
     </div>
-    <el-row>
-<!--       <el-col :span="6">
+<!--     <el-row>
+      <el-col :span="6">
         <el-button type="text" class="black-text-button ">Set Date</el-button>
-      </el-col> -->
+      </el-col>
       <el-col :span="6">
         <el-button v-if="subtasks.length > 0" type="text">{{formatSubtaskCount(subtasks)}}</el-button>
         <el-button v-else type="text" class="black-text-button ">Add subtask</el-button>
       </el-col>
-<!--       <el-col :span="6">
+      <el-col :span="6">
         <el-button type="text" class="black-text-button ">{{task.shareWith.length}}</el-button>
-      </el-col> -->
-    </el-row>
-    <TaskTree
-      v-for="model in subtasks" :key="model.id" :model="model">
-    </TaskTree>
-    <TaskForm :parentId="taskId"></TaskForm>
+      </el-col>
+    </el-row> -->
+    <div v-if="showSubtasks">
+      <TaskTree v-for="model in subtasks" :key="model.id" :model="model">
+      </TaskTree>
+      <TaskForm :parentId="taskId" :open="true"></TaskForm>      
+    </div>
+
     <div class="description-field">
       <span class="description-text">Click to add the description</span>
     </div>
@@ -60,7 +63,7 @@
 <script>
 import { mapState } from 'vuex'
 import { GetTask, GetTasks, GetComments, UpdateTask } from '../constants/query.gql'
-import { formatDate, backgroundStrongColorMap } from '@/helpers/helpers'
+import { backgroundStrongColorMap } from '@/helpers/helpers'
 import TaskHeader from '@/components/TaskHeader'
 import TaskTree from '@/components/TaskTree'
 import TaskForm from '@/components/TaskForm'
@@ -78,7 +81,6 @@ export default {
   props: ['taskId'],
   data() {
     return {
-      formatDate,
       task: {
         parent: {},
         creator: {
@@ -89,6 +91,7 @@ export default {
         assignees: [],
         shareWith: []
       },
+      showSubtasks: false,
       subtasks: [],
       comments: [],
       statusList: ['New', 'In Progress', 'Completed', 'On Hold', 'Cancelled'],
@@ -245,7 +248,7 @@ export default {
   padding: 0 8px;
 }
 
-.state-bar-creator {
+.state-bar-add-subtask {
   display: flex;
   align-items: center;
 }

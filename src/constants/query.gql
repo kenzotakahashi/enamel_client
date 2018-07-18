@@ -142,6 +142,12 @@ mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput]
   }
 }
 
+mutation UpdateFolder($id: String!, $input: FolderInput) {
+  updateFolder(id: $id, input: $input) {
+    ...FolderFields
+  }
+}
+
 mutation DeleteFolder($id: String!) {
   deleteFolder(id: $id)
 }

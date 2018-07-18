@@ -108,6 +108,7 @@ export default {
   margin: 0 4px;
   z-index: 5;
   text-align: center;
+  // color: rgba(0, 0, 0, 0.9);
 }
 
 .task-info-container {

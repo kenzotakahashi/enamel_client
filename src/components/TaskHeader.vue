@@ -1,59 +1,70 @@
 <template>
-  <el-row class="task-view-header">
-    <el-col :span="22">
-      <div v-if="task.parent" class="parent-task">{{task.parent.name}}</div>
-      <div>
-        <input class="no-outline header-title task-name" type="text" name="taskname" ref="taskname"
-          v-model="taskName" @keyup.enter="updateTask" @keyup.esc="cancel">
-        </input>
-      </div>
-
-      <span v-for="folder in task.folders">
-        <span class="folder-tag">{{ folder.name }}</span>
-      </span>
-<!--       <span>
-        <span>+</span>
-      </span> -->
-    </el-col>
-    <el-col :span="2">
-<!--       <span class="icon">
-        <i class="far fa-star"></i>
-      </span>
-      <span class="icon">
-        <i class="fas fa-thumbtack"></i>
-      </span>
-      <span class="icon">
-        <i class="fas fa-link"></i>
-      </span> -->
-      <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveWidget', 'task-menu')">
-        <i class="fas fa-ellipsis-h"></i>
-        <div class="dropdown-content right" v-show="activeWidget === 'task-menu'">
-          <!-- <div>Make reccurent</div> -->
-          <!-- <div>Duplicate task</div> -->
-          <!-- <div>Request status update</div> -->
-          <!-- <div>Print</div> -->
-          <!-- <hr></hr> -->
-          <!-- <div>Enter full screeen</div> -->
-          <!-- <div>Open task in separate tab</div> -->
-          <!-- <hr></hr> -->
-          <div @click="deleteTask">Delete task</div>
-          <!-- <hr></hr> -->
-          <!-- <div>Close panel</div> -->
+  <div class="task-view-header">
+    <div class="task-header-wrap">
+      <div class="task-header">
+        <div v-if="task.parent" class="parent-task">{{task.parent.name}}</div>
+        <div>
+          <input class="no-outline header-title task-name" type="text" name="taskname" ref="taskname"
+            v-model="taskName" @keyup.enter="updateTask" @keyup.esc="cancel">
+          </input>
         </div>
-      </span>
-    </el-col>
-  </el-row>
+
+      </div>
+      <div>
+  <!--       <span class="icon">
+          <i class="far fa-star"></i>
+        </span>
+        <span class="icon">
+          <i class="fas fa-thumbtack"></i>
+        </span>
+        <span class="icon">
+          <i class="fas fa-link"></i>
+        </span> -->
+        <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveWidget', 'task-menu')">
+          <i class="fas fa-ellipsis-h"></i>
+          <div class="dropdown-content right" v-show="activeWidget === 'task-menu'">
+            <!-- <div>Make reccurent</div> -->
+            <!-- <div>Duplicate task</div> -->
+            <!-- <div>Request status update</div> -->
+            <!-- <div>Print</div> -->
+            <!-- <hr></hr> -->
+            <!-- <div>Enter full screeen</div> -->
+            <!-- <div>Open task in separate tab</div> -->
+            <!-- <hr></hr> -->
+            <div @click="deleteTask">Delete task</div>
+            <!-- <hr></hr> -->
+            <!-- <div>Close panel</div> -->
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div class="tag-view">
+      <div class="folder-tag-group">
+        <span v-for="folder in task.folders">
+          <span class="folder-tag">{{ folder.name }}</span>
+        </span>        
+      </div>
+      <div class="state-bar-creator">
+        <span class="small-text">
+          by {{task.creator.firstname}} {{task.creator.lastname[0]}} at {{formatDate(task.createdAt)}}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { UpdateTask, DeleteTask, GetTasks } from '../constants/query.gql'
+import { formatDate } from '@/helpers/helpers'
 
 export default {
   props: ['task'],
   computed: mapState(['activeWidget']),
   data() {
     return {
+      formatDate,
       taskName: this.task.name
     }
   },
@@ -64,7 +75,6 @@ export default {
   },
   methods: {
     updateTask(e) {
-      const id = this.task.id
       const name = this.taskName
       if (name === this.task.name) {
         this.cancel(e)
@@ -72,7 +82,7 @@ export default {
       }
       this.$apollo.mutate({
         mutation: UpdateTask,
-        variables: { id, input: {name} },
+        variables: { id: this.task.id, input: {name} },
       }).then(() => {
         this.cancel(e)
       }).catch((error) => {
@@ -122,10 +132,26 @@ export default {
   padding: 12px 12px 12px 24px;
 }
 
+.task-header-wrap {
+  display: flex;
+}
+
+.task-header {
+  flex-grow: 1;
+}
+
 .task-name {
   padding: 0;
   margin: 5px 0;
   height: 32px;
+}
+
+.tag-view {
+  display: flex;
+}
+
+.folder-tag-group {
+  flex-grow: 1
 }
 
 .folder-tag {
@@ -143,6 +169,11 @@ export default {
 
 .folder-tag:hover {
   opacity: .75;
+}
+
+.state-bar-creator {
+  display: flex;
+  align-items: center;
 }
 
 .parent-task {
