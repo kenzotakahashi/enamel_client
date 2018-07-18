@@ -19,6 +19,7 @@ fragment TaskFields on Task {
     firstname
     lastname
   }
+  description
   shareWith
   startDate
   finishDate
@@ -41,6 +42,7 @@ fragment FolderFields on Folder {
   id
   name
   parent
+  description
   shareWith
 }
 

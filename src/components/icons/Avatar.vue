@@ -34,6 +34,7 @@
 <script>
 
 export default {
+  name: 'avatar',
   props: ['user', 'manual', 'size', 'selected'],
   computed: {
     getInitials() {

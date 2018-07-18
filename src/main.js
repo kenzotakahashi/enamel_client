@@ -19,6 +19,14 @@ import store from './store'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/style.scss'
 
+import Avatar from '@/components/icons/Avatar.vue'
+import CloseButton from '@/components/icons/CloseButton.vue'
+import RemoveButton from '@/components/icons/RemoveButton.vue'
+
+Vue.component('avatar', Avatar)
+Vue.component('close-button', CloseButton)
+Vue.component('remove-button', RemoveButton)
+
 Vue.use(ElementUI)
 // Vue.use(VeeValidate)
 Vue.config.productionTip = false

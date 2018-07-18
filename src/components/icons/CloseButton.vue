@@ -9,6 +9,7 @@
 
 <script>
 export default {
+  name: 'close-button',
   props: ['size', 'hidden']
 }
 </script>

@@ -7,9 +7,7 @@
         <span class="shared-with">{{folder.shareWith && folder.shareWith.length}}</span>
       </el-row>
 
-      <div class="description-field">
-        <span class="description-text">Click to add the description</span>
-      </div>
+      <DescriptionField :model="folder" kind="folder"></DescriptionField>
 
     </div>
   </div>
@@ -17,8 +15,12 @@
 
 <script>
 import { formatDate } from '@/helpers/helpers'
+import DescriptionField from '@/components/DescriptionField'
 
 export default {
+  components: {
+    DescriptionField
+  },
   data() {
     return {
       formatDate

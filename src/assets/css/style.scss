@@ -21,6 +21,13 @@ ul, li {
   margin: 0;
 }
 
+textarea {
+  outline: none;
+  border: none;
+  resize: none;
+  font-size: inherit;
+}
+
 button {
   border: none;
   background: none;
@@ -188,12 +195,6 @@ ul.tree {
 }
 .no-select-color::selection {
   background: none;
-}
-
-.description-field {
-  padding: 30px 30px;
-  border-bottom: 1px solid;
-  border-color: rgba(0,0,0,.16);
 }
 
 .comment-box {

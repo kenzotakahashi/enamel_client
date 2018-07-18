@@ -6,6 +6,13 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'remove-button',
+}
+</script>
+
+
 <style scoped>
 .remove-button {
   visibility: hidden;

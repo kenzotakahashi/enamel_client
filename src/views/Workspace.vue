@@ -29,7 +29,7 @@
       </el-aside>
 
       <el-main class="work-space-center">
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </el-main>
 
       <FolderForm v-if="showModal" :config="modalConfig" @close="showModal = false"></FolderForm>
