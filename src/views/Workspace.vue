@@ -6,10 +6,10 @@
 
     <el-container :style="styleObj">
       <el-aside class="tree-root" width="220px">
-        <div v-if="getTeam.id" class="tree-item dropdown"
+        <div v-if="getTeam.id" class="tree-item"
             @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${getTeam.id}`)"
             @click.left.stop="$router.push({name: 'folder', params: {id: getTeam.id}})">
-          <div class="tree-plate">
+          <div class="tree-plate"  v-bind:class="{active: $route.params.id === getTeam.id}">
             <div class="circle"></div>              
             <span class="folder no-select-color teamname">{{ getTeam.name }}</span>
 

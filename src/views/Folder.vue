@@ -126,6 +126,7 @@ export default {
   padding: 0;
   margin: 5px 0;
   height: 32px;
+  width: 100%;
 }
 
 .menu-title {

@@ -179,6 +179,10 @@ ul.tree {
   background-color: $hover-inverse;
 }
 
+.tree-plate.active:before {
+  background-color: #48f;
+}
+
 .no-select-color::-moz-selection {
   background: none;
 }

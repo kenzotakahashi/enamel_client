@@ -7,7 +7,7 @@
         v-bind:style="{visibility: isFolder ? 'visible' : 'hidden'}">
         <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
       </span>
-      <div class="tree-plate">
+      <div class="tree-plate" v-bind:class="{active: $route.params.id === model.id}">
         <span class="folder no-select-color">{{ model.name }}</span>
 
         <div class="dropdown-content left" v-show="activeWidget === `folder${model.id}`">

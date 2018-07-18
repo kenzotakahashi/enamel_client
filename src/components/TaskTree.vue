@@ -1,6 +1,6 @@
 <template name="tree">
   <li>
-    <div class="tree-item">
+    <div class="tree-item" v-bind:class="{active: $route.params.taskId === model.id}">
       <span @click="toggle" class="task-fold-button"
         v-bind:style="{visibility: isParent ? 'visible' : 'hidden'}">
         <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
@@ -145,6 +145,10 @@ export default {
 
 .tree-item:hover {
   background-color: $hover;
+}
+
+.tree-item.active {
+  background-color: #4488ff29;
 }
 
 .task-title {
