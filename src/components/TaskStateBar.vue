@@ -20,10 +20,12 @@
 
       </div>
     </div>
-<!--     <div class="state-bar-assignee">
+
+    <div class="state-bar-assignee">
 
       <div class="tooltip">
-        <div v-show="activeWidget === 'addAssigneeTooltip'" class="tooltip-content top" @click.stop="">
+        <div v-show="activeWidget === 'addAssigneeTooltip'"
+          class="tooltip-content bottom group-view" @click.stop="">
           <div>
             <div class="search-user-input">
               <el-input type="text" v-model="searchUser" placeholder="Search contact"
@@ -33,10 +35,10 @@
           </div>
           <div class="contact-picker-item-list">
             <div v-for="user in filteredUsers" class="contact-picker-item"
-              @click.stop="assignUserToTask(user)">
+              @click.stop="assignUserToTask(user.id)">
               <div class="picker-item">
                 <div class="item">
-                  <Avatar class="picker-avatar" :user="user" :size="32"></Avatar>
+                  <avatar class="picker-avatar" :user="user" :size="32"></avatar>
                   <div>
                     <div class="name">{{user.name}}</div>
                     <div class="email">{{user.email}}</div>
@@ -49,30 +51,27 @@
 
         <div class="contact-field">
           <div v-if="task.assignees.length > 0" class="add-additional">
-            <Avatar v-for="user in task.assignees" :key="user.id" 
+            <avatar v-for="user in task.assignees" :key="user.id" 
               class="member-avatar" :user="user" :size="32">
-              <RemoveButton @click="removeUserFromTask(user.id)"></RemoveButton>
-            </Avatar>
+              <remove-button @click="removeUserFromTask(user.id)"></remove-button>
+            </avatar>
             <div class="cross-wrapper">
               <span slot="reference" class="cross"
                 @click.stop="changeActiveWidget('addAssigneeTooltip')">
               </span>
             </div>
           </div>
-          <el-button v-else type="text"
-            @click.stop="changeActiveWidget('addAssigneeTooltip')">
-            Add members</el-button>
+          <el-button v-else
+            type="text"
+            @click.stop="changeActiveWidget('addAssigneeTooltip')"
+            class="black-text-button" >
+            + Add assignee
+          </el-button>
         </div>
       </div>
 
-      <span v-if="task.assignees.length > 0">TODO: Assignees</span>
-      <el-button
-        type="text"
-        @click="$emit('toggleSubtaskView')"
-        class="black-text-button" >
-        + Add assignee
-      </el-button>
-    </div> -->
+
+    </div>
 
     <div class="state-bar-add-subtask">
       <el-button type="text" @click="$emit('toggleSubtaskView')"
@@ -85,18 +84,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import { UpdateTask } from '@/constants/query.gql'
 import { backgroundStrongColorMap } from '@/helpers/helpers'
-// import Avatar from './icons/Avatar'
-// import RemoveButton from './icons/RemoveButton'
 
 export default {
-  // components: {
-  //   Avatar,
-  //   RemoveButton
-  // },
   props: ['task', 'subtasks', 'users', 'showSubtasks'],
   data() {
     return {
+      searchUser: '',
       statusList: ['New', 'In Progress', 'Completed', 'On Hold', 'Cancelled'],
       backgroundStrongColorMap,
       backgroundColorMap: {
@@ -116,6 +111,13 @@ export default {
     }
   },
   computed: {
+    filteredUsers() {
+      const s = this.searchUser.toLowerCase()
+      const users = this.task.assignees
+      console.log(users)
+      return this.users.filter(o => !users.includes(o.id)
+        && (o.name.toLowerCase().includes(s) || o.email.toLowerCase().includes(s)))
+    },
     ...mapState(['activeWidget'])
   },
   methods: {
@@ -137,11 +139,35 @@ export default {
         console.log(error)
       })
     },
-    assignUserToTask(user) {
-      this.form.users.push(user)
+    assignUserToTask(id) {
+      const assignees = this.task.assignees.map(o => o.id)
+      assignees.push(id)
+      this.$apollo.mutate({
+        mutation: UpdateTask,
+        variables: {
+          id: this.task.id,
+          input: { assignees }
+        },
+      }).then(({data: {updateTask}}) => {
+        console.log(updateTask)
+        this.$store.dispatch('changeActiveWidget', null)
+      }).catch((error) => {
+        console.log(error)
+      })
     },
     removeUserFromTask(id) {
-      this.form.users = this.form.users.filter(o => o.id !== id)
+      const assignees = this.task.assignees.map(p => p.id).filter(o => o !== id)
+      this.$apollo.mutate({
+        mutation: UpdateTask,
+        variables: {
+          id: this.task.id,
+          input: { assignees }
+        },
+      }).then(() => {
+        this.$store.dispatch('changeActiveWidget', null)
+      }).catch((error) => {
+        console.log(error)
+      })
     },
     changeActiveWidget(key) {
       this.$store.dispatch('changeActiveWidget', key)

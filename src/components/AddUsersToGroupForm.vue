@@ -7,10 +7,10 @@
         <section>
           <div class="contact-field">
             <div v-if="form.users.length > 0" class="add-additional">
-              <Avatar v-for="user in form.users" :key="user.id" 
+              <avatar v-for="user in form.users" :key="user.id" 
                 class="member-avatar" :user="user" :size="32">
-                <RemoveButton @click="removeMemberFromGroup(user.id)"></RemoveButton>
-              </Avatar>
+                <remove-button @click="removeMemberFromGroup(user.id)"></remove-button>
+              </avatar>
               <div class="cross-wrapper">
                 <span slot="reference" class="cross"
                   @click.stop="changeActiveWidget('addGroupTooltip')">
@@ -34,7 +34,7 @@
               @click.stop="addMemberToGroup(user)">
               <div class="picker-item">
                 <div class="item">
-                  <Avatar class="picker-avatar" :user="user" :size="32"></Avatar>
+                  <avatar class="picker-avatar" :user="user" :size="32"></avatar>
                   <div>
                     <div class="name">{{user.name}}</div>
                     <div class="email">{{user.email}}</div>
@@ -50,7 +50,7 @@
           <el-button type="text" @click="$emit('close')">Cancel</el-button>          
         </section>
 
-        <CloseButton class="close" :hidden="false" @click="$emit('close')"></CloseButton>
+        <close-button class="close" :hidden="false" @click="$emit('close')"></close-button>
       </div>
     </div>
   </div>
@@ -58,17 +58,9 @@
 
 <script>
 import { AddUsersToGroup, GetUsers, GetGroups } from '../constants/query.gql'
-import Avatar from './icons/Avatar'
-import RemoveButton from './icons/RemoveButton'
-import CloseButton from './icons/CloseButton'
 import { mapState } from 'vuex'
 
 export default {
-  components: {
-    Avatar,
-    RemoveButton,
-    CloseButton
-  },
   props: ['group', 'users'],
   data() {
     return {

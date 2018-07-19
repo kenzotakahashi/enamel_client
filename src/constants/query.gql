@@ -12,6 +12,9 @@ fragment TaskFields on Task {
   assignees {
     id
     name
+    firstname
+    lastname
+    avatarColor
   }
   creator {
     id

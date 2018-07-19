@@ -22,12 +22,12 @@
         <section>
           <div class="field-title">Avatar color</div>
           <div class="avatarcolor-container">
-            <Avatar v-for="avatarColor in colors" :key="avatarColor"
+            <avatar v-for="avatarColor in colors" :key="avatarColor"
               class="color-avatar" 
               @click="selectAvatarColor(avatarColor)"
               :manual="{initials: form.initials, avatarColor}" :size="32"
               :selected="form.avatarColor === avatarColor">
-            </Avatar>
+            </avatar>
           </div>
         </section>
 
@@ -44,7 +44,7 @@
             @click="deleteGroup">Delete group</el-button>
         </section>
 
-        <CloseButton class="close" :hidden="false" @click="$emit('close')"></CloseButton>
+        <close-button class="close" :hidden="false" @click="$emit('close')"></close-button>
       </div>
     </div>
   </div>
@@ -52,18 +52,10 @@
 
 <script>
 import { UpdateGroup, DeleteGroup, GetGroups } from '../constants/query.gql'
-import Avatar from './icons/Avatar'
-import RemoveButton from './icons/RemoveButton'
-import CloseButton from './icons/CloseButton'
 import { mapState } from 'vuex'
 import { randomChoice } from '@/helpers/helpers'
 
 export default {
-  components: {
-    Avatar,
-    RemoveButton,
-    CloseButton
-  },
   props: ['group'],
   data() {
     const { name, initials, avatarColor } = this.group

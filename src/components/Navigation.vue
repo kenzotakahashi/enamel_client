@@ -4,7 +4,7 @@
       <div class="logo">enamel</div>
     </div>
     <div class="user-container">
-      <Avatar :user="getUser" :size="32"></Avatar>
+      <avatar :user="getUser" :size="32"></avatar>
       <span class="name">
         {{getUser.name}}
         <i class="fas fa-angle-down"></i>
@@ -15,13 +15,9 @@
 
 <script>
 import { mapState } from  'vuex'
-import Avatar from '@/components/icons/Avatar'
 import { GetTeam, GetUser } from '../constants/query.gql'
 
 export default {
-  components: {
-    Avatar,
-  },
   computed: mapState(['activeWidget']),
   data() {
     return {

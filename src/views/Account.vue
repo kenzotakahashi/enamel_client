@@ -27,7 +27,7 @@
           <div v-for="(group, index) in getGroups" :key="index+2"
             class="group-list-item" v-bind:class="{selected: selected === index+2}"
             @click="changeView(index+2)">
-            <Avatar class="avatar" :manual="group" :size="24"></Avatar>
+            <avatar class="avatar" :manual="group" :size="24"></avatar>
             <span class="name">{{group.name}}</span>
             <span class="member-count">{{group.users.length}}</span>
           </div>
@@ -84,7 +84,7 @@
             <el-table-column label="NAME" sortable width="180">
               <template slot-scope="scope">
                 <div class="user-container">
-                  <Avatar class="avatar" :user="scope.row" :size="24"></Avatar>
+                  <avatar class="avatar" :user="scope.row" :size="24"></avatar>
                   {{scope.row.name}}
                 </div>
               </template>
@@ -94,7 +94,7 @@
             <el-table-column prop="status" label="STATUS" sortable></el-table-column>
             <el-table-column label="" width="40">
               <template v-if="selected >= 2" slot-scope="scope">
-                <CloseButton :hidden="true" @click="removeUsersFromGroup(scope.row.id)"></CloseButton>
+                <close-button :hidden="true" @click="removeUsersFromGroup(scope.row.id)"></close-button>
               </template>
             </el-table-column>
           </el-table>
@@ -122,25 +122,21 @@
 <script>
 import { mapState } from 'vuex'
 import Navigation from '@/components/Navigation'
-import Avatar from '@/components/icons/Avatar'
 import GroupForm from '@/components/GroupForm'
 import GroupUpdateForm from '@/components/GroupUpdateForm'
 import InviteUserForm from '@/components/InviteUserForm'
 import AddUsersToGroupForm from '@/components/AddUsersToGroupForm'
 import UserDetail from '@/components/UserDetail'
-import CloseButton from '@/components/icons/CloseButton'
 import { GetUsers, GetGroups, RemoveUsersFromGroup } from '../constants/query.gql'
 
 export default {
   components: {
     Navigation,
-    Avatar,
     GroupForm,
     GroupUpdateForm,
     InviteUserForm,
     AddUsersToGroupForm,
     UserDetail,
-    CloseButton
   },
   data() {
     return {

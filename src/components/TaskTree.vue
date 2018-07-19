@@ -10,7 +10,7 @@
         <router-link :to="{name: 'task', params: {taskId: model.id}}">
           <span class="task">
             <div class="user-container">
-              <Avatar :size="24" class="task-avatar"></Avatar>
+              <avatar :size="24" class="task-avatar"></avatar>
               <span class="task-title">{{ model.name }}</span>              
             </div>
           </span>
@@ -21,7 +21,7 @@
         class="task-info-container">
         <span class="task-info-wrapper">
           <div class="user-container">
-            <Avatar :size="24" class="task-avatar"></Avatar>
+            <avatar :size="24" class="task-avatar"></avatar>
             <span class="task-title">{{ model.name }}</span>              
           </div>
         </span>
@@ -43,7 +43,6 @@
 
 <script>
 import TaskTree from './TaskTree'
-import Avatar from './icons/Avatar'
 import { GetTasks } from '../constants/query.gql'
 import { backgroundStrongColorMap } from '@/helpers/helpers'
 
@@ -51,7 +50,6 @@ export default {
   name: 'tree',
   components: {
     'tree': TaskTree,
-    Avatar
   },
   props: {
     model: Object

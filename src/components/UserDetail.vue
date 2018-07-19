@@ -4,7 +4,7 @@
       <div class="user-detail-inner-container">
 
         <div class="user-main-info-container">
-          <Avatar :user="user" :size="144"></Avatar>
+          <avatar :user="user" :size="144"></avatar>
           <div class="user-name">{{user.name}}</div>
           <div class="user-role">{{user.jobTitle}}</div>
           <div class="user-signup-date">
@@ -52,9 +52,9 @@
           <div v-show="activeTab === 'groups'" class="user-group-section">
             <div class="user-groups-label">Member of</div>
             <div class="group-list">
-              <Avatar v-for="group in userGroups" :key="group.id" class="group-avatar"
+              <avatar v-for="group in userGroups" :key="group.id" class="group-avatar"
                 :manual="group" :size="32">
-              </Avatar>
+              </avatar>
             </div>
           </div>
         </div>
@@ -73,14 +73,12 @@
         </section> -->
 
       </div>
-      <CloseButton :size="24" @click="$store.dispatch('changeActiveWidget', null)"></CloseButton>
+      <close-button :size="24" @click="$store.dispatch('changeActiveWidget', null)"></close-button>
     </div>
   </div>
 </template>
 
 <script>
-import Avatar from './icons/Avatar'
-import CloseButton from './icons/CloseButton'
 import moment from 'moment'
 
 export default {
@@ -90,10 +88,6 @@ export default {
       activeTab: 'settings',
       notify: true
     }
-  },
-  components: {
-    Avatar,
-    CloseButton
   },
   computed: {
     userGroups() {

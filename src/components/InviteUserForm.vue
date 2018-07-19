@@ -26,7 +26,7 @@
                   @click.stop="addMemberToGroup(group)">
                   <div class="picker-item">
                     <div class="item">
-                      <Avatar class="picker-avatar" :manual="group" :size="32"></Avatar>
+                      <avatar class="picker-avatar" :manual="group" :size="32"></avatar>
                       <div>
                         <div class="name">{{group.name}}</div>
                       </div>
@@ -38,10 +38,10 @@
 
             <div class="contact-field">
               <div v-if="form.groups.length > 0" class="add-additional">
-                <Avatar v-for="group in form.groups" :key="group.id" 
+                <avatar v-for="group in form.groups" :key="group.id" 
                   class="member-avatar" :manual="group" :size="32">
-                  <RemoveButton @click="removeMemberFromGroup(group.id)"></RemoveButton>
-                </Avatar>
+                  <remove-button @click="removeMemberFromGroup(group.id)"></remove-button>
+                </avatar>
                 <div class="cross-wrapper">
                   <span slot="reference" class="cross"
                     @click.stop="changeActiveWidget('addGroupTooltip')">
@@ -76,15 +76,9 @@
 
 <script>
 import { Invite, GetUsers, GetGroups } from '../constants/query.gql'
-import Avatar from './icons/Avatar'
-import RemoveButton from './icons/RemoveButton'
 import { mapState } from 'vuex'
 
 export default {
-  components: {
-    Avatar,
-    RemoveButton
-  },
   props: ['groups', 'targetGroup'],
   data() {
     return {
