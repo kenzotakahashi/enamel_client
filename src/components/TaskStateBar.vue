@@ -70,7 +70,6 @@
         </div>
       </div>
 
-
     </div>
 
     <div class="state-bar-add-subtask">
@@ -114,7 +113,6 @@ export default {
     filteredUsers() {
       const s = this.searchUser.toLowerCase()
       const users = this.task.assignees
-      console.log(users)
       return this.users.filter(o => !users.includes(o.id)
         && (o.name.toLowerCase().includes(s) || o.email.toLowerCase().includes(s)))
     },
@@ -127,41 +125,23 @@ export default {
     },
     changeTaskStatus(status) {
       if (this.task.status === status) return
-      this.$apollo.mutate({
-        mutation: UpdateTask,
-        variables: {
-          id: this.task.id,
-          input: {status}
-        },
-      }).then(() => {
-        this.$store.dispatch('changeActiveWidget', null)
-      }).catch((error) => {
-        console.log(error)
-      })
+      this.updateTask({status})
     },
     assignUserToTask(id) {
       const assignees = this.task.assignees.map(o => o.id)
       assignees.push(id)
-      this.$apollo.mutate({
-        mutation: UpdateTask,
-        variables: {
-          id: this.task.id,
-          input: { assignees }
-        },
-      }).then(({data: {updateTask}}) => {
-        console.log(updateTask)
-        this.$store.dispatch('changeActiveWidget', null)
-      }).catch((error) => {
-        console.log(error)
-      })
+      this.updateTask({assignees})
     },
     removeUserFromTask(id) {
       const assignees = this.task.assignees.map(p => p.id).filter(o => o !== id)
+      this.updateTask({assignees})
+    },
+    updateTask(input) {
       this.$apollo.mutate({
         mutation: UpdateTask,
         variables: {
           id: this.task.id,
-          input: { assignees }
+          input
         },
       }).then(() => {
         this.$store.dispatch('changeActiveWidget', null)

@@ -16,6 +16,15 @@
     }">
       {{manual.initials}}
     </span>
+    <span v-else-if="number" class="avatar-core" v-bind:class="{selectedColor: selected}" v-bind:style="{
+      backgroundColor: '#f2f7ff',
+      height: size + 'px',
+      width: size + 'px',
+      fontSize: size * 0.4375 + 'px',
+      color: 'rgba(0,0,0,.56)'
+    }">
+      {{number}}
+    </span>
     <span v-else class="avatar-core" v-bind:style="{
       backgroundColor: '#f2f7ff',
       height: size + 'px',
@@ -35,7 +44,7 @@
 
 export default {
   name: 'avatar',
-  props: ['user', 'manual', 'size', 'selected'],
+  props: ['user', 'manual', 'number', 'size', 'selected'],
   computed: {
     getInitials() {
       const {firstname, lastname} = this.user
