@@ -1,26 +1,6 @@
 <template>
   <span class="avatar-top" @click="$emit('click')">
-    <span v-if="obj && obj.avatarColor" class="avatar-core"
-      v-bind:class="{selectedColor: selected}"
-      v-bind:style="{
-        backgroundColor: `#${obj.avatarColor}`,
-        height: size + 'px',
-        width: size + 'px',
-        fontSize: size * 0.4375 + 'px'
-      }"
-    >
-      {{getInitials}}
-    </span>
-    <span v-else-if="number" class="avatar-core" v-bind:class="{selectedColor: selected}" v-bind:style="{
-      backgroundColor: '#f2f7ff',
-      height: size + 'px',
-      width: size + 'px',
-      fontSize: size * 0.4375 + 'px',
-      color: 'rgba(0,0,0,.56)'
-    }">
-      {{number}}
-    </span>
-    <span v-else-if="kind === 'unassigned'" class="avatar-core" v-bind:style="{
+    <span v-if="kind === 'unassigned'" class="avatar-core" v-bind:style="{
       backgroundColor: '#f2f7ff',
       height: size + 'px',
       width: size + 'px',
@@ -31,6 +11,46 @@
         </path>
       </svg>      
     </span>
+    <span v-else-if="kind === 'Team'" class="avatar-core" v-bind:style="{
+      backgroundColor: '#f2f7ff',
+      color: 'rgba(0,0,0,.56)',
+      height: size + 'px',
+      width: size + 'px',
+    }">
+      <i class="fas fa-users"></i>
+    </span>
+    <span v-else-if="obj && obj.avatarColor" class="avatar-core"
+      v-bind:class="{selectedColor: selected}"
+      v-bind:style="{
+        backgroundColor: `#${obj.avatarColor}`,
+        height: size + 'px',
+        width: size + 'px',
+        fontSize: size * 0.4375 + 'px'
+      }"
+    >
+      {{getInitials}}
+    </span>
+    <span v-else-if="obj && !obj.avatarColor" class="avatar-core"
+      v-bind:class="{selectedColor: selected}"
+      v-bind:style="{
+        backgroundColor: '#f2f7ff',
+        color: '#48f',
+        height: size + 'px',
+        width: size + 'px',
+      }"
+    >
+      <i class="far fa-envelope-open"></i>
+    </span>
+    <span v-else-if="number" class="avatar-core" v-bind:class="{selectedColor: selected}" v-bind:style="{
+      backgroundColor: '#f2f7ff',
+      color: 'rgba(0,0,0,.56)',
+      height: size + 'px',
+      width: size + 'px',
+      fontSize: size * 0.4375 + 'px'
+    }">
+      {{number}}
+    </span>
+
     <slot></slot>
   </span>
 </template>

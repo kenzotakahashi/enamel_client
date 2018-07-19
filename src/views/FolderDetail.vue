@@ -10,29 +10,31 @@
 
       <div class="tooltip">
         <div v-show="activeWidget === 'addFolderShareTooltip'" class="tooltip-content bottom" @click.stop="">
-          <div class="contact-field">
+          <div class="group-field">
             <div class="add-additional">
               <avatar v-for="group in shareWith" :key="group.id" 
-                class="member-avatar" :obj="group" :size="32">
+                class="member-avatar" :kind="group.__typename" :obj="group" :size="32">
                 <remove-button @click="removeGroup(group.id)"></remove-button>
               </avatar>
             </div>
           </div>
           <div>
-            <div class="search-user-input">
-              <el-input type="text" v-model="searchGroup" placeholder="Search group"
+            <div class="search-input">
+              <div class="label">Share with:</div>
+              <el-input type="text" v-model="searchGroup" placeholder="Add by name or email"
                 @keyup.esc="changeActiveWidget(null)">
               </el-input>                
             </div>
           </div>
           <div class="contact-picker-item-list">
-            <div v-for="group in filteredGroups" class="contact-picker-item"
+            <div v-for="group in filteredGroups" :key="group.id" class="contact-picker-item"
               @click.stop="addGroup(group)">
               <div class="picker-item">
                 <div class="item">
-                  <avatar class="picker-avatar" :obj="group" :size="32"></avatar>
+                  <avatar class="picker-avatar" :kind="group.__typename" :obj="group" :size="32"></avatar>
                   <div>
                     <div class="name">{{group.name}}</div>
+                    <div class="email">{{group.email}}</div>
                   </div>
                 </div>
               </div>
@@ -58,7 +60,7 @@
 <script>
 import { mapState } from 'vuex'
 import { formatDate } from '@/helpers/helpers'
-import { UpdateFolder } from '../constants/query.gql'
+import { UpdateFolder, GetUser, GetUsers, GetGroups, GetTeam } from '../constants/query.gql'
 import DescriptionField from '@/components/DescriptionField'
 
 export default {
@@ -66,25 +68,46 @@ export default {
     DescriptionField
   },
   data() {
-    console.log(this.folder.shareWith)
     return {
+      getUser: {},
+      getUsers: [],
+      getGroups: [],
+      getTeam: {},
+      excludeList: [],
       searchGroup: '',
       formatDate,
       folderName: this.folder.name,
-      shareWith: this.folder.shareWith
+      shareWith: this.folder.shareWith.map(o => ({
+        ...o,
+        id: o.item,
+        __typename: o.kind
+      }))
     }
   },
   props: ['folder'],
+  apollo: {
+    getUser: GetUser,
+    getUsers: GetUsers,
+    getGroups: GetGroups,
+    getTeam: GetTeam,
+  },
   computed: {
     shareInfo() {
-      const share = this.folder.shareWith
+      const share = this.shareWith
       // !share || share.length ===
     },
+    groups() {
+      return [this.getTeam].concat(this.getUsers).concat(this.getGroups)
+    },
     filteredGroups() {
-      return []
       const s = this.searchGroup.toLowerCase()
-      const groups = this.shareWith.map(o => o.id)
-      return this.folder.shareWith.filter(o => !groups.includes(o.id) && o.name.toLowerCase().includes(s))
+      const shared = this.shareWith.map(o => o.id)
+      return this.groups.filter(o => {
+        if (shared.includes(o.id)) return false
+        if (this.excludeList.includes(o.id)) return false
+        if (o.email && o.email.includes(s)) return true
+        return o.name && o.name.toLowerCase().includes(s)
+      })
     },
     ...mapState(['activeWidget'])
   },
@@ -93,10 +116,31 @@ export default {
       this.$store.dispatch('changeActiveWidget', key)
     },
     addGroup(group) {
-      // this.form.groups.push(group)
+      this.shareWith.push(group)
+      this.mergeGroup(this.shareWith)
     },
     removeGroup(id) {
-      // this.form.groups = this.form.groups.filter(o => o.id !== id)
+      // if (this.shareWith.length === 1) {
+      //   const obj = this.shareWith[0]
+      //   if (obj.__typename === 'User') {
+      //     if (obj.id === this.getUser.id)
+      //   }
+      // }
+      this.mergeGroup(this.shareWith.filter(o => o.id !== id))
+    },
+    mergeGroup(shareWith) {
+      this.excludeList = []
+      if (shareWith.length === 0) {
+        this.shareWith = [this.getUser]
+        return
+      }
+      if (shareWith.find(o => o.__typename === 'Team')) {
+        this.excludeList = shareWith.filter(o =>
+          ['Regular User','Owner','Administrator'].includes(o.role)).map(p => p.id)
+      }
+      const members = shareWith.filter(o => o.__typename === 'Group').map(p => p.users)
+      this.excludeList = this.excludeList.concat(...members)
+      this.shareWith = shareWith.filter(o => !this.excludeList.includes(o.id))
     },
     updateFolder(e) {
       const name = this.folderName
@@ -152,11 +196,6 @@ export default {
 
 /*tooltip*/
 
-.field-title {
-  margin-bottom: 8px;
-  font-size: 12px;
-}
-
 .member-avatar {
   margin-right: 8px;
   cursor: pointer;
@@ -172,7 +211,7 @@ export default {
   margin-left: -139px;
 }
 
-.search-user-input {
+.search-input {
   padding: 15px;
 }
 
@@ -182,9 +221,10 @@ export default {
   overflow: auto;
 }
 
-.contact-field {
+.group-field {
   box-sizing: border-box;
-  height: 36px;
+  /*height: 36px;*/
+  padding: 15px;
 }
 
 .add-additional {
@@ -192,8 +232,8 @@ export default {
   flex-direction: row;
 }
 
-.role-select {
-  width: 100%;
+.label {
+  text-align: left;
 }
 
 </style>
