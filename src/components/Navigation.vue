@@ -4,7 +4,7 @@
       <div class="logo">enamel</div>
     </div>
     <div class="user-container">
-      <avatar :user="getUser" :size="32"></avatar>
+      <avatar :user="getUser" :size="32" class="nav-avatar"></avatar>
       <span class="name">
         {{getUser.name}}
         <i class="fas fa-angle-down"></i>
@@ -65,6 +65,10 @@ export default {
 .name {
   display: flex;
   align-items: center;
+}
+
+.nav-avatar {
+  margin-right: 6px;
 }
 
 .fa-angle-down {

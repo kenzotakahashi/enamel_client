@@ -242,33 +242,6 @@ export default {
 }
 
 /*assignees*/
-.groupname-initials-section {
-  display: flex;
-}
-
-.avatarcolor-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.field-title {
-  margin-bottom: 8px;
-  font-size: 12px;
-}
-
-.name-form {
-  flex-grow: 1;
-}
-
-.initials-form {
-  width: 56px;
-  padding-left: 8px;
-}
-
-.color-avatar {
-  margin-bottom: 8px;
-  margin-right: 8px;
-}
 
 .member-avatar {
   margin-right: 8px;

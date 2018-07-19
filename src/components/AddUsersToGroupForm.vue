@@ -122,11 +122,6 @@ section {
   padding: 24px;
 }
 
-.field-title {
-  margin-bottom: 8px;
-  font-size: 12px;
-}
-
 .member-avatar {
   margin-right: 8px;
   cursor: pointer;
