@@ -2,8 +2,18 @@
   <div @click="openForm" class="description-field">
     <span v-show="!showForm" class="description-text">Click to add the description</span>
     <div v-show="showForm">
-      <textarea cols="5" ref="descriptionform" v-model="description" @keyup.esc="closeForm"></textarea>
-      <el-button type="primary" size="small" @click.stop="updateDescription">Save</el-button>
+      <textarea
+        cols="5"
+        ref="descriptionform"
+        v-model="description"
+        @keyup.esc="closeForm"
+        @focus="showButton = true"
+      >
+      </textarea>
+      <div class="save-button" v-bind:style="{visibility: showButton ? 'visible' : 'hidden'}" >
+        <el-button type="primary" size="small" @click.stop="updateDescription"
+          >Save</el-button>        
+      </div>
     </div>
   </div>
 </template>
@@ -15,6 +25,7 @@ export default {
   props: ['model', 'kind'],
   data() {
     return {
+      showButton: false,
       isFormOpen: false,
       description: this.model.description
     }
@@ -76,4 +87,10 @@ textarea {
   font-weight: 600;
   color: rgba(0, 0, 0, 0.32);
 }
+
+.save-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
 </style>
