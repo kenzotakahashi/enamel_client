@@ -53,7 +53,7 @@
             <div class="user-groups-label">Member of</div>
             <div class="group-list">
               <avatar v-for="group in userGroups" :key="group.id" class="group-avatar"
-                :manual="group" :size="32">
+                :obj="group" :size="32">
               </avatar>
             </div>
           </div>

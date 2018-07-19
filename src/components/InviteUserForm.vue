@@ -26,7 +26,7 @@
                   @click.stop="addMemberToGroup(group)">
                   <div class="picker-item">
                     <div class="item">
-                      <avatar class="picker-avatar" :manual="group" :size="32"></avatar>
+                      <avatar class="picker-avatar" :obj="group" :size="32"></avatar>
                       <div>
                         <div class="name">{{group.name}}</div>
                       </div>
@@ -39,16 +39,16 @@
             <div class="contact-field">
               <div v-if="form.groups.length > 0" class="add-additional">
                 <avatar v-for="group in form.groups" :key="group.id" 
-                  class="member-avatar" :manual="group" :size="32">
+                  class="member-avatar" :obj="group" :size="32">
                   <remove-button @click="removeMemberFromGroup(group.id)"></remove-button>
                 </avatar>
                 <div class="cross-wrapper">
-                  <span slot="reference" class="cross"
+                  <span class="cross"
                     @click.stop="changeActiveWidget('addGroupTooltip')">
                   </span>
                 </div>
               </div>
-              <el-button v-else type="text" slot="reference"
+              <el-button v-else type="text"
                 @click.stop="changeActiveWidget('addGroupTooltip')">
                 Add to group</el-button>
             </div>

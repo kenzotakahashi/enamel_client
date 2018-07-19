@@ -25,7 +25,7 @@
             <avatar v-for="avatarColor in colors" :key="avatarColor"
               class="color-avatar" 
               @click="selectAvatarColor(avatarColor)"
-              :manual="{initials: form.initials, avatarColor}" :size="32"
+              :obj="{initials: form.initials, avatarColor}" :size="32"
               :selected="form.avatarColor === avatarColor">
             </avatar>
           </div>
@@ -47,7 +47,7 @@
                   @click.stop="addMemberToGroup(user)">
                   <div class="picker-item">
                     <div class="item">
-                      <avatar class="picker-avatar" :user="user" :size="32"></avatar>
+                      <avatar class="picker-avatar" :obj="user" :size="32"></avatar>
                       <div>
                         <div class="name">{{user.name}}</div>
                         <div class="email">{{user.email}}</div>
@@ -61,11 +61,11 @@
             <div class="contact-field">
               <div v-if="form.users.length > 0" class="add-additional">
                 <avatar v-for="user in form.users" :key="user.id" 
-                  class="member-avatar" :user="user" :size="32">
+                  class="member-avatar" :obj="user" :size="32">
                   <remove-button @click="removeMemberFromGroup(user.id)"></remove-button>
                 </avatar>
                 <div class="cross-wrapper">
-                  <span slot="reference" class="cross"
+                  <span class="cross"
                     @click.stop="changeActiveWidget('addGroupTooltip')">
                   </span>
                 </div>

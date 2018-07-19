@@ -38,7 +38,7 @@
               @click.stop="assignUserToTask(user.id)">
               <div class="picker-item">
                 <div class="item">
-                  <avatar class="picker-avatar" :user="user" :size="32"></avatar>
+                  <avatar class="picker-avatar" :obj="user" :size="32"></avatar>
                   <div>
                     <div class="name">{{user.name}}</div>
                     <div class="email">{{user.email}}</div>
@@ -52,11 +52,11 @@
         <div class="contact-field">
           <div v-if="task.assignees.length > 0" class="add-additional">
             <avatar v-for="user in task.assignees" :key="user.id" 
-              class="member-avatar" :user="user" :size="32">
+              class="member-avatar" :obj="user" :size="32">
               <remove-button @click="removeUserFromTask(user.id)"></remove-button>
             </avatar>
             <div class="cross-wrapper">
-              <span slot="reference" class="cross"
+              <span class="cross"
                 @click.stop="changeActiveWidget('addAssigneeTooltip')">
               </span>
             </div>

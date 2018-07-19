@@ -4,7 +4,7 @@
       <div class="logo">enamel</div>
     </div>
     <div class="user-container">
-      <avatar :user="getUser" :size="32" class="nav-avatar"></avatar>
+      <avatar :obj="getUser" :size="32" class="nav-avatar"></avatar>
       <span class="name">
         {{getUser.name}}
         <i class="fas fa-angle-down"></i>

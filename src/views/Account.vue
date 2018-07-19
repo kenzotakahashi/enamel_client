@@ -27,7 +27,7 @@
           <div v-for="(group, index) in getGroups" :key="index+2"
             class="group-list-item" v-bind:class="{selected: selected === index+2}"
             @click="changeView(index+2)">
-            <avatar class="avatar" :manual="group" :size="24"></avatar>
+            <avatar class="avatar" :obj="group" :size="24"></avatar>
             <span class="name">{{group.name}}</span>
             <span class="member-count">{{group.users.length}}</span>
           </div>
@@ -84,7 +84,7 @@
             <el-table-column label="NAME" sortable width="180">
               <template slot-scope="scope">
                 <div class="user-container">
-                  <avatar class="avatar" :user="scope.row" :size="24"></avatar>
+                  <avatar class="avatar" :obj="scope.row" :size="24"></avatar>
                   {{scope.row.name}}
                 </div>
               </template>

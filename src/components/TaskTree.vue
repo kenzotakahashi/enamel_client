@@ -21,7 +21,7 @@
         class="task-info-container">
         <span class="task-info-wrapper">
           <div class="user-container">
-            <avatar v-if="model.assignees && model.assignees.length === 1" :user="model.assignees[0]"
+            <avatar v-if="model.assignees && model.assignees.length === 1" :obj="model.assignees[0]"
               :size="24" class="task-avatar"></avatar>
             <avatar v-else-if="model.assignees && model.assignees.length > 1" :number="model.assignees.length"
               :size="24" class="task-avatar"></avatar>

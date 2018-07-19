@@ -25,7 +25,7 @@
             <avatar v-for="avatarColor in colors" :key="avatarColor"
               class="color-avatar" 
               @click="selectAvatarColor(avatarColor)"
-              :manual="{initials: form.initials, avatarColor}" :size="32"
+              :obj="{initials: form.initials, avatarColor}" :size="32"
               :selected="form.avatarColor === avatarColor">
             </avatar>
           </div>

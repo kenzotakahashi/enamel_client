@@ -1,20 +1,15 @@
 <template>
   <span class="avatar-top" @click="$emit('click')">
-    <span v-if="user && user.avatarColor" class="avatar-core" v-bind:style="{
-      backgroundColor: `#${user.avatarColor}`,
-      height: size + 'px',
-      width: size + 'px',
-      fontSize: size * 0.4375 + 'px'
-    }">
+    <span v-if="obj && obj.avatarColor" class="avatar-core"
+      v-bind:class="{selectedColor: selected}"
+      v-bind:style="{
+        backgroundColor: `#${obj.avatarColor}`,
+        height: size + 'px',
+        width: size + 'px',
+        fontSize: size * 0.4375 + 'px'
+      }"
+    >
       {{getInitials}}
-    </span>
-    <span v-else-if="manual" class="avatar-core" v-bind:class="{selectedColor: selected}" v-bind:style="{
-      backgroundColor: `#${manual.avatarColor}`,
-      height: size + 'px',
-      width: size + 'px',
-      fontSize: size * 0.4375 + 'px',
-    }">
-      {{manual.initials}}
     </span>
     <span v-else-if="number" class="avatar-core" v-bind:class="{selectedColor: selected}" v-bind:style="{
       backgroundColor: '#f2f7ff',
@@ -25,7 +20,7 @@
     }">
       {{number}}
     </span>
-    <span v-else class="avatar-core" v-bind:style="{
+    <span v-else-if="kind === 'unassigned'" class="avatar-core" v-bind:style="{
       backgroundColor: '#f2f7ff',
       height: size + 'px',
       width: size + 'px',
@@ -44,10 +39,11 @@
 
 export default {
   name: 'avatar',
-  props: ['user', 'manual', 'number', 'size', 'selected'],
+  props: ['obj', 'number', 'kind', 'size', 'selected'],
   computed: {
     getInitials() {
-      const {firstname, lastname} = this.user
+      if (this.obj.initials) return this.obj.initials
+      const {firstname, lastname} = this.obj
       if (!firstname) return
       return `${firstname[0]}${lastname[0]}`.toUpperCase()
     },
