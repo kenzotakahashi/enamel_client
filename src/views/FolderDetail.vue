@@ -13,7 +13,7 @@
           <div class="group-field">
             <div class="add-additional">
               <avatar v-for="group in shareWith" :key="group.id" 
-                class="member-avatar" :kind="group.__typename" :obj="group" :size="32">
+                class="member-avatar" :kind="group.__typename" :obj="getAvatarObj(group)" :size="32">
                 <remove-button @click="removeGroup(group.id)"></remove-button>
               </avatar>
             </div>
@@ -86,6 +86,7 @@ export default {
         id: o.item,
         __typename: o.kind
       }))
+      // shareWith: []
     }
   },
   props: ['folder'],
@@ -116,6 +117,10 @@ export default {
     ...mapState(['activeWidget'])
   },
   methods: {
+    getAvatarObj(obj) {
+      if (!obj.kind) return obj
+      return this.groups.find(o => o.id === obj.item)
+    },
     changeActiveWidget(key) {
       this.$store.dispatch('changeActiveWidget', key)
     },
@@ -145,6 +150,13 @@ export default {
       const members = shareWith.filter(o => o.__typename === 'Group').map(p => p.users)
       this.excludeList = this.excludeList.concat(...members)
       this.shareWith = shareWith.filter(o => !this.excludeList.includes(o.id))
+      
+
+      const sh = this.shareWith.map(o => ({
+        kind: o.__typename,
+        item: o.id
+      }))
+      this.changeSharing(sh)
     },
     updateFolder(e) {
       const name = this.folderName
@@ -157,6 +169,15 @@ export default {
         variables: { id: this.folder.id, input: {name} },
       }).then(() => {
         this.cancel(e)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    changeSharing(shareWith) {
+      this.$apollo.mutate({
+        mutation: UpdateFolder,
+        variables: { id: this.folder.id, input: {shareWith} },
+      }).then(() => {
       }).catch((error) => {
         console.log(error)
       })
