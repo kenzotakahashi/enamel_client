@@ -42,7 +42,11 @@
           </div>
         </div>
 
-        <el-button type="text" class="black-text-button share-info"
+        <el-button v-if="folder.parent" type="text" class="black-text-button subfolder share-info">
+          <i class="fas fa-share-alt"></i>
+          <span class="shared-with">{{folder.shareWith && folder.shareWith.length}}</span>
+        </el-button>
+        <el-button v-else type="text" class="black-text-button share-info"
           @click.stop="changeActiveWidget('addFolderShareTooltip')" >
           <i class="fas fa-share-alt"></i>
           <span class="shared-with">{{folder.shareWith && folder.shareWith.length}}</span>
@@ -192,6 +196,11 @@ export default {
 
 .shared-with {
   padding-left: 7px;
+}
+
+.subfolder:hover {
+  color: initial;
+  cursor: default;
 }
 
 /*tooltip*/
