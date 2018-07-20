@@ -67,6 +67,14 @@ import { formatDate } from '@/helpers/helpers'
 import { UpdateFolder, GetUser, GetUsers, GetGroups, GetTeam } from '../constants/query.gql'
 import DescriptionField from '@/components/DescriptionField'
 
+function initializeShareWith(shareWith) {
+  return shareWith.map(o => ({
+    ...o,
+    id: o.item,
+    __typename: o.kind
+  }))
+}
+
 export default {
   components: {
     DescriptionField
@@ -77,16 +85,11 @@ export default {
       getUsers: [],
       getGroups: [],
       getTeam: {},
-      excludeList: [],
+      // excludeList: [],
       searchGroup: '',
       formatDate,
       folderName: this.folder.name,
-      shareWith: this.folder.shareWith.map(o => ({
-        ...o,
-        id: o.item,
-        __typename: o.kind
-      }))
-      // shareWith: []
+      shareWith: initializeShareWith(this.folder.shareWith)
     }
   },
   props: ['folder'],
@@ -106,10 +109,12 @@ export default {
     },
     filteredGroups() {
       const s = this.searchGroup.toLowerCase()
-      const shared = this.shareWith.map(o => o.id)
+      const sharedIds = this.shareWith.map(o => o.id)
+      const shared = this.groups.filter(o => sharedIds.includes(o.id))
+      const excludeList = this.excludeList(shared)
       return this.groups.filter(o => {
-        if (shared.includes(o.id)) return false
-        if (this.excludeList.includes(o.id)) return false
+        if (sharedIds.includes(o.id)) return false
+        if (excludeList.includes(o.id)) return false
         if (o.email && o.email.includes(s)) return true
         return o.name && o.name.toLowerCase().includes(s)
       })
@@ -125,8 +130,7 @@ export default {
       this.$store.dispatch('changeActiveWidget', key)
     },
     addGroup(group) {
-      this.shareWith.push(group)
-      this.mergeGroup(this.shareWith)
+      this.mergeGroup(this.shareWith.concat([group]))
     },
     removeGroup(id) {
       // if (this.shareWith.length === 1) {
@@ -137,22 +141,27 @@ export default {
       // }
       this.mergeGroup(this.shareWith.filter(o => o.id !== id))
     },
-    mergeGroup(shareWith) {
-      this.excludeList = []
-      if (shareWith.length === 0) {
-        this.shareWith = [this.getUser]
-        return
-      }
+    excludeList(shareWith) {
+      let list = []
       if (shareWith.find(o => o.__typename === 'Team')) {
-        this.excludeList = shareWith.filter(o =>
+        list = shareWith.filter(o =>
           ['Regular User','Owner','Administrator'].includes(o.role)).map(p => p.id)
       }
       const members = shareWith.filter(o => o.__typename === 'Group').map(p => p.users)
-      this.excludeList = this.excludeList.concat(...members)
-      this.shareWith = shareWith.filter(o => !this.excludeList.includes(o.id))
+      return list.concat(...members)
+    },
+    mergeGroup(shareWith) {
+      console.log(shareWith)
+      const sharedIds = shareWith.map(o => o.id)
+      const shared = this.groups.filter(o => sharedIds.includes(o.id))
+      let _shareWith
+      if (shared.length === 0) {
+        _shareWith = [this.getUser]
+      } else {
+        _shareWith = shared.filter(o => !this.excludeList(shared).includes(o.id))        
+      }
       
-
-      const sh = this.shareWith.map(o => ({
+      const sh = _shareWith.map(o => ({
         kind: o.__typename,
         item: o.id
       }))
@@ -177,7 +186,8 @@ export default {
       this.$apollo.mutate({
         mutation: UpdateFolder,
         variables: { id: this.folder.id, input: {shareWith} },
-      }).then(() => {
+      }).then(({data: {updateFolder} }) => {
+        this.shareWith = initializeShareWith(updateFolder.shareWith)
       }).catch((error) => {
         console.log(error)
       })
