@@ -234,7 +234,7 @@ export default {
   height: 48px;
   position: relative;
   padding: 0 24px;
-  border-top: solid 1px;
+  /*border-top: solid 1px;*/
   border-bottom: solid 1px;
   border-color: rgba(0,0,0,.16);
 }

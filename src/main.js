@@ -94,13 +94,8 @@ const apolloProvider = new VueApollo({
 
 Vue.use(VueApollo)
 
-const userId = localStorage.getItem('user-id')
-
 new Vue({
   router,
-  data: {
-    userId
-  },
   provide: apolloProvider.provide(),
   store,
   render: h => h(App)

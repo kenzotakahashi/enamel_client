@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { CaptureEmail } from '../constants/query.gql'
 
 export default {
@@ -44,6 +45,9 @@ export default {
         email: '',
       }
     }
+  },
+  computed: {
+    ...mapState(['userId'])
   },
   methods: {
     async capture() {

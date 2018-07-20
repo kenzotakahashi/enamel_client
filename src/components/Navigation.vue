@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
     <div class="nav-left">
-      <div class="logo">enamel</div>
+      <router-link :to="{name: 'home'}" class="logo">enamel</router-link>
     </div>
     <NavigationRight v-if="auth"></NavigationRight>
   </div>
