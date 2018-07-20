@@ -44,12 +44,12 @@
 
         <el-button v-if="folder.parent" type="text" class="black-text-button subfolder share-info">
           <i class="fas fa-share-alt"></i>
-          <span class="shared-with">{{folder.shareWith && folder.shareWith.length}}</span>
+          <span class="shared-with">{{ shareInfo }}</span>
         </el-button>
         <el-button v-else type="text" class="black-text-button share-info"
           @click.stop="changeActiveWidget('addFolderShareTooltip')" >
           <i class="fas fa-share-alt"></i>
-          <span class="shared-with">{{folder.shareWith && folder.shareWith.length}}</span>
+          <span class="shared-with">{{ shareInfo }}</span>
         </el-button>
 
       </div>
@@ -101,7 +101,25 @@ export default {
   computed: {
     shareInfo() {
       const share = this.shareWith
-      // !share || share.length ===
+      if (!share) return 'Private'
+      if (share.length === 1) {
+        if (share[0].__typename === 'User') {
+          return 'Private'
+        } else {
+          return 'Shared with 1 group'
+        }
+      } else {
+        const users = share.filter(o => o.__typename === 'User').length
+        const groups = share.length - users
+        if (!users) {
+          return `Shared with ${groups} groups`
+        } else if (!groups) {
+          return `Shared with ${users} people`
+        } else {
+          return `Shared with ${groups} group${groups > 1 ? 's' : ''}
+                  and ${users} ${users > 1 ? 'people' : 'person'}`
+        }
+      }
     },
     groups() {
       return [this.getTeam].concat(this.getUsers).concat(this.getGroups)
@@ -133,13 +151,21 @@ export default {
       this.mergeGroup(this.shareWith.concat([group]))
     },
     removeGroup(id) {
-      // if (this.shareWith.length === 1) {
-      //   const obj = this.shareWith[0]
-      //   if (obj.__typename === 'User') {
-      //     if (obj.id === this.getUser.id)
-      //   }
-      // }
-      this.mergeGroup(this.shareWith.filter(o => o.id !== id))
+      // Folder must be shared with at least one user
+      if (this.shareWith.length === 1 && this.shareWith[0].__typename === 'User') {
+        return
+      }
+      // For now, you cannot remove yourself from the folder.
+      if (id === this.getUser.id) {
+        return
+      }
+      const shareWith = this.shareWith.filter(o => o.id !== id)
+      const group = this.groups.find(o => o.id === id)
+      if (group.__typename === 'Team' ||
+          group.__typename === 'Group' && group.users.includes(this.getUser.id)) {
+        shareWith.push(this.getUser)
+      }
+      this.mergeGroup(shareWith)
     },
     excludeUsers(shareWith, groups) {
       let list = []
@@ -153,13 +179,8 @@ export default {
       return list.concat(...members)
     },
     mergeGroup(shareWith) {
-      let _shareWith
-      if (shareWith.length === 0) {
-        _shareWith = [this.getUser]
-      } else {
-        const excludeList = this.excludeUsers(shareWith, this.groups)
-        _shareWith = shareWith.filter(o => !excludeList.includes(o.id))        
-      }
+      const excludeList = this.excludeUsers(shareWith, this.groups)
+      const _shareWith = shareWith.filter(o => !excludeList.includes(o.id))
       
       const sh = _shareWith.map(o => ({
         kind: o.__typename,
