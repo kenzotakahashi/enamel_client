@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header height="52px">
-      <Navigation></Navigation>
+      <navigation :auth="true"></navigation>
     </el-header>
 
     <el-container :style="styleObj">
@@ -44,14 +44,12 @@
 import { mapState } from  'vuex'
 import Tree from '@/components/FolderTree'
 import FolderForm from '@/components/FolderForm'
-import Navigation from '@/components/Navigation'
 import { GetFolders, GetTeam } from '../constants/query.gql'
 
 export default {
   components: {
     Tree,
     FolderForm,
-    Navigation
   },
   computed: mapState(['activeWidget']),
   data() {

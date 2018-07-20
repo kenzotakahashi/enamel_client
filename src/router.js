@@ -9,6 +9,7 @@ import Folder from './views/Folder.vue'
 import FolderDetail from './views/FolderDetail.vue'
 import Task from './views/Task.vue'
 import Account from './views/Account.vue'
+import Decline from './views/Decline.vue'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/decline/:id',
+      name: 'decline',
+      component: Decline
     },
     {
       path: '/account',

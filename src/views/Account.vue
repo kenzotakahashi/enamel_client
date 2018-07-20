@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header height="52px">
-      <Navigation></Navigation>
+      <navigation :auth="true"></navigation>
     </el-header>
 
     <el-main class="white account" :style="styleObj">
@@ -77,7 +77,7 @@
           </div>          
           <el-table :data="filteredUsers" empty-text="No users" style="width: 100%"
             @row-click="openUserDetail">
-            <el-table-column label="NAME" sortable width="180">
+            <el-table-column label="NAME" sortable width="200">
               <template slot-scope="scope">
                 <div class="user-container">
                   <avatar class="avatar" :obj="scope.row" :size="24"></avatar>
@@ -85,7 +85,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="email" label="EMAIL" sortable width="180"></el-table-column>
+            <el-table-column prop="email" label="EMAIL" sortable width="280"></el-table-column>
             <el-table-column prop="role" label="ROLE" sortable></el-table-column>
             <el-table-column prop="status" label="STATUS" sortable></el-table-column>
             <el-table-column label="" width="40">
@@ -117,7 +117,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import Navigation from '@/components/Navigation'
 import GroupForm from '@/components/GroupForm'
 import GroupUpdateForm from '@/components/GroupUpdateForm'
 import InviteUserForm from '@/components/InviteUserForm'
@@ -127,7 +126,6 @@ import { GetUsers, GetGroups, RemoveUsersFromGroup } from '../constants/query.gq
 
 export default {
   components: {
-    Navigation,
     GroupForm,
     GroupUpdateForm,
     InviteUserForm,

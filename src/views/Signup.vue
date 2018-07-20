@@ -1,29 +1,39 @@
 <template>
-  <div class="container">
-    <h3 class="logo">enamel</h3>
-    <div class="columns">
-      <div class="column col-4 col-mx-auto">
-        <div>Welcome to enamel! Finish setting up your account</div>
-        <div class="form-group">
-          <label class="form-label" for="firstname">First name</label>
-          <input class="form-input" type="text" id="firstname" v-model="form.firstname" placeholder="Your first name">
-          <label class="form-label" for="lastname">Last name</label>
-          <input class="form-input" type="text" id="lastname" v-model="form.lastname" placeholder="Your last name">
-          <label class="form-label" for="password-1">Password</label>
-          <input class="form-input" type="password" id="password-1" v-model="form.password" placeholder="Create password">
-        </div>
-        <button class="btn btn-primary" @click="signup">Complete</button>
-      </div>
-    </div>
-  </div>
+  <el-container>
+    <el-header height="52px">
+      <navigation></navigation>
+    </el-header>
+
+    <el-main>
+      <el-row>
+        <el-col :span="6" :offset="9" justify="center">
+          <div>Welcome to enamel! Finish setting up your account</div>        
+
+          <el-form ref="form" :model="form">
+            <el-form-item>
+              <label>First name</label>
+              <el-input v-model="form.firstname" placeholder="Your first name"></el-input>
+              <label>Last name</label>
+              <el-input v-model="form.lastname" placeholder="Your last name"></el-input>
+              <label>Password</label>
+              <el-input v-model="form.password" placeholder="Password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="signup">Complete</el-button>
+            </el-form-item>
+          </el-form>
+
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
+
 </template>
 
 <script>
 import { Signup } from '../constants/query.gql'
 
 export default {
-  components: {
-  },
   data() {
     return {
       form: {
@@ -65,3 +75,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.el-button {
+  width: 100%;
+}
+</style>
+

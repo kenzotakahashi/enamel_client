@@ -1,11 +1,7 @@
 <template>
   <el-container>
-    <el-header height="56px">
-      <el-row>
-        <el-col :span="2">
-          <div class="logo">enamel</div>
-        </el-col>
-      </el-row>
+    <el-header height="52px">
+      <navigation></navigation>
     </el-header>
 
     <el-main>
@@ -36,8 +32,6 @@
 import { Login } from '../constants/query.gql'
 
 export default {
-  components: {
-  },
   data() {
     return {
       form: {
@@ -75,7 +69,7 @@ export default {
 </script>
 
 <style scoped>
-label {
-  text-align: left;
+.el-button {
+  width: 100%;
 }
 </style>

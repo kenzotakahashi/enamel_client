@@ -3,40 +3,18 @@
     <div class="nav-left">
       <div class="logo">enamel</div>
     </div>
-    <div class="user-container">
-      <avatar :obj="getUser" :size="32" class="nav-avatar"></avatar>
-      <span class="name">
-        {{getUser.name}}
-        <i class="fas fa-angle-down"></i>
-      </span>
-    </div>
+    <NavigationRight v-if="auth"></NavigationRight>
   </div>
 </template>
 
 <script>
-import { mapState } from  'vuex'
-import { GetTeam, GetUser } from '../constants/query.gql'
+import NavigationRight from './NavigationRight'
 
 export default {
-  computed: mapState(['activeWidget']),
-  data() {
-    return {
-      modalConfig: {},
-      getTeam: {},
-      getUser: {}
-    }
+  components: {
+    NavigationRight
   },
-  apollo: {
-    getUser: {
-      query: GetUser,
-      variables: {},
-      result({data}) {
-      }
-    },
-    getTeam: {
-      query: GetTeam,
-    },
-  }
+  props: ['auth'],
 }
 
 </script>
@@ -60,18 +38,5 @@ export default {
   font-size: 25px;
   font-family: 'Questrial', sans-serif;
   letter-spacing: 3px;
-}
-
-.name {
-  display: flex;
-  align-items: center;
-}
-
-.nav-avatar {
-  margin-right: 6px;
-}
-
-.fa-angle-down {
-  padding-left: 10px;
 }
 </style>

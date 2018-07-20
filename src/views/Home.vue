@@ -1,34 +1,45 @@
 <template>
-  <div class="container">
-    <h2>enamel</h2>
-    <div class="columns">
-      <div class="column col-4 col-mx-auto">
-        <div>Enter your email address to start free trial</div>
-        <div class="form-group">
-          <label class="form-label" for="email-1">Email</label>
-          <input class="form-input" type="email" id="email-1" v-model="form.email" placeholder="Email">
-          <button class="btn btn-primary" @click="capture">Create my enamel account</button>
-        </div>
+  <el-container>
+    <el-header height="52px">
+      <navigation></navigation>
+    </el-header>
 
-        <div v-if="submitted">
-          <div>Thank you!</div>
-          <router-link :to="{name: 'signup', params: {id}}">Set up my account</router-link>
-        </div>
-      </div>
-    </div>
-  </div>
+    <el-main>
+      <el-row>
+        <el-col :span="6" :offset="9" justify="center">
+          <h2>Welcome!</h2>
+          <div>Enter your email address to start free trial</div>
+
+          <el-form ref="form" :model="form">
+            <el-form-item>
+              <label>Email</label>
+              <el-input v-model="form.email" placeholder="Email"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="capture">Create my enamel account</el-button>
+            </el-form-item>
+          </el-form>
+
+          <div v-if="submitted">
+            <div>Thank you!</div>
+            <div>Please check your email.</div>
+            <!-- <router-link :to="{name: 'signup', params: {id}}">Set up my account</router-link> -->
+          </div>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
+
 </template>
 
 <script>
 import { CaptureEmail } from '../constants/query.gql'
 
 export default {
-  components: {
-  },
   data() {
     return {
       submitted: false,
-      id: '',
+      // id: '',
       form: {
         email: '',
       }
@@ -44,7 +55,7 @@ export default {
           variables: {email}
         }).then(({data}) => {
           this.submitted = true
-          this.id = data.captureEmail.id
+          // this.id = data.captureEmail.id
         }).catch((error) => {
           console.log(error)
         })
@@ -53,3 +64,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.el-button {
+  width: 100%;
+}
+</style>

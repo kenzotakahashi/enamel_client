@@ -97,6 +97,10 @@ mutation Invite($emails: [String], $groups: [String], $role: String) {
   }
 }
 
+mutation Decline($id: String!) {
+  decline(id: $id)
+}
+
 mutation Signup($id: String!, $firstname: String!, $lastname: String!, $password: String!) {
   signup(id: $id, firstname: $firstname, lastname: $lastname, password: $password) {
     token
