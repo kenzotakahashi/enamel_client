@@ -85,7 +85,6 @@ export default {
       getUsers: [],
       getGroups: [],
       getTeam: {},
-      // excludeList: [],
       searchGroup: '',
       formatDate,
       folderName: this.folder.name,
@@ -107,14 +106,15 @@ export default {
     groups() {
       return [this.getTeam].concat(this.getUsers).concat(this.getGroups)
     },
+    excludeList() {
+      return this.excludeUsers(this.shareWith, this.groups || [])
+    },
     filteredGroups() {
       const s = this.searchGroup.toLowerCase()
       const sharedIds = this.shareWith.map(o => o.id)
-      const shared = this.groups.filter(o => sharedIds.includes(o.id))
-      const excludeList = this.excludeList(shared)
       return this.groups.filter(o => {
         if (sharedIds.includes(o.id)) return false
-        if (excludeList.includes(o.id)) return false
+        if (this.excludeList.includes(o.id)) return false
         if (o.email && o.email.includes(s)) return true
         return o.name && o.name.toLowerCase().includes(s)
       })
@@ -141,24 +141,24 @@ export default {
       // }
       this.mergeGroup(this.shareWith.filter(o => o.id !== id))
     },
-    excludeList(shareWith) {
+    excludeUsers(shareWith, groups) {
       let list = []
-      if (shareWith.find(o => o.__typename === 'Team')) {
-        list = shareWith.filter(o =>
+      const sharedIds = shareWith.map(o => o.id)
+      const shared = groups.filter(o => sharedIds.includes(o.id))
+      if (shared.find(o => o.__typename === 'Team')) {
+        list = this.groups.filter(o =>
           ['Regular User','Owner','Administrator'].includes(o.role)).map(p => p.id)
       }
-      const members = shareWith.filter(o => o.__typename === 'Group').map(p => p.users)
+      const members = shared.filter(o => o.__typename === 'Group').map(p => p.users)
       return list.concat(...members)
     },
     mergeGroup(shareWith) {
-      console.log(shareWith)
-      const sharedIds = shareWith.map(o => o.id)
-      const shared = this.groups.filter(o => sharedIds.includes(o.id))
       let _shareWith
-      if (shared.length === 0) {
+      if (shareWith.length === 0) {
         _shareWith = [this.getUser]
       } else {
-        _shareWith = shared.filter(o => !this.excludeList(shared).includes(o.id))        
+        const excludeList = this.excludeUsers(shareWith, this.groups)
+        _shareWith = shareWith.filter(o => !excludeList.includes(o.id))        
       }
       
       const sh = _shareWith.map(o => ({
