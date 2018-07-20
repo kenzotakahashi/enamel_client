@@ -127,17 +127,6 @@ ul.tree {
   letter-spacing: .325px;
 }
 
-.fold-button {
-  width: 18px;
-  margin: 0 9px;
-  z-index: 5;
-  text-align: center;
-}
-
-.fold-button.inverse:hover {
-  background-color: $hover-inverse;
-}
-
 .tree-root {
   position: relative;
 }
@@ -153,7 +142,7 @@ ul.tree {
   height: 6px;
   background-color: #f9fbfd;
   border-radius: 50%;
-  margin: 0 13px;
+  margin: 12px 13px;
 }
 
 .tree-item {
@@ -164,8 +153,23 @@ ul.tree {
   box-sizing: border-box;
 }
 
+.fold-button {
+  width: 18px;
+  margin: 0 9px;
+  z-index: 5;
+  text-align: center;
+}
+
+.fold-button:hover {
+  background-color: $hover-inverse;
+}
+
+.fold-button.active:hover {
+  background-color: rgba(255,255,255,.1);
+}
+
 .tree-plate {
-  display: block;
+  display: flex;
   position: static;
   width: 100%;
   height: auto;
@@ -222,6 +226,10 @@ ul.tree {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.16);
   z-index: 1;
   font-size: 14px;
+}
+
+.tree-plate > .dropdown-content {
+  top: 30px;
 }
 
 .dropdown-content.right {

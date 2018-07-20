@@ -41,9 +41,9 @@
 
     <div class="tag-view">
       <div class="folder-tag-group">
-        <span v-for="folder in task.folders">
+<!--         <span v-for="folder in task.folders">
           <span class="folder-tag">{{ folder.name }}</span>
-        </span>        
+        </span> -->
       </div>
       <div class="state-bar-creator">
         <span class="small-text">

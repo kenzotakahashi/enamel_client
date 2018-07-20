@@ -12,6 +12,7 @@
           <div class="tree-plate"  v-bind:class="{active: $route.params.id === getTeam.id}">
             <div class="circle"></div>              
             <span class="folder no-select-color teamname">{{ getTeam.name }}</span>
+            <plus-button @click="openModal('folder')" color="white"></plus-button>
 
             <div class="dropdown-content left" v-show="activeWidget === `folder${getTeam.id}`">
               <div @click="openModal('folder')">Add Folder</div>
@@ -93,4 +94,9 @@ export default {
 </script>
 
 <style scoped>
+.plus-button {
+  position: absolute;
+  right: 0;
+  top: 7px;
+}
 </style>

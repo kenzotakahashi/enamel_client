@@ -22,10 +22,12 @@ import './assets/css/style.scss'
 import Avatar from '@/components/icons/Avatar.vue'
 import CloseButton from '@/components/icons/CloseButton.vue'
 import RemoveButton from '@/components/icons/RemoveButton.vue'
+import PlusButton from '@/components/icons/PlusButton.vue'
 
 Vue.component('avatar', Avatar)
 Vue.component('close-button', CloseButton)
 Vue.component('remove-button', RemoveButton)
+Vue.component('plus-button', PlusButton)
 
 Vue.use(ElementUI)
 // Vue.use(VeeValidate)

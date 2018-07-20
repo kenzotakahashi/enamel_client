@@ -9,13 +9,8 @@
       <el-row>
         <el-col :span="7">
           <div class="column-header">
-            <div>
-              <!-- <i class="fas fa-search"></i> -->
-              <span class="title">Groups<span class="count-title">({{getGroups.length}})</span></span>
-              <span class="create-group-button" @click="showGroupForm = true">
-                <i class="fas fa-plus-circle"></i>                
-              </span>
-            </div>
+            <span class="title group">Groups<span class="count-title">({{getGroups.length}})</span></span>
+            <plus-button @click="showGroupForm = true" class="title-plus-button"></plus-button>
           </div>
 
           <div v-for="(group, index) in groups" :key="index"
@@ -35,36 +30,37 @@
 
         <el-col :span="17" class="account-main-container">
           <div class="column-header">
-            <div>
-              <span class="title">{{selectedGroup.name}}
-                <span class="count-title">({{users.length}})</span>
-              </span>
-              <el-button v-show="selected === 0" type="text" class="text-button"
-                @click="openInviteUserForm('all')">+ Add users</el-button>
-              <span v-show="selected >= 2">
-                <div class="tooltip">
-                  <div v-show="activeWidget === 'addUsersToGroupTooltip'"
-                    class="tooltip-content bottom group-view">
-                    <div class="menu-item" @click="showAddUsersToGroupForm = true">Add from account</div>
-                    <div class="menu-item" @click="openInviteUserForm('group')">Invite by email</div>        
-                  </div>
-
-                  <div class="contact-field">
-                    <el-button type="text" class="text-button"
-                      @click.stop="$store.dispatch('changeActiveWidget', 'addUsersToGroupTooltip')">
-                      + Add users
-                    </el-button>
-                  </div>
+            <span class="title">{{selectedGroup.name}}
+              <span class="count-title">({{users.length}})</span>
+            </span>
+            <el-button v-show="selected === 0" type="text" class="text-button"
+              @click="openInviteUserForm('all')">
+              <!-- <plus-button class="add-user-plus-button"></plus-button> -->
+              <span>+ Add users</span>
+            </el-button>
+            <span v-show="selected >= 2">
+              <div class="tooltip">
+                <div v-show="activeWidget === 'addUsersToGroupTooltip'"
+                  class="tooltip-content bottom group-view">
+                  <div class="menu-item" @click="showAddUsersToGroupForm = true">Add from account</div>
+                  <div class="menu-item" @click="openInviteUserForm('group')">Invite by email</div>        
                 </div>
 
-                <el-button type="text" class="text-button"
-                  @click="showGroupUpdateForm = true">
-                  <!-- <i class="fas fa-sliders-h"></i> -->
-                  <i class="fas fa-cog"></i>
-                   Group settings
-                 </el-button>
-              </span>
-            </div>
+                <div class="contact-field">
+                  <el-button type="text" class="text-button"
+                    @click.stop="$store.dispatch('changeActiveWidget', 'addUsersToGroupTooltip')">
+                    + Add users
+                  </el-button>
+                </div>
+              </div>
+
+              <el-button type="text" class="text-button"
+                @click="showGroupUpdateForm = true">
+                <!-- <i class="fas fa-sliders-h"></i> -->
+                <i class="fas fa-cog"></i>
+                 Group settings
+               </el-button>
+            </span>
           </div>
           <div class="users-overview-items">
             <div class="users-overview-item"
@@ -256,6 +252,7 @@ export default {
 
 .column-header {
   margin-bottom: 15px;
+  display: flex;
 }
 
 .users-and-groups-header {
@@ -269,6 +266,10 @@ export default {
 .title {
   font-size: 18px;
   font-weight: 600;
+}
+
+.title.group {
+  flex-grow: 1;
 }
 
 .count-title {
@@ -335,6 +336,16 @@ export default {
 .create-group-button {
   float: right;
   cursor: pointer;
+}
+
+.plus-button.title-plus-button {
+  align-self: center;
+  fill: rgba(0, 0, 0, 0.32);
+}
+
+.plus-button.add-user-plus-button {
+  display: inline-block;
+  /*align-self: center;*/
 }
 
 </style>

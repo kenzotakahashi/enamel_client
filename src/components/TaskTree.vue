@@ -113,6 +113,10 @@ export default {
   // color: rgba(0, 0, 0, 0.9);
 }
 
+.task-fold-button:hover {
+  color: #48f;
+}
+
 .task-info-container {
   display: flex;
   position: static;
