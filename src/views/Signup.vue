@@ -16,7 +16,7 @@
               <label>Last name</label>
               <el-input v-model="form.lastname" placeholder="Your last name"></el-input>
               <label>Password</label>
-              <el-input v-model="form.password" placeholder="Password"></el-input>
+              <el-input v-model="form.password" type="password" placeholder="Password"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="signup">Complete</el-button>
