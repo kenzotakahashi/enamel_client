@@ -4,9 +4,11 @@
       <div class="task-header">
         <div v-if="task.parent" class="parent-task">{{task.parent.name}}</div>
         <div>
-          <input class="no-outline header-title task-name" type="text" name="taskname" ref="taskname"
-            v-model="taskName" @keyup.enter="updateTask" @keyup.esc="cancel">
-          </input>
+          <form @submit.prevent="updateTask">
+            <input class="no-outline header-title task-name" type="text" name="taskname" ref="taskname"
+              v-model="taskName" @keyup.esc="cancel">
+            </input>
+          </form>
         </div>
 
       </div>

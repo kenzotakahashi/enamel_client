@@ -1,9 +1,11 @@
 <template>
   <div class="task-creation-form">
     <div v-show="isFormOpen" class="task-input">
-      <input @focusout="closeForm" @keyup.enter="createTask" @keyup.esc="closeForm"
-        class="no-outline" ref="taskform" type="text" name="task"
-        v-model="newTaskName" placeholder="Enter title for new task"></input>
+      <form @submit.prevent="createTask">
+        <input @focusout="closeForm" @keyup.esc="closeForm"
+          class="no-outline" ref="taskform" type="text" name="task"
+          v-model="newTaskName" placeholder="Enter title for new task"></input>
+      </form>
     </div>
     <div v-show="!isFormOpen" @click="openForm" class="task-button">
       <el-button type="text">+ New task</el-button>      
@@ -100,8 +102,12 @@ export default {
 
 .task-input {
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   height: 100%;
+}
+
+.task-input > form {
+  display: flex;
 }
 
 .task-input > input {

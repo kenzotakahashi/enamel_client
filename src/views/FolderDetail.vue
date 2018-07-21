@@ -1,9 +1,11 @@
 <template>
   <div class="white card max-height">
     <div class="folder-header">
-      <input class="no-outline header-title folder-name" type="text" name="taskname" ref="taskname"
-        v-model="folderName" @keyup.enter="updateFolder" @keyup.esc="cancel">
-      </input>
+      <form @submit.prevent="updateFolder">
+        <input class="no-outline header-title folder-name" type="text" name="taskname" ref="taskname"
+          v-model="folderName" @keyup.esc="cancel">
+        </input>
+      </form>
     </div>
     <div class="folder-statebar">
 

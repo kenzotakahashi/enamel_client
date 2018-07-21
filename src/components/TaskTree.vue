@@ -1,22 +1,11 @@
 <template name="tree">
   <li>
-    <div class="tree-item" v-bind:class="{active: $route.params.taskId === model.id}">
+    <div class="tree-item" v-bind:class="{active: isSeletecd}">
       <span @click="toggle" class="task-fold-button"
         v-bind:style="{visibility: isParent ? 'visible' : 'hidden'}">
         <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
       </span>
 
-<!--       <div class="task-info-container">
-        <router-link :to="{name: 'task', params: {taskId: model.id}}">
-          <span class="task">
-            <div class="user-container">
-              <avatar :size="24" class="task-avatar"></avatar>
-              <span class="task-title">{{ model.name }}</span>              
-            </div>
-          </span>
-        </router-link>
-        <span class="task-status" v-bind:style="statusColor">{{ model.status }}</span>
-      </div> -->
       <router-link :to="{name: 'task', params: {taskId: model.id}}"
         class="task-info-container">
         <span class="task-info-wrapper">
@@ -25,7 +14,7 @@
               :size="24" class="task-avatar"></avatar>
             <avatar v-else-if="model.assignees && model.assignees.length > 1" :number="model.assignees.length"
               :size="24" class="task-avatar"></avatar>
-            <avatar v-else :size="24" class="task-avatar"></avatar>
+            <avatar v-else :size="24" class="task-avatar" kind="unassigned"></avatar>
             <span class="task-title">{{ model.name }}</span>              
           </div>
         </span>
@@ -36,7 +25,7 @@
 
     <ul class="tree" v-show="open" v-if="isParent">
       <tree
-        class=""
+        @open="openArrow"
         v-for="task in getTasks"
         :key="task.id"
         :model="task">
@@ -59,6 +48,9 @@ export default {
     model: Object
   },
   mounted() {
+    if (this.isSeletecd) {
+      this.$emit('open')
+    }
   },
   data() {
     return {
@@ -71,11 +63,8 @@ export default {
     isParent() {
       return this.getTasks.length > 0
     },
-    statusColor() {
-      // this.model.status
-      return {
-        color: '#1976d2'
-      }
+    isSeletecd() {
+      return this.$route.params.taskId === this.model.id
     }
   },
   apollo: {
@@ -90,10 +79,12 @@ export default {
     }
   },
   methods: {
-    toggle: function () {
-      if (this.isParent) {
-        this.open = !this.open
-      }
+    toggle() {
+      this.open = !this.open
+    },
+    openArrow() {
+      this.open = true
+      this.$emit('open')
     }
   }
 };

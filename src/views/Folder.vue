@@ -3,20 +3,7 @@
     <el-col :span="12" class="max-height">
       <div class="white card max-height">
         <div class="folder-header">
-          <input class="no-outline header-title folder-name" type="text" name="taskname" ref="taskname"
-            v-model="folderName" @keyup.enter="updateFolder" @keyup.esc="cancel">
-          </input>
-
-          <!-- <div class="header-title">{{folder.name}}</div> -->
-
-<!--           <div>
-            <span class="menu-title">LIST</span>
-            <span class="menu-title">BOARD</span>
-            <span class="menu-title">TABLE</span>
-            <span class="menu-title">GANTT CHART</span>
-            <span class="menu-title">STREAM</span>
-            <span class="menu-title">MORE</span>
-          </div> -->
+          <div class="header-title folder-name">{{folder.name}}</div>
         </div>
         <TaskForm></TaskForm>
         <TaskTree

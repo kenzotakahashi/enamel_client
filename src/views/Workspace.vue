@@ -96,5 +96,6 @@ export default {
   position: absolute;
   right: 0;
   top: 7px;
+  margin: 0 2px;
 }
 </style>
