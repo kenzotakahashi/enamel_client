@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
     <div class="nav-left">
-      <router-link :to="{name: 'home'}" class="logo">enamel</router-link>
+      <a :href="`${url}`" class="logo">enamel</a>
     </div>
     <NavigationRight v-if="auth"></NavigationRight>
   </div>
@@ -15,6 +15,11 @@ export default {
     NavigationRight
   },
   props: ['auth'],
+  data() {
+    return {
+      url: process.env.BASE_URL
+    }
+  }
 }
 
 </script>
