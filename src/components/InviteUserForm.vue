@@ -121,7 +121,6 @@ export default {
           role: this.form.role
         },
         update: (store, { data: { invite } }) => {
-          console.log(invite)
           try {
             const data = store.readQuery({ query: GetUsers })
             data.getUsers = data.getUsers.concat(invite)
