@@ -10,7 +10,7 @@ export default new Vuex.Store({
   },
   mutations: {
     changeActiveWidget(state, key) {
-      state.activeWidget = key
+      state.activeWidget = state.activeWidget === key ? null : key
     }
   },
   actions: {

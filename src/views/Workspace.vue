@@ -14,7 +14,6 @@
 
             <div class="dropdown-content left" v-show="activeWidget === `folder${getTeam.id}`">
               <div @click="openModal('folder')">Add Folder</div>
-              <!-- <div @click="openModal('project')">Add Project</div> -->
             </div>
           </div>
         </div>

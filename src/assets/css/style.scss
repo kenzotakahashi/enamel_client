@@ -3,7 +3,8 @@ body {
   margin: 0;
   background-color: #4A4090;
   -webkit-font-smoothing: antialiased;
-  font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN","Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
+  font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN",
+              "Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
 }
 
 .white {
@@ -211,6 +212,7 @@ ul.tree {
 
 .dropdown {
   position: relative;
+  overflow: hidden;
   /*display: inline-block;*/
 }
 
