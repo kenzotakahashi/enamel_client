@@ -54,6 +54,14 @@ a, a:visited, a:hover, a:active, a:focus {
   box-shadow: none;
 }
 
+.container {
+  box-sizing: border-box;
+  display: flex;
+  position: absolute;
+  left: 0px;
+  top: 52px;
+}
+
 .header-title {
   font-size: 18px;
   line-height: 21px;
@@ -81,10 +89,6 @@ a, a:visited, a:hover, a:active, a:focus {
 
 .el-table__row:hover .close-button.hidden {
   visibility: visible;
-}
-
-.space {
-  padding: 10px;
 }
 
 .fa-angle-down, .fa-angle-right {
@@ -348,10 +352,6 @@ ul.tree {
   border-width: 8px;
   border-style: solid;
   border-color: #fff transparent transparent transparent;
-}
-
-.account {
-  padding: 30px 60px 0;
 }
 
 .contact-picker-item {

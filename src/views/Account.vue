@@ -1,13 +1,12 @@
 <template>
-  <el-container>
-    <el-header>
-      <navigation :auth="true"></navigation>
-    </el-header>
+  <div>
+    <navigation :auth="true"></navigation>
 
-    <el-main class="white account" :style="styleObj">
+    <div class="container white account" :style="styleObj">
+      <div></div>
       <h2 class="users-and-groups-header">Users & Groups</h2>
       <el-row>
-        <el-col :span="7">
+        <el-col :span="6">
           <div class="column-header">
             <span class="title group">Groups<span class="count-title">({{getGroups.length}})</span></span>
             <plus-button @click="showGroupForm = true" class="title-plus-button"></plus-button>
@@ -28,7 +27,7 @@
           </div>
         </el-col>
 
-        <el-col :span="17" class="account-main-container">
+        <el-col :span="18" class="account-main-container">
           <div class="column-header">
             <span class="title">{{selectedGroup.name}}
               <span class="count-title">({{users.length}})</span>
@@ -74,7 +73,6 @@
             </div>
           </div>
 
-          </div>          
           <el-table :data="filteredUsers" empty-text="No users" style="width: 100%"
             @row-click="openUserDetail">
             <el-table-column label="NAME" sortable width="200">
@@ -85,7 +83,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="email" label="EMAIL" sortable width="280"></el-table-column>
+            <el-table-column prop="email" label="EMAIL" sortable width="260"></el-table-column>
             <el-table-column prop="role" label="ROLE" sortable></el-table-column>
             <el-table-column prop="status" label="STATUS" sortable></el-table-column>
             <el-table-column label="" width="40">
@@ -109,9 +107,9 @@
       <UserDetail v-if="activeWidget === 'userDetail'"
         :user="selectedUser" :groups="getGroups">
       </UserDetail>
-    </el-main>
+    </div>
 
-  </el-container>
+  </div>
 
 </template>
 
@@ -170,9 +168,6 @@ export default {
       getUsers: [],
       getGroups: [],
       styleObj: {
-        position: "absolute",
-        left: "0px",
-        top: "52px",
         width: `${window.innerWidth}px`,
         height: `${window.innerHeight - 52}px`
       }
@@ -247,6 +242,11 @@ export default {
 </script>
 
 <style scoped>
+
+.account {
+  padding: 30px 60px 0;
+  flex-direction: column;
+}
 
 .column-header {
   margin-bottom: 15px;

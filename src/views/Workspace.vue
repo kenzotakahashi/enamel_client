@@ -56,9 +56,6 @@ export default {
       getFolders: [],
       getTeam: {},
       styleObj: {
-        position: "absolute",
-        left: "0px",
-        top: "52px",
         width: `${window.innerWidth}px`,
         height: `${window.innerHeight - 52}px`
       }
@@ -94,11 +91,6 @@ export default {
   right: 0;
   top: 7px;
   margin: 0 2px;
-}
-
-.container {
-  height: 100%;
-  display: flex;
 }
 
 aside {
