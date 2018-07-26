@@ -1,11 +1,9 @@
 <template>
-  <el-container>
-    <el-header>
-      <navigation :auth="true"></navigation>
-    </el-header>
+  <div>
+    <navigation :auth="true"></navigation>
 
-    <el-container :style="styleObj">
-      <el-aside class="tree-root" width="220px">
+    <div class="container" :style="styleObj">
+      <aside class="tree-root">
         <div v-if="getTeam.id" class="tree-item"
             @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${getTeam.id}`)"
             @click.left.stop="$router.push({name: 'folder', params: {id: getTeam.id}})">
@@ -27,16 +25,16 @@
           :model="folder"
           :team="getTeam.id" >
         </Tree>
-      </el-aside>
+      </aside>
 
-      <el-main class="work-space-center">
+      <div class="workspace-main">
         <router-view :key="$route.fullPath"></router-view>
-      </el-main>
+      </div>
 
       <FolderForm v-if="showModal" :config="modalConfig" @close="showModal = false"></FolderForm>
-    </el-container>
+    </div>
 
-  </el-container>
+  </div>
 
 </template>
 
@@ -97,5 +95,20 @@ export default {
   right: 0;
   top: 7px;
   margin: 0 2px;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+}
+
+aside {
+  width: 220px;
+  height: 100%;
+  display: inline-block;
+}
+
+.workspace-main {
+  flex-grow: 1;
 }
 </style>

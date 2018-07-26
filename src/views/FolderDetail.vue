@@ -232,7 +232,7 @@ export default {
 
 .folder-statebar {  
   display: flex;
-  min-width: 400px;
+  /*min-width: 400px;*/
   height: 48px;
   position: relative;
   padding: 0 24px;
