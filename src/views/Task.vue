@@ -4,6 +4,7 @@
     <TaskStateBar :task="task" :subtasks="subtasks" :users="getUsers" :showSubtasks="showSubtasks"
       @toggleSubtaskView="showSubtasks = !showSubtasks">
     </TaskStateBar>
+    <TaskSettingBar :task="task"></TaskSettingBar>
 
 <!--     <el-row>
       <el-col :span="6">
@@ -35,6 +36,7 @@ import { mapState } from 'vuex'
 import { GetTask, GetTasks, GetUsers, UpdateTask } from '../constants/query.gql'
 import TaskHeader from '@/components/TaskHeader'
 import TaskStateBar from '@/components/TaskStateBar'
+import TaskSettingBar from '@/components/TaskSettingBar'
 import TaskTree from '@/components/TaskTree'
 import TaskForm from '@/components/TaskForm'
 import DescriptionField from '@/components/DescriptionField'
@@ -45,6 +47,7 @@ export default {
   components: {
     TaskHeader,
     TaskStateBar,
+    TaskSettingBar,
     TaskTree,
     TaskForm,
     DescriptionField,
