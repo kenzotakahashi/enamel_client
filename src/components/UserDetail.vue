@@ -30,7 +30,7 @@
               <tbody>
                 <tr>
                   <td class="user-settings-label">Role</td>
-                  <td class="user-settings-value">{{user.role}}</td>
+                  <td class="user-settings-value">{{form.role}}</td>
                 </tr>
                 <tr>
                   <td class="user-settings-label">Email</td>
@@ -38,8 +38,8 @@
                 </tr>
                 <tr v-if="currentUser.role === 'Owner'">
                   <td class="user-settings-label">Rate/Salary</td>
-                  <td class="user-settings-value" v-if="user.rateType">
-                    {{user.rate}} per {{user.rateType}}
+                  <td class="user-settings-value" v-if="form.rateType">
+                    {{form.rate}} per {{form.rateType}}
                   </td>
                 </tr>
                 <tr>
