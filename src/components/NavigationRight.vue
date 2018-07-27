@@ -8,9 +8,13 @@
       </span>
     </div>
     <div class="dropdown-content" v-show="activeWidget === 'account-menu'">
-      <div v-if="route !== 'account'"><router-link :to="{name: 'account'}">Accounts</router-link></div>
-      <div v-if="route !== 'workspace'"><router-link :to="{name: 'workspace'}">Workspace</router-link></div>
-      <div @click="logout">Logout</div>
+      <div v-if="['Owner', 'Administrator'].includes(getUser.role) && route !== 'account'">
+        <router-link :to="{name: 'account'}">Accounts</router-link></div>
+      <div v-if="route !== 'workspace'">
+        <router-link :to="{name: 'workspace'}">Workspace</router-link></div>
+      <div>
+        <a @click="logout" :href="`${url}login`">Logout</a>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +28,7 @@ export default {
   props: ['auth'],
   data() {
     return {
+      url: process.env.BASE_URL,
       route: this.$route.name,
       modalConfig: {},
       getTeam: {},
@@ -34,8 +39,6 @@ export default {
     getUser: {
       query: GetUser,
       variables: {},
-      result({data}) {
-      }
     },
     getTeam: {
       query: GetTeam,
@@ -46,14 +49,13 @@ export default {
       localStorage.setItem('user-id', null)
       localStorage.setItem('user-token', null)
       this.$root.$data.userId = localStorage.getItem('user-id')
-      this.$router.push({name: 'login'})
     }
   }
 }
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .name {
   display: flex;
   align-items: center;
@@ -71,5 +73,13 @@ export default {
   position: fixed;
   top: 42px;
   right: 10px;
+  > div {
+    padding: 0;
+    > a {
+      padding: 5px 16px;
+      width: 100%;
+    }
+  }
 }
+
 </style>

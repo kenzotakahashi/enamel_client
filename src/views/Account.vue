@@ -6,7 +6,7 @@
       <div></div>
       <h2 class="users-and-groups-header">Users & Groups</h2>
       <el-row>
-        <el-col :span="6">
+        <el-col :span="5">
           <div class="column-header">
             <span class="title group">Groups<span class="count-title">({{getGroups.length}})</span></span>
             <plus-button @click="showGroupForm = true" class="title-plus-button"></plus-button>
@@ -27,7 +27,7 @@
           </div>
         </el-col>
 
-        <el-col :span="18" class="account-main-container">
+        <el-col :span="19" class="account-main-container">
           <div class="column-header">
             <span class="title">{{selectedGroup.name}}
               <span class="count-title">({{users.length}})</span>
@@ -75,7 +75,7 @@
 
           <el-table :data="filteredUsers" empty-text="No users" style="width: 100%"
             @row-click="openUserDetail">
-            <el-table-column label="NAME" sortable width="200">
+            <el-table-column label="NAME" sortable width="190">
               <template slot-scope="scope">
                 <div class="user-container">
                   <avatar class="avatar" :obj="scope.row" :size="24"></avatar>
@@ -83,7 +83,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="email" label="EMAIL" sortable width="260"></el-table-column>
+            <el-table-column prop="email" label="EMAIL" sortable width="230"></el-table-column>
             <el-table-column prop="role" label="ROLE" sortable></el-table-column>
             <el-table-column prop="status" label="STATUS" sortable></el-table-column>
             <el-table-column label="" width="40">
@@ -105,7 +105,7 @@
         :group="selectedGroup" :users="getUsers"
         @close="showAddUsersToGroupForm = false"></AddUsersToGroupForm>
       <UserDetail v-if="activeWidget === 'userDetail'"
-        :user="selectedUser" :groups="getGroups">
+        :user="selectedUser" :groups="getGroups" :currentUser="getUser">
       </UserDetail>
     </div>
 
@@ -120,7 +120,7 @@ import GroupUpdateForm from '@/components/GroupUpdateForm'
 import InviteUserForm from '@/components/InviteUserForm'
 import AddUsersToGroupForm from '@/components/AddUsersToGroupForm'
 import UserDetail from '@/components/UserDetail'
-import { GetUsers, GetGroups, RemoveUsersFromGroup } from '../constants/query.gql'
+import { GetUser, GetUsers, GetGroups, RemoveUsersFromGroup } from '../constants/query.gql'
 
 export default {
   components: {
@@ -165,6 +165,7 @@ export default {
           filter: ['Collaborator']
         },
       ],
+      getUser: {},
       getUsers: [],
       getGroups: [],
       styleObj: {
@@ -174,6 +175,10 @@ export default {
     }
   },
   apollo: {
+    getUser: {
+      query: GetUser,
+      variables: {},
+    },
     getUsers: {
       query: GetUsers
     },
@@ -251,6 +256,7 @@ export default {
 .column-header {
   margin-bottom: 15px;
   display: flex;
+  align-items: center;
 }
 
 .users-and-groups-header {

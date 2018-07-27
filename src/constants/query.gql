@@ -72,6 +72,8 @@ fragment UserFields on User {
   jobTitle
   avatarColor
   role
+  rate
+  rateType
   status
   createdAt
 }
@@ -188,6 +190,12 @@ mutation UpdateGroup($id: String!, $name: String, $initials: String, $avatarColo
 
 mutation DeleteGroup($id: String!) {
   deleteGroup(id: $id)
+}
+
+mutation UpdateUser($id: String!, $input: UserInput) {
+  updateUser(id: $id, input: $input) {
+    ...UserFields
+  }
 }
 
 query GetTeam {

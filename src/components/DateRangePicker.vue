@@ -189,7 +189,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .daterange-picker {
   box-sizing: border-box;
   text-align: center;

@@ -4,7 +4,7 @@
       <div class="user-detail-inner-container">
 
         <div class="user-main-info-container">
-          <avatar :user="user" :size="144"></avatar>
+          <avatar :obj="user" :size="144"></avatar>
           <div class="user-name">{{user.name}}</div>
           <div class="user-role">{{user.jobTitle}}</div>
           <div class="user-signup-date">
@@ -25,6 +25,7 @@
         </div>
       
         <div>
+          
           <table v-show="activeTab === 'settings'" class="user-settings-table">
             <tbody>
               <tr>
@@ -34,6 +35,12 @@
               <tr>
                 <td class="user-settings-label">Email</td>
                 <td class="user-settings-value">{{user.email}}</td>
+              </tr>
+              <tr v-if="currentUser.role === 'Owner'">
+                <td class="user-settings-label">Rate/Salary</td>
+                <td class="user-settings-value" v-if="user.rateType">
+                  {{user.rate}} per {{user.rateType}}
+                </td>
               </tr>
               <tr>
                 <td class="user-settings-label">Location</td>
@@ -82,7 +89,7 @@
 import moment from 'moment'
 
 export default {
-  props: ['user', 'groups'],
+  props: ['user', 'groups', 'currentUser'],
   data() {
     return {
       activeTab: 'settings',
