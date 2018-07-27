@@ -24,45 +24,84 @@
           </button>
         </div>
       
-        <div>
-          
-          <table v-show="activeTab === 'settings'" class="user-settings-table">
-            <tbody>
-              <tr>
-                <td class="user-settings-label">Role</td>
-                <td class="user-settings-value">{{user.role}}</td>
-              </tr>
-              <tr>
-                <td class="user-settings-label">Email</td>
-                <td class="user-settings-value">{{user.email}}</td>
-              </tr>
-              <tr v-if="currentUser.role === 'Owner'">
-                <td class="user-settings-label">Rate/Salary</td>
-                <td class="user-settings-value" v-if="user.rateType">
-                  {{user.rate}} per {{user.rateType}}
-                </td>
-              </tr>
-              <tr>
-                <td class="user-settings-label">Location</td>
-                <td class="user-settings-value">--</td>
-              </tr>
-              <tr>
-                <td class="user-settings-label">Phone number</td>
-                <td class="user-settings-value">--</td>
-              </tr>
-              <tr>
-                <td class="user-settings-label">Time zone</td>
-                <td class="user-settings-value">US/Pacific</td>
-              </tr>
-            </tbody>
-          </table>
-          <div v-show="activeTab === 'groups'" class="user-group-section">
-            <div class="user-groups-label">Member of</div>
-            <div class="group-list">
-              <avatar v-for="group in userGroups" :key="group.id" class="group-avatar"
-                :obj="group" :size="32">
-              </avatar>
-            </div>
+        <div v-show="activeTab === 'settings'">
+          <div v-show="!showSettingsForm">
+            <table class="user-settings-table">
+              <tbody>
+                <tr>
+                  <td class="user-settings-label">Role</td>
+                  <td class="user-settings-value">{{user.role}}</td>
+                </tr>
+                <tr>
+                  <td class="user-settings-label">Email</td>
+                  <td class="user-settings-value">{{user.email}}</td>
+                </tr>
+                <tr v-if="currentUser.role === 'Owner'">
+                  <td class="user-settings-label">Rate/Salary</td>
+                  <td class="user-settings-value" v-if="user.rateType">
+                    {{user.rate}} per {{user.rateType}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="user-settings-label">Location</td>
+                  <td class="user-settings-value">--</td>
+                </tr>
+                <tr>
+                  <td class="user-settings-label">Phone number</td>
+                  <td class="user-settings-value">--</td>
+                </tr>
+                <tr>
+                  <td class="user-settings-label">Time zone</td>
+                  <td class="user-settings-value">US/Pacific</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <el-button type="text" class="text-button"
+              @click="showSettingsForm = true">
+              <span>Edit settings</span>
+            </el-button>
+          </div>
+          <div v-show="showSettingsForm">
+            <el-form ref="form" :model="form" size="small">
+              <el-form-item>
+                <label>Role</label>
+                <el-select class="role-select" v-model="form.role" placeholder="please select a role">
+                  <el-option label="Administrator" value="Administrator"></el-option>
+                  <el-option label="Regular User" value="Regular User"></el-option>
+                  <el-option label="External User" value="External User"></el-option>
+                  <el-option label="Collaborator" value="Collaborator"></el-option>
+                </el-select>
+                <!-- <el-input v-model="form.role" placeholder="Role"></el-input> -->
+                <label>{{ rateLabel }}</label>
+                <div class="rate-form">
+                  <div class="rate-input">
+                    <el-input v-model="form.rate" type="number" min="0" placeholder="Rate">          
+                    </el-input>
+                  </div>
+                  <el-radio-group v-model="form.rateType"
+                    :style="{
+                      display: 'flex',
+                      'align-items': 'center'
+                    }">
+                    <el-radio-button label="Hour"></el-radio-button>
+                    <el-radio-button label="Month"></el-radio-button>
+                  </el-radio-group>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="default" @click="updateUser">Save changes</el-button>
+                <el-button type="text" @click="showSettingsForm = false">Cancel</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </div>
+        <div v-show="activeTab === 'groups'" class="user-group-section">
+          <div class="user-groups-label">Member of</div>
+          <div class="group-list">
+            <avatar v-for="group in userGroups" :key="group.id" class="group-avatar"
+              :obj="group" :size="32">
+            </avatar>
           </div>
         </div>
 
@@ -87,25 +126,55 @@
 
 <script>
 import moment from 'moment'
+import { UpdateUser } from  '@/constants/query.gql'
 
 export default {
   props: ['user', 'groups', 'currentUser'],
   data() {
+    const { role, rate, rateType } = this.user
     return {
       activeTab: 'settings',
-      notify: true
+      showSettingsForm: false,
+      notify: true,
+      form: {
+        role,
+        rate,
+        rateType
+      }
     }
   },
   computed: {
     userGroups() {
       const id = this.user.id
       return this.groups.filter(o => o.users.includes(id))
+    },
+    rateLabel() {
+      if (this.form.rateType === 'Hour') {
+        return 'Rate'
+      } else if (this.form.rateType === 'Month') {
+        return 'Salary'
+      } else {
+        return 'Rate/Salary'
+      }
     }
   },
   methods: {
     formateDate(date) {
       return moment(date).format('MMM DD, YYYY')
     },
+    updateUser() {
+      this.$apollo.mutate({
+        mutation: UpdateUser,
+        variables: {
+          id: this.user.id, 
+          input: this.form
+        },
+      }).then(() => {
+        this.showSettingsForm = false
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
   }
 }
 
@@ -293,6 +362,23 @@ td {
   margin: 15px 0;
 }
 
+.role-select {
+  width: 100%;
+}
+
+.rate-form {
+  display: flex;
+}
+
+.rate-input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.rate-input > div {
+  display: flex;
+  align-items: center;
+}
 
 </style>
 

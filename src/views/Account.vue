@@ -218,7 +218,9 @@ export default {
       this.showInviteUserForm = type
     },
     openUserDetail(user, e) {
-      this.changeActiveWidget('userDetail')
+      if (this.activeWidget !== 'userDetail') {
+        this.changeActiveWidget('userDetail')       
+      }
       this.selectedUser = user
       e.stopPropagation()
     },
