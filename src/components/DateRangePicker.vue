@@ -5,6 +5,7 @@
 		</div>
 		<div class="planning-types">
 			<div v-for="planning in planningList" :key="planning"
+				@click="changePlanningType(planning)"
 				class="planning-type" v-bind:class="{active: planningType === planning}">
 				{{planning}}
 			</div>
@@ -15,16 +16,24 @@
 				<div>
 					<form>
 						<div class="form-item">
-							<div class="form-element">
-								<input type="text" v-model="form.startDate"></input>
-								
+							<div class="form-element" @click.stop="focusInput('startDate')">
+								<input type="text" v-model="startDate"
+									ref="startDate" @input="">	
+								</input>
+								<div v-show="showEmptyField" class="empty-field"
+									@mouseover="emptyField = today" @mouseleave="emptyField = defaultField">
+									{{emptyField}}
+								</div>
 							</div>
 						</div>
+
 						<div class="separator">-</div>
+
 						<div class="form-item">
 							<div class="form-element" @click.stop="focusInput('finishDate')">
-								<input type="text" v-model="form.finishDate"
-									ref="finishDate"></input>
+								<input type="text" v-model="finishDate"
+									ref="finishDate" @input="">
+								</input>
 								<div v-show="showEmptyField" class="empty-field"
 									@mouseover="emptyField = today" @mouseleave="emptyField = defaultField">
 									{{emptyField}}
@@ -36,42 +45,146 @@
 			</div>
 			<div class="planning-duration">
 				<div class="header">Duration:</div>
-				
+					<form>
+						<div class="form-item">
+<!-- 							<div class="form-element">
+								<input type="number" class="duration" min="0"
+									v-model="duration"></input>
+							</div> -->
+							<span>{{duration}}</span>
+							<span class="duration-label">{{durationLabel}}</span>
+						</div>
+					</form>				
 			</div>
 		</div>
+
+		<section>
+		  <el-button type="primary" @click="updateTask">OK</el-button>
+		  <el-button type="text" @click="changeActiveWidget(null)">
+		  	Cancel
+		  </el-button>          
+		</section>
 	</div>
 </template>
 
 <script>
 import moment from 'moment'
+import { UpdateTask } from '@/constants/query.gql'
 
 export default {
 	props: ['task'],
 	data() {
+		const hasDate = this.task.startDate !== null
+		const startDate = hasDate
+			? moment(this.task.startDate).format('MM/DD/YYYY')
+			: null
+		const finishDate = hasDate
+			? moment(this.task.finishDate).format('MM/DD/YYYY')
+			: null
+
 		const today = moment().format('MM/DD/YYYY')
+		const tomorrow = moment().add(1, 'days').format('MM/DD/YYYY')
+		const nextWeek = {
+			startDate: moment().day(8).format('MM/DD/YYYY'),
+			finishDate: moment().day(12).format('MM/DD/YYYY')
+		}
+
 		return {
-			planningType: 'backlogged',
+			planningType: this.getPlanningType(startDate, finishDate, today, tomorrow, nextWeek),
 			planningList: ['backlogged','today','tomorrow','next week','custom date'],
 			today,
+			tomorrow,
+			nextWeek,
 			defaultField: 'MM/DD/YYYY',
 			emptyField: 'MM/DD/YYYY',
-			showEmptyField: !this.task.startDate,
-			form: {
-				startDate: this.task.startDate,
-				finishDate: this.task.finishDate
+			showEmptyField: !hasDate,
+			startDate,
+			finishDate,
+			duration: this.task.duration
+		}
+	},
+	computed: {
+		durationLabel() {
+			if (this.duration === 1) {
+				return 'day'
+			} else if (this.duration > 1) {
+				return 'days'
+			} else {
+				return ''
 			}
 		}
 	},
 	methods: {
+		getPlanningType(startDate, finishDate, today, tomorrow,  nextWeek) {
+			if (startDate === today && finishDate === today) {
+				return 'today'
+			} else if (startDate === tomorrow && finishDate && tomorrow) {
+				return 'tomorrow'
+			} else if (startDate === nextWeek.startDate &&
+								finishDate === nextWeek.finishDate) {
+				return 'next week'
+			} else if (startDate) {
+				return 'custom date'
+			} else {
+				return 'backlogged'
+			}
+		},
 		focusInput(formType) {
 			this.showEmptyField = false
-			if (!this.form.startDate) {
-				this.form.startDate = this.today
-				this.form.finishDate = this.today
+			if (!this.startDate) {
+				this.startDate = this.today
+				this.finishDate = this.today
 				this.planningType = 'today'
 			}
 			this.$refs[formType].focus()
-		}
+		},
+		changePlanningType(kind) {
+			this.planningType = kind
+			if (kind === 'backlogged') {
+				this.startDate = null
+				this.finishDate = null
+				this.showEmptyField = true
+			} else if (kind === 'today' || kind === 'custom date' && !this.startDate) {
+				this.startDate = this.today
+				this.finishDate = this.today
+				this.duration = 1
+				this.showEmptyField = false
+			} else if (kind === 'tomorrow') {
+				this.startDate = this.tomorrow
+				this.finishDate = this.tomorrow
+				this.duration = 1
+				this.showEmptyField = false
+			} else if (kind === 'next week') {
+				this.startDate = this.nextWeek.startDate
+				this.finishDate = this.nextWeek.finishDate
+				this.duration = 5
+				this.showEmptyField = false
+			}
+		},
+		checkPlanningType() {
+			// if (this.startDate === this.today && this.finishDate === this.today) {
+			// }
+		},
+		updateTask(e) {
+		  this.$apollo.mutate({
+		    mutation: UpdateTask,
+		    variables: {
+		    	id: this.task.id,
+		    	input: {
+		    		startDate: this.startDate,
+		    		finishDate: this.finishDate,
+		    		duration: this.duration
+		    	}
+		    },
+		  }).then(() => {
+				this.changeActiveWidget(null)    
+		  }).catch((error) => {
+		    console.log(error)
+		  })
+		},
+		changeActiveWidget(key) {
+		  this.$store.dispatch('changeActiveWidget', key)
+		},
 	}
 }
 </script>
@@ -92,8 +205,8 @@ export default {
 }
 
 .daterange-picker.bottom {
-  top: 30px;
-  left: -152px;  
+  top: 0px;
+  left: -162px;  
 }
 
 .title {
@@ -162,6 +275,7 @@ form {
 }
 
 .form-element {
+	display: inline-block;
 	position: relative;
   border: 1px solid;
 	border-color: #d1d1d3;
@@ -177,6 +291,10 @@ form {
 	padding: 0 8px;
 }
 
+.form-element > input.duration {
+	width: 50px;
+}
+
 .empty-field {
 	font-size: 13px;
   line-height: 18px;
@@ -189,6 +307,14 @@ form {
   height: 23px;
   left: 0px;
   top: 0px;
+}
+
+.duration-label {
+	margin-left: 7px;
+}
+
+section {
+	padding: 9px 18px 15px;
 }
 
 </style>

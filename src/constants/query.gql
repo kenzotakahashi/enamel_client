@@ -26,6 +26,7 @@ fragment TaskFields on Task {
   shareWith
   startDate
   finishDate
+  duration
   importance
   status
   createdAt
