@@ -13,7 +13,8 @@
 			</el-button>	
 
 			<DateRangePicker v-show="activeWidget === 'daterange'" :task="task"></DateRangePicker>
-			<!-- <Record></Record> -->
+			<Record v-show="activeWidget === 'record-form'"
+				:task="task" :record="getRecord"></Record>
 		</div>
 	</div>
 </template>
@@ -22,7 +23,7 @@
 import { mapState } from 'vuex'
 import moment from 'moment'
 import DateRangePicker from '../DateRangePicker'
-import Record from '../DateRangePicker'
+import Record from '../Record'
 import { GetRecord } from '@/constants/query.gql'
 
 export default {
@@ -39,9 +40,9 @@ export default {
 	apollo: {
 		getRecord: {
 			query: GetRecord,
-			varables() {
+			variables() {
 				return {
-					task: this.task.id					
+					task: this.task.id
 				}
 			},
 			error(err) {
@@ -67,8 +68,9 @@ export default {
 			}
 		},
 		recordLabel() {
-			if (!this.getRecord) return '0:00'
-			return this.getRecord.timeSpent
+			if (!this.getRecord || !this.getRecord.timeSpent) return '0:00'
+			const [ hours, minutes ] = this.getRecord.timeSpent.split(':')
+			return `${hours}:${minutes > 0 ? minutes : '00'}`
 		}
 	},
 	methods: {
