@@ -201,7 +201,7 @@ mutation CreateRecord($input: RecordInput) {
   createRecord(input: $input) { ...RecordFields }
 }
 
-mutation UpdateRecprd($id: String!, $input: RecordInput) {
+mutation UpdateRecord($id: String!, $input: RecordInput) {
   updateRecord(id: $id, input: $input) { ...RecordFields }
 }
 
@@ -248,8 +248,8 @@ query GetComments($parent: String) {
   getComments(parent: $parent) { ...CommentFields }
 }
 
-query GetRecord($id: String, $task: String) {
-  getRecord(id: $id, task: $task) { ...RecordFields }
+query GetRecord($id: String, $task: String, $date: String) {
+  getRecord(id: $id, task: $task, date: $date) { ...RecordFields }
 }
 
 mutation CreateComment($body: String, $parent: ShareInput) {

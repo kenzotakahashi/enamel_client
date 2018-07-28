@@ -13,7 +13,7 @@
 			</el-button>	
 
 			<DateRangePicker v-show="activeWidget === 'daterange'" :task="task"></DateRangePicker>
-			<Record v-show="activeWidget === 'record-form'"
+			<Record v-if="activeWidget === 'record-form'"
 				:task="task" :record="getRecord"></Record>
 		</div>
 	</div>
@@ -42,7 +42,8 @@ export default {
 			query: GetRecord,
 			variables() {
 				return {
-					task: this.task.id
+					task: this.task.id,
+					date: moment().format('YYYY-MM-DD')
 				}
 			},
 			error(err) {

@@ -5,14 +5,14 @@
 				<div class="form-item">
 					<div class="form-element">
 						<input type="number" class="hours" min="0"
-							v-model="hours"></input>
+							@focus="selectText" v-model="hours"></input>
 					</div>					
 				</div>
 				<div class="colon">:</div>
 				<div class="form-item">
 					<div class="form-element">
 						<input type="number" class="minutes" min="0" max="50" step="10"
-							v-model="minutes"></input>
+							@focus="selectText" v-model="minutes"></input>
 					</div>					
 				</div>
 			</form>	
@@ -22,12 +22,12 @@
 			</div>				
 		</div>
 		<div class="comment">
-			<textarea placeholder="Comment"></textarea>
+			<textarea placeholder="Comment" v-model="comment"></textarea>
 		</div>
 
 		<div class="controls">
 		  <el-button type="primary" size="small" :disabled="hours === 0 && minutes === 0"
-		  	@click="create">Add entry</el-button>
+		  	@click="create">{{ record ? 'Edit entry' : 'Add entry' }}</el-button>
 		  <el-button type="text" size="small" @click="deleteRecord">Reset timer</el-button>
 		</div>
 	</div>
@@ -35,7 +35,7 @@
 
 <script>
 import moment from 'moment'
-import { CreateRecord, UpdateRecord, DeleteRecord } from '@/constants/query.gql'
+import { CreateRecord, UpdateRecord, DeleteRecord, GetRecord } from '@/constants/query.gql'
 
 export default {
 	props: ['task', 'record'],
@@ -44,7 +44,6 @@ export default {
 		const [ hours, minutes ] = timeSpent
 			? timeSpent.split(':').map(o => parseInt(o))
 			: [0,0]
-		// console.log(hours)
 		return {
 			hours,
 			minutes,
@@ -58,10 +57,13 @@ export default {
 		}
 	},
 	methods: {
+		selectText(event) {
+		  const el = event.target
+		  el.focus()
+		  el.select()
+		},
 		create() {
 			const input = {
-				task: this.task.id,
-				date: this.date.format('YYYY-MM-DD'),
 				timeSpent: `${this.hours}:${this.minutes}`,
 				comment: this.comment
 			}
@@ -71,12 +73,24 @@ export default {
 					variables: {
 						id: this.record.id,
 						input
+					},
+					update: (store, { data: { updateRecord } }) => {
+						this.syncGetRecord(store, updateRecord)
 					}
 				})
 			} else {
 				this.createRecord({
 					mutation: CreateRecord,
-					variables: {input}
+					variables: {
+						input: {
+							...input,
+							date: this.date.format('YYYY-MM-DD'),
+							task: this.task.id
+						}
+					},
+					update: (store, { data: { createRecord } }) => {
+						this.syncGetRecord(store, createRecord)
+					}
 				})
 			}
 		},
@@ -94,7 +108,11 @@ export default {
 			}
 			this.$apollo.mutate({
 				mutation: DeleteRecord,
-				variables: { id: this.record.id }
+				variables: { id: this.record.id },
+				update: (store) => {
+					// TODO: delete getRecords
+					this.syncGetRecord(store, null)
+				}
 			}).then(() => {
 				this.changeActiveWidget(null)
 			}).catch((error) => {
@@ -104,6 +122,15 @@ export default {
 		changeActiveWidget(key) {
 		  this.$store.dispatch('changeActiveWidget', key)
 		},
+		syncGetRecord(store, val) {
+			const variables = {
+				task: this.task.id,
+				date: moment().format('YYYY-MM-DD')
+			}
+			const data = store.readQuery({ query: GetRecord, variables })
+			data.getRecord = val
+			store.writeQuery({ query: GetRecord, variables, data })
+		}
 	}
 }
 </script>
