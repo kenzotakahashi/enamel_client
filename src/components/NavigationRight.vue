@@ -46,8 +46,8 @@ export default {
   },
   methods: {
     logout() {
-      localStorage.setItem('user-id', null)
-      localStorage.setItem('user-token', null)
+      localStorage.removeItem('user-id')
+      localStorage.removeItem('user-token')
       this.$root.$data.userId = localStorage.getItem('user-id')
     }
   }

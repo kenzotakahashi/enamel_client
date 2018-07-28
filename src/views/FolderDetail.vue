@@ -45,7 +45,7 @@
         </div>
 
         <el-button v-if="folder.parent" type="text" class="black-text-button subfolder share-info">
-          <i class="fas fa-share-alt"></i>
+          <!-- <i class="fas fa-share-alt"></i> -->
           <span class="shared-with">{{ shareInfo }}</span>
         </el-button>
         <el-button v-else type="text" class="black-text-button share-info"
