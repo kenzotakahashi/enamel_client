@@ -36,7 +36,7 @@
 
 <script>
 import TaskTree from './TaskTree'
-import { GetTasks } from '../constants/query.gql'
+import { GetTasks } from '@/constants/query.gql'
 import { backgroundStrongColorMap } from '@/helpers/helpers'
 
 export default {

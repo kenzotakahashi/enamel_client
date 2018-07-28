@@ -28,7 +28,7 @@
 
             <div class="button-group">
               <el-button type="primary" @click="create(mode)">Create</el-button>
-              <el-button type="" @click="$emit('close')">Cancel</el-button>              
+              <el-button type="text" @click="$emit('close')">Cancel</el-button>              
             </div>
 
           </el-col>

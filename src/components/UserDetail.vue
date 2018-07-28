@@ -58,6 +58,7 @@
             </table>
 
             <el-button type="text" class="text-button"
+              v-if="currentUser.role === 'Owner'"
               @click="showSettingsForm = true">
               <span>Edit settings</span>
             </el-button>

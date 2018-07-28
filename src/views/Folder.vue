@@ -23,8 +23,8 @@
 
 <script>
 import { GetFolder, GetTasks, UpdateFolder } from '../constants/query.gql'
-import TaskTree from '@/components/TaskTree'
-import TaskForm from '@/components/TaskForm'
+import TaskTree from '@/components/task/TaskTree'
+import TaskForm from '@/components/task/TaskForm'
 import FolderDetail from './FolderDetail.vue'
 
 export default {

@@ -263,11 +263,6 @@ export default {
 	font-size: 15px;
 }
 
-form {
-/*	display: flex;
-	flex-direction: row;
-*/}
-
 .form-item {
 	height: 27px;
 	display: inline-block;

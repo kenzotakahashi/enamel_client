@@ -58,7 +58,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { UpdateTask, DeleteTask, GetTasks } from '../constants/query.gql'
+import { UpdateTask, DeleteTask, GetTasks } from '@/constants/query.gql'
 import { formatDate } from '@/helpers/helpers'
 
 export default {

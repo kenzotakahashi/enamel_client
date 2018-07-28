@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { GetTasks, GetTask, CreateTask } from '../constants/query.gql'
+import { GetTasks, GetTask, CreateTask } from '@/constants/query.gql'
 import shortid from 'shortid'
 
 export default {

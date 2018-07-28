@@ -87,6 +87,15 @@ fragment GroupFields on Group {
   users
 }
 
+fragment RecordFields on Record {
+  id
+  user
+  task
+  date
+  timeSpent
+  comment
+}
+
 mutation CaptureEmail($email: String!) {
   captureEmail(email: $email) {
     id
@@ -95,9 +104,7 @@ mutation CaptureEmail($email: String!) {
 }
 
 mutation Invite($emails: [String], $groups: [String], $role: String) {
-  invite(emails: $emails, groups: $groups, role: $role) {
-    ...UserFields
-  }
+  invite(emails: $emails, groups: $groups, role: $role) { ...UserFields }
 }
 
 mutation Decline($id: String!) {
@@ -125,15 +132,11 @@ mutation Login($email: String!, $password: String!) {
 }
 
 mutation CreateTask($folder: String, $parent: String, $name: String!) {
-  createTask(folder: $folder, parent: $parent, name: $name) {
-    ...TaskFields
-  }
+  createTask(folder: $folder, parent: $parent, name: $name) { ...TaskFields }
 }
 
 mutation UpdateTask($id: String!, $input: TaskInput) {
-  updateTask(id: $id, input: $input) {
-    ...TaskFields
-  }
+  updateTask(id: $id, input: $input) { ...TaskFields }
 }
 
 mutation DeleteTask($id: String!) {
@@ -155,9 +158,7 @@ mutation CreateProject($parent: String, $name: String!, $shareWith: [ShareInput]
 }
 
 mutation UpdateFolder($id: String!, $input: FolderInput) {
-  updateFolder(id: $id, input: $input) {
-    ...FolderFields
-  }
+  updateFolder(id: $id, input: $input) { ...FolderFields }
 }
 
 mutation DeleteFolder($id: String!) {
@@ -193,9 +194,19 @@ mutation DeleteGroup($id: String!) {
 }
 
 mutation UpdateUser($id: String!, $input: UserInput) {
-  updateUser(id: $id, input: $input) {
-    ...UserFields
-  }
+  updateUser(id: $id, input: $input) { ...UserFields }
+}
+
+mutation CreateRecord($input: RecordInput) {
+  createRecord(input: $input) { ...RecordFields }
+}
+
+mutation UpdateRecprd($id: String!, $input: RecordInput) {
+  updateRecord(id: $id, input: $input) { ...RecordFields }
+}
+
+mutation DeleteRecord($id: String!) {
+  deleteRecord(id: $id)
 }
 
 query GetTeam {
@@ -206,55 +217,41 @@ query GetTeam {
 }
 
 query GetUser($id: String) {
-  getUser(id: $id) {
-    ...UserFields
-  }
+  getUser(id: $id) { ...UserFields }
 }
 
 query GetUsers {
-  getUsers {
-    ...UserFields
-  }
+  getUsers { ...UserFields }
 }
 
 query GetGroups {
-  getGroups {
-    ...GroupFields
-  }
+  getGroups { ...GroupFields }
 }
 
 query GetFolders($parent: String) {
-  getFolders(parent: $parent) {
-    ...FolderFields
-  }
+  getFolders(parent: $parent) { ...FolderFields }
 }
 
 query GetFolder($id: String!) {
-  getFolder(id: $id) {
-    ...FolderFields
-  }
+  getFolder(id: $id) { ...FolderFields }
 }
 
 query GetTasks($parent: String, $folder: String) {
-  getTasks(parent: $parent, folder: $folder) {
-    ...TaskFields
-  }
+  getTasks(parent: $parent, folder: $folder) { ...TaskFields }
 }
 
 query GetTask($id: String!) {
-  getTask(id: $id) {
-    ...TaskFields
-  }
+  getTask(id: $id) { ...TaskFields }
 }
 
 query GetComments($parent: String) {
-  getComments(parent: $parent) {
-    ...CommentFields
-  }
+  getComments(parent: $parent) { ...CommentFields }
+}
+
+query GetRecord($id: String, $task: String) {
+  getRecord(id: $id, task: $task) { ...RecordFields }
 }
 
 mutation CreateComment($body: String, $parent: ShareInput) {
-  createComment(body: $body, parent: $parent) {
-    ...CommentFields
-  }
+  createComment(body: $body, parent: $parent) { ...CommentFields }
 }

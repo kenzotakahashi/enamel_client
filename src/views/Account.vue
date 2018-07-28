@@ -84,7 +84,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="email" label="EMAIL" sortable width="230"></el-table-column>
-            <el-table-column prop="role" label="ROLE" sortable></el-table-column>
+            <el-table-column prop="role" label="ROLE" sortable width="115"></el-table-column>
             <el-table-column prop="status" label="STATUS" sortable></el-table-column>
             <el-table-column label="" width="40">
               <template v-if="selected >= 2" slot-scope="scope">
@@ -285,7 +285,7 @@ export default {
 }
 
 .account-main-container {
-  padding: 0 32px;
+  padding-left: 32px;
 }
 
 .text-button {
