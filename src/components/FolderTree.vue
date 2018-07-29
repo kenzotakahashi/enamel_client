@@ -1,6 +1,6 @@
 <template name="tree">
   <li>
-    <div class="tree-item dropdown"
+    <div class="tree-item"
         @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${model.id}`)"
         @click.left.stop="$router.push({name: 'folder', params: {id: model.id}})">
       <span @click="toggle" class="fold-button"
