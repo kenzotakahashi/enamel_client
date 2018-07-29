@@ -47,11 +47,6 @@
           <span class="folder-tag">{{ folder.name }}</span>
         </span> -->
       </div>
-      <div class="state-bar-creator">
-        <span class="small-text">
-          by {{task.creator.firstname}} {{task.creator.lastname[0]}} at {{formatDate(task.createdAt)}}
-        </span>
-      </div>
     </div>
   </div>
 </template>
@@ -59,14 +54,12 @@
 <script>
 import { mapState } from 'vuex'
 import { UpdateTask, DeleteTask, GetTasks } from '@/constants/query.gql'
-import { formatDate } from '@/helpers/helpers'
 
 export default {
   props: ['task'],
   computed: mapState(['activeWidget']),
   data() {
     return {
-      formatDate,
       taskName: this.task.name
     }
   },
@@ -171,11 +164,6 @@ export default {
 
 .folder-tag:hover {
   opacity: .75;
-}
-
-.state-bar-creator {
-  display: flex;
-  align-items: center;
 }
 
 .parent-task {

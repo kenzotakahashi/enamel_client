@@ -1,21 +1,32 @@
 <template>
 	<div class="task-setting-bar">
-		<div class="tooltip">
-			<el-button type="text" class="black-text-button"
-			  @click.stop="changeActiveWidget('daterange')">
-			  <i class="far fa-calendar"></i>
-				<span class="date-button-label">{{ dateLabel }}</span>
-			</el-button>	
-			<el-button type="text" class="black-text-button"
-			  @click.stop="changeActiveWidget('record-form')">
-			  <i class="far fa-clock"></i>
-				<span class="date-button-label">{{ recordLabel }}</span>
-			</el-button>	
+		<!-- <div class=""> -->
+			<div>
+				<el-button type="text" class="black-text-button"
+				  @click.stop="changeActiveWidget('daterange')">
+				  <i class="far fa-calendar"></i>
+					<span class="date-button-label">{{ dateLabel }}</span>
+				</el-button>				
+			</div>
+			<div class="record-wrapper">
+				<el-button type="text" class="black-text-button"
+				  @click.stop="changeActiveWidget('record-form')">
+				  <i class="far fa-clock"></i>
+					<span class="date-button-label">{{ recordLabel }}</span>
+				</el-button>					
+			</div>
 
-			<DateRangePicker v-show="activeWidget === 'daterange'" :task="task"></DateRangePicker>
+			<div class="state-bar-add-subtask">
+			  <el-button type="text" @click="$emit('toggleSubtaskView')"
+			    v-bind:class="{'black-text-button': !showSubtasks}">
+			    {{subtasks.length > 0 ? formatSubtaskCount(subtasks) : 'Add subtask'}}
+			  </el-button>
+			</div>
+
 			<Record v-if="activeWidget === 'record-form'"
 				:task="task" :record="getRecord"></Record>
-		</div>
+			<DateRangePicker v-show="activeWidget === 'daterange'" :task="task"></DateRangePicker>
+		<!-- </div> -->
 	</div>
 </template>
 
@@ -31,7 +42,7 @@ export default {
 		DateRangePicker,
 		Record
 	},
-	props: ['task'],
+	props: ['task', 'subtasks', 'showSubtasks'],
 	data() {
 		return {
 			getRecord: {}
@@ -78,11 +89,15 @@ export default {
 		changeActiveWidget(key) {
 		  this.$store.dispatch('changeActiveWidget', key)
 		},
+		formatSubtaskCount(subtasks) {
+		  const count = subtasks.length
+		  return `${count} subtask${count > 1 ? 's' : ''}`
+		},
 	}
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .task-setting-bar {  
   display: flex;
   height: 44px;
@@ -92,6 +107,9 @@ export default {
   border-top: solid 1px;
   border-bottom: solid 1px;
   border-color: rgba(0,0,0,.16);
+  & > div {
+	  padding-right: 10px;
+  }
 }
 
 .fa-calendar, .fa-clock {
@@ -100,6 +118,17 @@ export default {
 
 .date-button-label {
 	font-size: 12px;
+}
+
+.record-wrapper {
+	flex-grow: 1;
+	// display: flex;
+}
+
+.state-bar-add-subtask {
+  display: flex;
+  align-items: center;
+  // padding: 0 10px;
 }
 	
 </style>

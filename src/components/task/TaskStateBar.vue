@@ -72,24 +72,25 @@
 
     </div>
 
-    <div class="state-bar-add-subtask">
-      <el-button type="text" @click="$emit('toggleSubtaskView')"
-        v-bind:class="{'black-text-button': !showSubtasks}">
-        {{subtasks.length > 0 ? formatSubtaskCount(subtasks) : 'Add subtask'}}
-      </el-button>
+    <div class="state-bar-creator">
+      <span class="small-text">
+        by {{task.creator.firstname}} {{task.creator.lastname[0]}} at {{formatDate(task.createdAt)}}
+      </span>
     </div>
+
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { UpdateTask } from '@/constants/query.gql'
-import { backgroundStrongColorMap } from '@/helpers/helpers'
+import { backgroundStrongColorMap, formatDate } from '@/helpers/helpers'
 
 export default {
-  props: ['task', 'subtasks', 'users', 'showSubtasks'],
+  props: ['task', 'users'],
   data() {
     return {
+      formatDate,
       searchUser: '',
       statusList: ['New', 'In Progress', 'Completed', 'On Hold', 'Cancelled'],
       backgroundStrongColorMap,
@@ -119,10 +120,6 @@ export default {
     ...mapState(['activeWidget'])
   },
   methods: {
-    formatSubtaskCount(subtasks) {
-      const count = subtasks.length
-      return `${count} subtask${count > 1 ? 's' : ''}`
-    },
     changeTaskStatus(status) {
       if (this.task.status === status) return
       this.updateTask({status})
@@ -164,7 +161,6 @@ export default {
   position: relative;
   padding-right: 8px;
   border-top: solid 1px;
-  border-bottom: solid 1px;
   border-color: rgba(0,0,0,.16);
 }
 
@@ -236,9 +232,10 @@ export default {
   padding: 0 8px;
 }
 
-.state-bar-add-subtask {
+.state-bar-creator {
   display: flex;
   align-items: center;
+  padding-right: 10px;
 }
 
 /*assignees*/

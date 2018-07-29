@@ -51,6 +51,7 @@ export default {
           input: {description: this.description}
         },
       }).then(() => {
+        this.showButton = false
         this.cancel(e)
       }).catch((error) => {
         console.log(error)

@@ -1,10 +1,9 @@
 <template>
   <div class="white card max-height">
     <TaskHeader :task="task"></TaskHeader>
-    <TaskStateBar :task="task" :subtasks="subtasks" :users="getUsers" :showSubtasks="showSubtasks"
-      @toggleSubtaskView="showSubtasks = !showSubtasks">
-    </TaskStateBar>
-    <TaskSettingBar :task="task"></TaskSettingBar>
+    <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
+    <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
+      @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
 
 <!--     <el-row>
       <el-col :span="6">
