@@ -10,6 +10,7 @@ import { withClientState } from 'apollo-link-state'
 import { enableExperimentalFragmentVariables } from 'graphql-tag'
 import VueApollo from 'vue-apollo'
 import ElementUI from 'element-ui'
+import VueAnalytics from 'vue-analytics'
 
 import App from './App.vue'
 import router from './router'
@@ -30,6 +31,10 @@ Vue.component('avatar', Avatar)
 Vue.component('close-button', CloseButton)
 Vue.component('remove-button', RemoveButton)
 Vue.component('plus-button', PlusButton)
+
+Vue.use(VueAnalytics, {
+  id: 'UA-62716182-7'
+})
 
 Vue.use(ElementUI)
 // Vue.use(VeeValidate)

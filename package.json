@@ -25,6 +25,7 @@
     "shortid": "2.2.8",
     "vee-validate": "^2.1.0-beta.2",
     "vue": "^2.5.16",
+    "vue-analytics": "^5.12.3",
     "vue-apollo": "3.0.0-beta.19",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
