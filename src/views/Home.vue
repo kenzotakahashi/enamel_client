@@ -5,28 +5,27 @@
     </el-header>
 
     <el-main>
-      <el-row>
-        <el-col :span="6" :offset="9" justify="center">
-          <h2>Welcome!</h2>
-          <div>Enter your email address to start free trial</div>
+      <div class="container-center">
+        <h2>Welcome!</h2>
+        <div>Enter your email address to start free trial</div>
 
-          <el-form ref="form" :model="form">
-            <el-form-item>
-              <label>Email</label>
-              <el-input v-model="form.email" placeholder="Email"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click.once="capture">Create my enamel account</el-button>
-            </el-form-item>
-          </el-form>
+        <el-form ref="form" :model="form">
+          <el-form-item>
+            <label>Email</label>
+            <el-input v-model="form.email" placeholder="Email"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click.once="capture">Create my enamel account</el-button>
+          </el-form-item>
+        </el-form>
 
-          <div v-if="submitted">
-            <div>Thank you!</div>
-            <div>Please check your email.</div>
-            <!-- <router-link :to="{name: 'signup', params: {id}}">Set up my account</router-link> -->
-          </div>
-        </el-col>
-      </el-row>
+        <div v-if="submitted">
+          <div>Thank you!</div>
+          <div>Please check your email.</div>
+          <!-- <router-link :to="{name: 'signup', params: {id}}">Set up my account</router-link> -->
+        </div>        
+      </div>
+
     </el-main>
   </el-container>
 
@@ -73,4 +72,5 @@ export default {
 .el-button {
   width: 100%;
 }
+
 </style>

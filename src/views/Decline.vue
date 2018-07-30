@@ -5,11 +5,10 @@
     </el-header>
 
     <el-main>
-      <el-row>
-        <el-col :span="6" :offset="9" justify="center">
-          <div>Invitation declined.</div>
-        </el-col>
-      </el-row>
+      <div class="container-center">
+        <div>Invitation declined.</div>
+      </div>
+
     </el-main>
   </el-container>
 

@@ -5,24 +5,22 @@
     </el-header>
 
     <el-main>
-      <el-row>
-        <el-col :span="6" :offset="9" justify="center">
-          <h2>Login</h2>
+      <div class="container-center">
+        <h2>Login</h2>
 
-          <el-form ref="form" :model="form">
-            <el-form-item>
-              <label>Email</label>
-              <el-input v-model="form.email" placeholder="Email"></el-input>
-              <label>Password</label>
-              <el-input v-model="form.password" type="password" placeholder="Password"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click.once="login">Login</el-button>
-            </el-form-item>
-          </el-form>
+        <el-form ref="form" :model="form">
+          <el-form-item>
+            <label>Email</label>
+            <el-input v-model="form.email" placeholder="Email"></el-input>
+            <label>Password</label>
+            <el-input v-model="form.password" type="password" placeholder="Password"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click.once="login">Login</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 
-        </el-col>
-      </el-row>
     </el-main>
   </el-container>
 

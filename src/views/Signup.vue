@@ -5,26 +5,25 @@
     </el-header>
 
     <el-main>
-      <el-row>
-        <el-col :span="6" :offset="9" justify="center">
-          <div>Welcome to enamel! Finish setting up your account</div>        
+      <div class="container-center">
+        <div>Welcome to enamel! Finish setting up your account</div>        
 
-          <el-form ref="form" :model="form">
-            <el-form-item>
-              <label>First name</label>
-              <el-input v-model="form.firstname" placeholder="Your first name"></el-input>
-              <label>Last name</label>
-              <el-input v-model="form.lastname" placeholder="Your last name"></el-input>
-              <label>Password</label>
-              <el-input v-model="form.password" type="password" placeholder="Password"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click.once="signup">Complete</el-button>
-            </el-form-item>
-          </el-form>
+        <el-form ref="form" :model="form">
+          <el-form-item>
+            <label>First name</label>
+            <el-input v-model="form.firstname" placeholder="Your first name"></el-input>
+            <label>Last name</label>
+            <el-input v-model="form.lastname" placeholder="Your last name"></el-input>
+            <label>Password</label>
+            <el-input v-model="form.password" type="password" placeholder="Password"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click.once="signup">Complete</el-button>
+          </el-form-item>
+        </el-form>
 
-        </el-col>
-      </el-row>
+      </div>
+
     </el-main>
   </el-container>
 
