@@ -118,7 +118,7 @@ export default {
 		getPlanningType(startDate, finishDate, today, tomorrow,  nextWeek) {
 			if (startDate === today && finishDate === today) {
 				return 'today'
-			} else if (startDate === tomorrow && finishDate && tomorrow) {
+			} else if (startDate === tomorrow && finishDate === tomorrow) {
 				return 'tomorrow'
 			} else if (startDate === nextWeek.startDate &&
 								finishDate === nextWeek.finishDate) {
@@ -165,19 +165,35 @@ export default {
 			// if (this.startDate === this.today && this.finishDate === this.today) {
 			// }
 		},
+		parseDate(date) {
+			const splitted = date.split('/')
+			if (splitted.length !== 3) return false
+			return splitted.map(o => o.length >= 2 ? o : `0${o}`).join('/')
+		},
 		updateTask(e) {
+			const startDate = this.parseDate(this.startDate)
+			const finishDate = this.parseDate(this.finishDate)
+			const duration = moment.duration(moment(finishDate).diff(moment(startDate))).asDays() + 1
 		  this.$apollo.mutate({
 		    mutation: UpdateTask,
 		    variables: {
 		    	id: this.task.id,
 		    	input: {
-		    		startDate: this.startDate,
-		    		finishDate: this.finishDate,
-		    		duration: this.duration
+		    		startDate,
+		    		finishDate,
+		    		duration
 		    	}
 		    },
 		  }).then(() => {
-				this.changeActiveWidget(null)    
+				this.changeActiveWidget(null)
+				this.duration = duration
+				this.planningType = this.getPlanningType(
+					startDate,
+					finishDate,
+					this.today,
+					this.tomorrow,
+					this.nextWeek)
+				console.log(this.planningType)
 		  }).catch((error) => {
 		    console.log(error)
 		  })

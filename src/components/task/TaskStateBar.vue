@@ -156,7 +156,6 @@ export default {
 <style scoped>
 .task-statebar {  
   display: flex;
-  min-width: 400px;
   height: 48px;
   position: relative;
   padding-right: 8px;
