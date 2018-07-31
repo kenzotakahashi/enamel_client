@@ -25,10 +25,11 @@
 
     <ul class="tree" v-show="open" v-if="isParent">
       <tree
-        @open="openArrow"
         v-for="task in getTasks"
         :key="task.id"
-        :model="task">
+        :model="task"
+        @open="openArrow"
+      >
       </tree>
     </ul>
   </li>

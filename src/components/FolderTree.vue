@@ -25,10 +25,10 @@
 
     <ul class="tree" v-show="open" v-if="isFolder">
       <tree
-        class=""
         v-for="folder in getFolders"
         :key="folder.id"
         :model="folder"
+        @open="openArrow"
       >
       </tree>
     </ul>
@@ -60,9 +60,17 @@ export default {
       getFolders: []
     }
   },
+  mounted() {
+    if (this.isSeletecd) {
+      this.$emit('open')
+    }
+  },
   computed: {
     isFolder: function () {
       return this.getFolders.length > 0
+    },
+    isSeletecd() {
+      return this.$route.params.id === this.model.id
     },
     ...mapState(['activeWidget'])
   },
@@ -90,6 +98,10 @@ export default {
         mode,
         parent: this.model.id
       }
+    },
+    openArrow() {
+      this.open = true
+      this.$emit('open')
     },
     deleteFolder() {
       const { id, parent } = this.model
