@@ -6,10 +6,11 @@
           <div class="header-title folder-name">{{folder.name}}</div>
         </div>
         <TaskForm></TaskForm>
-        <TaskTree
-          v-for="task in getTasks" :key="task.id"
-          :model="task">
-        </TaskTree>
+        <div class="task-container">
+          <TaskTree
+            v-for="task in getTasks" :key="task.id" :model="task">
+          </TaskTree>          
+        </div>
       </div>
     </el-col>
     <el-col v-if="subRoute==='task'" :span="12" class="max-height">
@@ -127,4 +128,15 @@ export default {
 .max-height {
   height: 100%;
 }
+
+.white.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-container {
+  flex-grow: 1;
+  overflow: scroll;
+}
+
 </style>

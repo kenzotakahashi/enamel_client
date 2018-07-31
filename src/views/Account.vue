@@ -157,12 +157,12 @@ export default {
           filter: ['Regular User']
         },
         {
-          name: 'External Users',
-          filter: ['External User']
-        },
-        {
           name: 'Collaborators',
           filter: ['Collaborator']
+        },
+        {
+          name: 'External Users',
+          filter: ['External User']
         },
       ],
       getUser: {},

@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     showForm() {
-      return this.isFormOpen || this.description.trim().length > 0
+      return this.isFormOpen || this.description
     }
   },
   methods: {

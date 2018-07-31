@@ -27,7 +27,7 @@ export default {
   },
   mounted() {
     if (this.open) {
-      this.$refs.taskform.focus()      
+      this.$refs.taskform.focus()
     }
   },
   methods: {

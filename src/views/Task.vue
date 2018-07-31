@@ -1,29 +1,19 @@
 <template>
   <div class="white card max-height">
     <TaskHeader :task="task"></TaskHeader>
-    <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
-    <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
-      @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
+    <div class="scroll">
+      <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
+      <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
+        @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
 
-<!--     <el-row>
-      <el-col :span="6">
-        <el-button type="text" class="black-text-button ">Set Date</el-button>
-      </el-col>
-      <el-col :span="6">
-        <el-button v-if="subtasks.length > 0" type="text">{{formatSubtaskCount(subtasks)}}</el-button>
-        <el-button v-else type="text" class="black-text-button ">Add subtask</el-button>
-      </el-col>
-      <el-col :span="6">
-        <el-button type="text" class="black-text-button ">{{task.shareWith.length}}</el-button>
-      </el-col>
-    </el-row> -->
-    <div v-if="showSubtasks">
-      <TaskTree v-for="model in subtasks" :key="model.id" :model="model">
-      </TaskTree>
-      <TaskForm :parentId="taskId" :open="true"></TaskForm>      
+      <div v-if="showSubtasks">
+        <TaskTree v-for="model in subtasks" :key="model.id" :model="model">
+        </TaskTree>
+        <TaskForm :parentId="taskId" :open="true"></TaskForm>      
+      </div>
+
+      <DescriptionField :model="task" kind="task"></DescriptionField>      
     </div>
-
-    <DescriptionField :model="task" kind="task"></DescriptionField>
 <!--     <Comments :comments="getComments"></Comments>
     <CommentBox :parent="task.id" class="stick-bottom"></CommentBox> -->
   </div>
@@ -114,6 +104,9 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.scroll {
+  flex-grow: 1;
+  overflow: scroll;
+}
 </style>
