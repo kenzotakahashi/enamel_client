@@ -94,6 +94,9 @@ export default {
     }
   },
   props: ['folder'],
+  mounted() {
+    document.title = `${this.folder.name} - enamel`
+  },
   apollo: {
     getUser: GetUser,
     getUsers: GetUsers,

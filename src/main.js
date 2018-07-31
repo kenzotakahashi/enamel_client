@@ -48,8 +48,11 @@ const httpLink = new HttpLink({
 const cache = new InMemoryCache({
   cacheRedirects: {
     Query: {
-      showPurchase: (_, args, { getCacheKey }) => {
-        return getCacheKey({ __typename: 'Purchase', id: args.id })
+      getFolder: (_, args, { getCacheKey }) => {
+        return getCacheKey({ __typename: 'Folder', id: args.id })
+      },
+      getTask: (_, args, { getCacheKey }) => {
+        return getCacheKey({ __typename: 'Task', id: args.id })
       }
     },
   },

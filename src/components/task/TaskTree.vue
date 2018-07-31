@@ -121,6 +121,7 @@ export default {
   display: flex;
   align-items: center;
   width: 0;
+  overflow: hidden;
 }
 
 .task-status {

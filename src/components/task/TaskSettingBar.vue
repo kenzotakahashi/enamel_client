@@ -1,7 +1,7 @@
 <template>
 	<div class="task-setting-bar">
 		<!-- <div class=""> -->
-			<div>
+			<div class="daterange-wrapper">
 				<el-button type="text" class="black-text-button"
 				  @click.stop="changeActiveWidget('daterange')">
 				  <i class="far fa-calendar"></i>
@@ -122,7 +122,10 @@ export default {
 
 .record-wrapper {
 	flex-grow: 1;
-	// display: flex;
+}
+
+.daterange-wrapper, .record-wrapper {
+	display: flex;
 }
 
 .state-bar-add-subtask {

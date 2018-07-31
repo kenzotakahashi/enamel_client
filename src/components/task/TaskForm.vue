@@ -1,7 +1,7 @@
 <template>
   <div class="task-creation-form">
     <div v-show="isFormOpen" class="task-input">
-      <form @submit.prevent="createTask">
+      <form @submit.prevent="createTask" autocomplete="off">
         <input @focusout="closeForm" @keyup.esc="closeForm"
           class="no-outline" ref="taskform" type="text" name="task"
           v-model="newTaskName" placeholder="Enter title for new task"></input>
@@ -108,6 +108,7 @@ export default {
 
 .task-input > form {
   display: flex;
+  width: 100%;
 }
 
 .task-input > input {

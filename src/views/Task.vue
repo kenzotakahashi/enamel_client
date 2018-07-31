@@ -83,6 +83,7 @@ export default {
       },
       result({ data: { getTask } }) {
         this.task = getTask
+        document.title = `${getTask.name} - enamel`
       }
     },
     getTasks: {
