@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     showForm() {
-      return this.isFormOpen || this.description
+      return this.isFormOpen || this.description.trim().length > 0
     }
   },
   methods: {
@@ -51,6 +51,7 @@ export default {
           input: {description: this.description}
         },
       }).then(() => {
+        this.isFormOpen = false
         this.showButton = false
         this.cancel(e)
       }).catch((error) => {

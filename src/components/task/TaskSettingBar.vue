@@ -25,7 +25,7 @@
 
 			<Record v-if="activeWidget === 'record-form'"
 				:task="task" :record="getRecord"></Record>
-			<DateRangePicker v-show="activeWidget === 'daterange'" :task="task"></DateRangePicker>
+			<DateRangePicker v-if="activeWidget === 'daterange'" :task="task"></DateRangePicker>
 		<!-- </div> -->
 	</div>
 </template>

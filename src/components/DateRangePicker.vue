@@ -186,14 +186,6 @@ export default {
 		    },
 		  }).then(() => {
 				this.changeActiveWidget(null)
-				this.duration = duration
-				this.planningType = this.getPlanningType(
-					startDate,
-					finishDate,
-					this.today,
-					this.tomorrow,
-					this.nextWeek)
-				console.log(this.planningType)
 		  }).catch((error) => {
 		    console.log(error)
 		  })

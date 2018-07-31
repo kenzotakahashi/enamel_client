@@ -151,5 +151,6 @@ export default {
 
 .task-title {
   font-size: 14px;
+  white-space: nowrap;
 }
 </style>

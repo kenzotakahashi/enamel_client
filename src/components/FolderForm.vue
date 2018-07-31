@@ -54,6 +54,9 @@ export default {
       mode: this.config.mode
     }
   },
+  mounted() {
+    this.$refs.foldername.focus()
+  },
   methods: {
     create(mode) {
       const { name, shareWith, owners } = this.form
