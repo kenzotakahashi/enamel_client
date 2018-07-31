@@ -8,6 +8,10 @@
       <div class="container-center">
         <div>Welcome to enamel! Finish setting up your account</div>        
 
+        <div v-if="error" class="error">
+          {{ error }}
+        </div>
+
         <el-form ref="form" :model="form">
           <el-form-item>
             <label>First name</label>
@@ -35,6 +39,7 @@ import { Signup } from '../constants/query.gql'
 export default {
   data() {
     return {
+      error: false,
       form: {
         firstname: '',
         lastname: '',
@@ -46,25 +51,28 @@ export default {
     async signup() {
       // const validated = await this.$validator.validate()
       const { firstname, lastname, password } = this.form
-      if (firstname && lastname && password) {
-        this.$apollo.mutate({
-          mutation: Signup,
-          variables: {
-            id: this.$route.params.id,
-            firstname,
-            lastname,
-            password
-          }
-        }).then(({data: {signup}}) => {
-          const id = signup.user.id
-          const token = signup.token
-          this.saveUserData(id, token)
-
-          this.$router.push({name: 'workspace'})
-        }).catch((error) => {
-          console.log(error)
-        })
+      if (!(firstname && lastname && password)) {
+        this.error = 'Please complete the form'
+        return
       }
+      this.$apollo.mutate({
+        mutation: Signup,
+        variables: {
+          id: this.$route.params.id,
+          firstname,
+          lastname,
+          password
+        }
+      }).then(({data: {signup}}) => {
+        const id = signup.user.id
+        const token = signup.token
+        this.saveUserData(id, token)
+
+        this.$router.push({name: 'workspace'})
+      }).catch((error) => {
+        this.error = 'Something went wrong'
+        console.log(error)
+      })
     },
     saveUserData (id, token) {
       localStorage.setItem('user-id', id)
@@ -79,6 +87,10 @@ export default {
 
 .el-button {
   width: 100%;
+}
+
+.error {
+  padding-top: 10px;
 }
 </style>
 

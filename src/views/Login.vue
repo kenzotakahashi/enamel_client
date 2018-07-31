@@ -6,7 +6,11 @@
 
     <el-main>
       <div class="container-center">
-        <h2>Login</h2>
+        <h2>Log in</h2>
+        
+        <div v-if="error" class="error">
+          {{ error }}
+        </div>
 
         <el-form ref="form" :model="form">
           <el-form-item>
@@ -16,9 +20,14 @@
             <el-input v-model="form.password" type="password" placeholder="Password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click.once="login">Login</el-button>
+            <el-button type="primary" @click.once="login">Log in</el-button>
           </el-form-item>
         </el-form>
+
+        <div>
+          <span>Don't have an account?</span>
+          <router-link :to="{name: 'home'}" class="link">Create an account</router-link>
+        </div>
       </div>
 
     </el-main>
@@ -32,6 +41,7 @@ import { Login } from '../constants/query.gql'
 export default {
   data() {
     return {
+      error: false,
       form: {
         email: '',
         password: '',
@@ -53,6 +63,7 @@ export default {
           this.saveUserData(id, token)
           this.$router.push({name: 'workspace'})
         }).catch((error) => {
+          this.error = 'Invalid email or password'
           console.log(error)
         })
       }

@@ -4,6 +4,10 @@
       <div class="modal-container">
         <h3>Invite users</h3>
 
+        <div v-if="error" class="error">
+          {{ error }}
+        </div>
+
         <section>
           <el-input v-for="(email, index) in form.emails" :key="index"
             type="email" v-model="form.emails[index]" placeholder="Enter email address"
@@ -76,13 +80,15 @@
 </template>
 
 <script>
-import { Invite, GetUsers, GetGroups } from '../constants/query.gql'
 import { mapState } from 'vuex'
+import { Invite, GetUsers, GetGroups } from '../constants/query.gql'
+import { validateEmail } from '@/helpers/helpers'
 
 export default {
   props: ['groups', 'targetGroup'],
   data() {
     return {
+      error: false,
       searchGroup: '',
       form: {
         emails: ['','',''],
@@ -110,9 +116,12 @@ export default {
       this.form.groups = this.form.groups.filter(o => o.id !== id)
     },
     invite() {
-      const emails = this.form.emails.filter(o => !!o)
+      const emails = this.form.emails.filter(o => !!o && validateEmail(o))
       const groups = this.form.groups.map(o => o.id)
-      if (emails.length === 0) return
+      if (emails.length === 0) {
+        this.error = 'Please enter at least one valid email'
+        return
+      }
       this.$apollo.mutate({
         mutation: Invite,
         variables: {
@@ -148,6 +157,7 @@ export default {
         // TODO: alert email addresses that already exist
         this.$emit('close')
       }).catch((error) => {
+        this.error = 'Something went wrong'
         console.log(error)
       })
     }

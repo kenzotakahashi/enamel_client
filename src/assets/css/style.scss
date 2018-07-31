@@ -60,6 +60,19 @@ a, a:visited, a:hover, a:active, a:focus {
   box-shadow: none;
 }
 
+.error {
+  color: #FF576F;
+}
+
+a.link {
+  padding: 0 10px;
+  font-weight: 700;
+  color: rgb(77, 208, 225);
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .container {
   box-sizing: border-box;
   display: flex;
@@ -69,7 +82,7 @@ a, a:visited, a:hover, a:active, a:focus {
 }
 
 .container-center {
-  max-width: 300px;
+  max-width: 400px;
   margin: auto;
 }
 
