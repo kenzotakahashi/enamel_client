@@ -213,8 +213,8 @@ export default {
 }
 
 .daterange-picker.bottom {
-  top: 0px;
-  left: -162px;  
+  top: 155px;
+  left: -165px;  
 }
 
 .title {

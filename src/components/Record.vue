@@ -151,8 +151,8 @@ export default {
 }
 
 .record-form.bottom {
-  top: 30px;
-  left: -62px;  
+  top: 155px;
+  left: 22px;
 }
 
 .time-logger {

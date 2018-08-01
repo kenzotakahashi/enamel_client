@@ -1,67 +1,36 @@
 <template>
 	<div class="task-setting-bar">
-		<!-- <div class=""> -->
-			<div class="daterange-wrapper">
-				<el-button type="text" class="black-text-button"
-				  @click.stop="changeActiveWidget('daterange')">
-				  <i class="far fa-calendar"></i>
-					<span class="date-button-label">{{ dateLabel }}</span>
-				</el-button>				
-			</div>
-			<div class="record-wrapper">
-				<el-button type="text" class="black-text-button"
-				  @click.stop="changeActiveWidget('record-form')">
-				  <i class="far fa-clock"></i>
-					<span class="date-button-label">{{ recordLabel }}</span>
-				</el-button>					
-			</div>
+		<div class="daterange-wrapper">
+			<el-button type="text" class="black-text-button"
+			  @click.stop="changeActiveWidget('daterange')">
+			  <i class="far fa-calendar"></i>
+				<span class="date-button-label">{{ dateLabel }}</span>
+			</el-button>				
+		</div>
+		<div class="record-wrapper">
+			<el-button type="text" class="black-text-button"
+			  @click.stop="changeActiveWidget('record-form')">
+			  <i class="far fa-clock"></i>
+				<span class="date-button-label">{{ recordLabel }}</span>
+			</el-button>					
+		</div>
 
-			<div class="state-bar-add-subtask">
-			  <el-button type="text" @click="$emit('toggleSubtaskView')"
-			    v-bind:class="{'black-text-button': !showSubtasks}">
-			    {{subtasks.length > 0 ? formatSubtaskCount(subtasks) : 'Add subtask'}}
-			  </el-button>
-			</div>
+		<div class="state-bar-add-subtask">
+		  <el-button type="text" @click="$emit('toggleSubtaskView')"
+		    v-bind:class="{'black-text-button': !showSubtasks}">
+		    {{subtasks.length > 0 ? formatSubtaskCount(subtasks) : 'Add subtask'}}
+		  </el-button>
+		</div>
 
-			<Record v-if="activeWidget === 'record-form'"
-				:task="task" :record="getRecord"></Record>
-			<DateRangePicker v-if="activeWidget === 'daterange'" :task="task"></DateRangePicker>
-		<!-- </div> -->
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-import DateRangePicker from '../DateRangePicker'
-import Record from '../Record'
-import { GetRecord } from '@/constants/query.gql'
 
 export default {
-	components: {
-		DateRangePicker,
-		Record
-	},
-	props: ['task', 'subtasks', 'showSubtasks'],
-	data() {
-		return {
-			getRecord: {}
-		}
-	},
-	apollo: {
-		getRecord: {
-			query: GetRecord,
-			variables() {
-				return {
-					task: this.task.id,
-					date: moment().format('YYYY-MM-DD')
-				}
-			},
-			error(err) {
-				console.log(err)
-			}
-		}
-	},
+	props: ['task', 'subtasks', 'showSubtasks', 'record'],
 	computed: {
 		...mapState(['activeWidget']),
 		dateLabel() {
@@ -80,8 +49,8 @@ export default {
 			}
 		},
 		recordLabel() {
-			if (!this.getRecord || !this.getRecord.timeSpent) return '0:00'
-			const [ hours, minutes ] = this.getRecord.timeSpent.split(':')
+			if (!this.record || !this.record.timeSpent) return '0:00'
+			const [ hours, minutes ] = this.record.timeSpent.split(':')
 			return `${hours}:${minutes > 0 ? minutes : '00'}`
 		}
 	},

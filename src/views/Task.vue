@@ -1,7 +1,7 @@
 <template>
   <div class="white card max-height">
     <TaskHeader :task="task"></TaskHeader>
-    <!-- <div class="scroll"> -->
+    <div class="scroll">
       <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
       <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
         @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
@@ -13,22 +13,28 @@
       </div>
 
       <DescriptionField :model="task" kind="task"></DescriptionField>
-    <!-- </div> -->
+    </div>
 <!--     <Comments :comments="getComments"></Comments>
     <CommentBox :parent="task.id" class="stick-bottom"></CommentBox> -->
+
+    <Record v-if="activeWidget === 'record-form'" :task="task" :record="getRecord"></Record>
+    <DateRangePicker v-if="activeWidget === 'daterange'" :task="task"></DateRangePicker>
   </div>
 
 </template>
 
 <script>
+import moment from 'moment'
 import { mapState } from 'vuex'
-import { GetTask, GetTasks, GetUsers, UpdateTask } from '../constants/query.gql'
+import { GetTask, GetTasks, GetUsers, GetRecord, UpdateTask } from '../constants/query.gql'
 import TaskHeader from '@/components/task/TaskHeader'
 import TaskStateBar from '@/components/task/TaskStateBar'
 import TaskSettingBar from '@/components/task/TaskSettingBar'
 import TaskTree from '@/components/task/TaskTree'
 import TaskForm from '@/components/task/TaskForm'
 import DescriptionField from '@/components/DescriptionField'
+import DateRangePicker from '@/components/DateRangePicker'
+import Record from '@/components/Record'
 // import Comments from '@/components/Comments'
 // import CommentBox from '@/components/CommentBox'
 
@@ -40,6 +46,8 @@ export default {
     TaskTree,
     TaskForm,
     DescriptionField,
+    DateRangePicker,
+    Record,
     // Comments,
     // CommentBox
   },
@@ -59,6 +67,7 @@ export default {
       showSubtasks: false,
       subtasks: [],
       comments: [],
+      getRecord: {},
       getUsers: [],
     }
   },
@@ -88,6 +97,18 @@ export default {
         this.subtasks = getTasks
       },
     },
+    getRecord: {
+      query: GetRecord,
+      variables() {
+        return {
+          task: this.task.id,
+          date: moment().format('YYYY-MM-DD')
+        }
+      },
+      error(err) {
+        console.log(err)
+      }
+    },
     getUsers: GetUsers
     // getComments: {
     //   query: GetComments,
@@ -105,9 +126,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.card {
+  position: relative;
+}
+
 .scroll {
-  // display: flex;
-  // flex-direction: column;
   flex-grow: 1;
   overflow: scroll;
 }
