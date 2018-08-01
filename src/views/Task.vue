@@ -4,6 +4,7 @@
     <div class="scroll">
       <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
       <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
+        :record="getRecord"
         @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
 
       <div v-if="showSubtasks">

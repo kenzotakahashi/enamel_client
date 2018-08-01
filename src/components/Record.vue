@@ -96,7 +96,7 @@ export default {
 		},
 		createRecord(arg) {
 		  this.$apollo.mutate(arg).then(() => {
-				this.changeActiveWidget(null)    
+				this.changeActiveWidget(null)
 		  }).catch((error) => {
 		    console.log(error)
 		  })
