@@ -64,8 +64,8 @@
           <el-select class="role-select" v-model="form.role" placeholder="please select a role">
             <el-option label="Administrator" value="Administrator"></el-option>
             <el-option label="Regular User" value="Regular User"></el-option>
-            <el-option label="External User" value="External User"></el-option>
             <el-option label="Collaborator" value="Collaborator"></el-option>
+            <el-option label="External User" value="External User"></el-option>
           </el-select>
         </section>
 

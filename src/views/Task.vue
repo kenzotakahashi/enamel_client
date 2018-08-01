@@ -1,7 +1,7 @@
 <template>
   <div class="white card max-height">
     <TaskHeader :task="task"></TaskHeader>
-    <div class="scroll">
+    <!-- <div class="scroll"> -->
       <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
       <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
         @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
@@ -12,8 +12,8 @@
         <TaskForm :parentId="taskId" :open="true"></TaskForm>      
       </div>
 
-      <DescriptionField :model="task" kind="task"></DescriptionField>      
-    </div>
+      <DescriptionField :model="task" kind="task"></DescriptionField>
+    <!-- </div> -->
 <!--     <Comments :comments="getComments"></Comments>
     <CommentBox :parent="task.id" class="stick-bottom"></CommentBox> -->
   </div>
@@ -106,6 +106,8 @@ export default {
 
 <style scoped lang="scss">
 .scroll {
+  // display: flex;
+  // flex-direction: column;
   flex-grow: 1;
   overflow: scroll;
 }
