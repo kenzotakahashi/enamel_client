@@ -47,12 +47,12 @@ const httpLink = new HttpLink({
   uri,
 })
 
-const wsLink = new WebSocketLink({
-  uri: `ws://${process.env.VUE_APP_URI}/subscriptions`,
-  options: {
-    reconnect: true,
-  },
-})
+// const wsLink = new WebSocketLink({
+//   uri: `ws://${process.env.VUE_APP_URI}/subscriptions`,
+//   options: {
+//     reconnect: true,
+//   },
+// })
 
 const cache = new InMemoryCache({
   cacheRedirects: {
