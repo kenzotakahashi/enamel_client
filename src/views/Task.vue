@@ -81,6 +81,7 @@ export default {
       variables() {
         return {id: this.taskId}
       },
+      pollInterval: 10000,
       result({ data: { getTask } }) {
         this.task = getTask
         document.title = `${getTask.name} - enamel`

@@ -99,8 +99,14 @@ export default {
   },
   apollo: {
     getUser: GetUser,
-    getUsers: GetUsers,
-    getGroups: GetGroups,
+    getUsers: {
+      query: GetUsers,
+      pollInterval: 90000
+    },
+    getGroups: {
+      query: GetGroups,
+      pollInterval: 90000
+    },
     getTeam: GetTeam,
   },
   computed: {

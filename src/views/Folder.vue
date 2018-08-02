@@ -59,6 +59,7 @@ export default {
       variables() {
         return {id: this.$route.params.id}
       },
+      pollInterval: 90000,
       result ({data: { getFolder }}) {
         this.folder = getFolder
         this.folderName = this.folder.name
@@ -75,6 +76,7 @@ export default {
       skip() {
         return !this.folder.id
       },
+      pollInterval: 10000,
       error(error) {
         console.error(error)
       }

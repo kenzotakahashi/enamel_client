@@ -67,6 +67,7 @@ export default {
     },
     getFolders: {
       query: GetFolders,
+      pollInterval: 90000,
       error(error) {
         console.error(error)
       },

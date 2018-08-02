@@ -74,6 +74,7 @@ export default {
       variables() {
         return { parent: this.model.id }
       },
+      pollInterval: 10000,
       error(error) {
         console.error(error)
       }

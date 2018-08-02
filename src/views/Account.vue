@@ -180,10 +180,12 @@ export default {
       variables: {},
     },
     getUsers: {
-      query: GetUsers
+      query: GetUsers,
+      pollInterval: 10000
     },
     getGroups: {
-      query: GetGroups
+      query: GetGroups,
+      pollInterval: 90000
     }
   },
   computed: {

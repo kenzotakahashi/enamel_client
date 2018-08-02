@@ -4,9 +4,11 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { persistCache } from 'apollo-cache-persist'
 import { onError } from "apollo-link-error"
-import { ApolloLink } from 'apollo-link'
+import { ApolloLink, split } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
 import { withClientState } from 'apollo-link-state'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
 import { enableExperimentalFragmentVariables } from 'graphql-tag'
 import VueApollo from 'vue-apollo'
 import ElementUI from 'element-ui'
@@ -43,6 +45,13 @@ Vue.config.productionTip = false
 const uri = `${process.env.VUE_APP_URI}/graphql`
 const httpLink = new HttpLink({
   uri,
+})
+
+const wsLink = new WebSocketLink({
+  uri: `ws://${process.env.VUE_APP_URI}/subscriptions`,
+  options: {
+    reconnect: true,
+  },
 })
 
 const cache = new InMemoryCache({
@@ -82,6 +91,21 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     )
   if (networkError) console.log(`[Network error]: ${networkError}`)
 })
+
+// const link = split(
+//   // split based on operation type
+//   ({ query }) => {
+//     const { kind, operation } = getMainDefinition(query)
+//     return kind === 'OperationDefinition' &&
+//       operation === 'subscription'
+//   },
+//   wsLink,
+//   ApolloLink.from([
+//     errorLink,
+//     authMiddleware,
+//     httpLink
+//   ])
+// )
 
 const client = new ApolloClient({
   link: ApolloLink.from([
