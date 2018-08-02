@@ -1,6 +1,6 @@
 <template>
-  <el-row class="max-height">
-    <el-col :span="12" class="max-height">
+  <div class="inner-space">
+    <div class="subspace">
       <div class="white card max-height">
         <div class="folder-header">
           <div class="header-title folder-name">{{folder.name}}</div>
@@ -12,14 +12,14 @@
           </TaskTree>          
         </div>
       </div>
-    </el-col>
-    <el-col v-if="subRoute==='task'" :span="12" class="max-height">
+    </div>
+    <div v-if="subRoute==='task'" class="subspace">
       <router-view></router-view>
-    </el-col>
-    <el-col v-if="!isTeam(folder) && subRoute==='folder'" :span="12" class="max-height">
+    </div>
+    <div v-if="!isTeam(folder) && subRoute==='folder'" class="subspace">
       <FolderDetail :folder="folder"></FolderDetail>
-    </el-col>
-  </el-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -107,6 +107,16 @@ export default {
 </script>
 
 <style>
+.inner-space {
+  display: flex;
+  height: 100%;
+}
+
+.subspace {
+  width: 50%;
+  height: 100%;
+}
+
 .folder-header {
   padding: 15px 24px 0;
   line-height: 21px;

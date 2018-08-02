@@ -56,7 +56,7 @@ export default {
       getFolders: [],
       getTeam: {},
       styleObj: {
-        width: `${window.innerWidth}px`,
+        width: '100%',
         height: `${window.innerHeight - 52}px`
       }
     }
