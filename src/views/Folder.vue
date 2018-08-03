@@ -4,17 +4,20 @@
       <div class="white card max-height">
         <div class="folder-header">
           <div class="header-title folder-name">{{folder.name}}</div>
+          <div>
+            <span class="menu-title">
+              List
+            </span>
+            <span class="menu-title">
+              Workload
+            </span>
+          </div>
         </div>
-        <TaskForm></TaskForm>
-        <draggable class="task-container" v-model="getTasks" @change="reorder">
-          <TaskTree
-            v-for="task in getTasks" :key="task.id" :model="task">
-          </TaskTree>
-        </draggable>     
+        <router-view></router-view>
       </div>
     </div>
     <div v-if="subRoute==='task'" class="subspace">
-      <router-view></router-view>
+      <Task :taskId="$route.params.taskId"></Task>
     </div>
     <div v-if="!isTeam(folder) && subRoute==='folder'" class="subspace">
       <FolderDetail :folder="folder"></FolderDetail>
@@ -23,17 +26,22 @@
 </template>
 
 <script>
-import moment from 'moment'
-import { GetFolder, GetTasks, UpdateFolder, UpdateTask } from '../constants/query.gql'
-import TaskTree from '@/components/task/TaskTree'
-import TaskForm from '@/components/task/TaskForm'
+import { GetFolder } from '../constants/query.gql'
+import Task from './Task.vue'
 import FolderDetail from './FolderDetail.vue'
 
 export default {
   components: {
-    TaskTree,
-    TaskForm,
+    Task,
     FolderDetail
+  },
+  data() {
+    return {
+      subRoute: 'folder',
+      folder: {
+        shareWith: []
+      },
+    }
   },
   beforeRouteUpdate (to, from, next) {
     this.subRoute = to.name
@@ -42,16 +50,6 @@ export default {
   mounted() {
     if (this.$route.params.taskId) {
       this.subRoute = 'task'
-    }
-  },
-  data() {
-    return {
-      subRoute: 'folder',
-      folderName: '',
-      folder: {
-        shareWith: []
-      },
-      getTasks: []
     }
   },
   apollo: {
@@ -63,82 +61,21 @@ export default {
       pollInterval: 90000,
       result ({data: { getFolder }}) {
         this.folder = getFolder
-        this.folderName = this.folder.name
         if (this.isTeam) {
           document.title = `${this.folder.name} - enamel`          
         }
       },
-    },
-    getTasks: {
-      query: GetTasks,
-      variables() {
-        return { folder: this.folder.id }
-      },
-      skip() {
-        return !this.folder.id
-      },
-      pollInterval: 10000,
-      error(error) {
-        console.error(error)
-      }
     }
   },
   methods: {
     isTeam(folder) {
       return !folder.parent && folder.shareWith.length === 0
-    },
-    updateFolder(e) {
-      const name = this.folderName
-      if (name === this.folder.name) {
-        this.cancel(e)
-        return
-      }
-      this.$apollo.mutate({
-        mutation: UpdateFolder,
-        variables: { id: this.folder.id, input: {name} },
-      }).then(() => {
-        this.cancel(e)
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-    reorder({moved: {element, newIndex}}) {
-      const folder = this.folder.id
-
-      this.$apollo.mutate({
-        mutation: UpdateTask,
-        variables: {
-          id: element.id,
-          input: {
-            order: newIndex === 0 ? moment().valueOf() : this.getTasks[newIndex-1].order - 1
-          }
-        },
-        update(store, { data: { updateTask } }) {
-          const data = store.readQuery({
-            query: GetTasks,
-            variables: { folder }
-          })
-          data.getTasks = data.getTasks.filter(o => o.id !== updateTask.id)
-          data.getTasks.splice(newIndex, 0, updateTask)
-          store.writeQuery({
-            query: GetTasks,
-            variables: { folder },
-            data
-          })
-        }
-      }).then(() => {
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-    cancel(e) {
-      e.target.blur()
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 .inner-space {
   display: flex;
   height: 100%;
@@ -163,8 +100,18 @@ export default {
 }
 
 .menu-title {
+  height: 25px;
+  box-sizing: border-box;
+  display: inline-block;
   margin: 0 5px;
   font-size: 12px;
+  cursor: pointer;
+  &:hover {
+    color: $blue-hover;
+  }
+  &.active {
+    border-bottom: 2px solid $blue-hover;
+  }
 }
 
 .max-height {
@@ -174,11 +121,6 @@ export default {
 .white.card {
   display: flex;
   flex-direction: column;
-}
-
-.task-container {
-  flex-grow: 1;
-  overflow: scroll;
 }
 
 </style>

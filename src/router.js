@@ -6,6 +6,8 @@ import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import Workspace from './views/Workspace.vue'
 import Folder from './views/Folder.vue'
+import Workload from './views/Workload.vue'
+import List from './views/List.vue'
 import FolderDetail from './views/FolderDetail.vue'
 import Task from './views/Task.vue'
 import Account from './views/Account.vue'
@@ -32,15 +34,27 @@ const workspace = {
       props: true,
       children: [
         {
-          path: '',
-          name: 'folder',
-          component: FolderDetail
+          path: 'list',
+          component: List,
+          props: true,
+          children: [
+            {
+              path: '',
+              name: 'folder',
+              component: FolderDetail
+            },
+            {
+              path: ':taskId',
+              name: 'task',
+              component: Task,
+              props: true
+            }
+          ]
         },
         {
-          path: 'task/:taskId',
-          name: 'task',
-          component: Task,
-          props: true
+          path: 'workload',
+          name: 'workload',
+          component: Workload
         }
       ]
     }
