@@ -1,14 +1,16 @@
 <template>
   <div class="inner-space">
-    <div class="subspace">
+    <div class="max-height" v-bind:style="{width: subRoute === 'workload' ? '100%' : '50%'}">
       <div class="white card max-height">
         <div class="folder-header">
           <div class="header-title folder-name">{{folder.name}}</div>
           <div>
-            <span class="menu-title">
+            <span class="menu-title" v-bind:class="{active: view === 'list'}"
+              @click="$router.push({name: 'folder', params: {id}})">
               List
             </span>
-            <span class="menu-title">
+            <span class="menu-title" v-bind:class="{active: view === 'workload'}"
+              @click="$router.push({name: 'workload', params: {id}})">
               Workload
             </span>
           </div>
@@ -35,8 +37,11 @@ export default {
     Task,
     FolderDetail
   },
+  props: ['id'],
   data() {
+    const path = this.$route.fullPath.split('/')
     return {
+      view: path.includes('list') ? 'list' : 'workload',
       subRoute: 'folder',
       folder: {
         shareWith: []
@@ -50,13 +55,15 @@ export default {
   mounted() {
     if (this.$route.params.taskId) {
       this.subRoute = 'task'
+    } else if (this.$route.name === 'workload') {
+      this.subRoute = 'workload'
     }
   },
   apollo: {
     getFolder: {
       query: GetFolder,
       variables() {
-        return {id: this.$route.params.id}
+        return {id: this.id}
       },
       pollInterval: 90000,
       result ({data: { getFolder }}) {

@@ -41,6 +41,7 @@ const workspace = {
             {
               path: '',
               name: 'folder',
+              props: true,
               component: FolderDetail
             },
             {
