@@ -168,7 +168,8 @@ export default {
 		parseDate(date) {
 			const splitted = date.split('/')
 			if (splitted.length !== 3) return false
-			return splitted.map(o => o.length >= 2 ? o : `0${o}`).join('/')
+			const parsed = splitted.map(o => o.length >= 2 ? o : `0${o}`)
+			return `${parsed[2]}-${parsed[0]}-${parsed[1]}`
 		},
 		updateTask(e) {
 			const startDate = this.parseDate(this.startDate)

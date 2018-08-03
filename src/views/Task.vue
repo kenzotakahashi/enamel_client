@@ -7,10 +7,12 @@
         :record="getRecord"
         @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
 
-      <div v-if="showSubtasks">
-        <TaskTree v-for="model in subtasks" :key="model.id" :model="model">
-        </TaskTree>
-        <TaskForm :parentId="taskId" :open="true"></TaskForm>      
+      <div>
+        <draggable v-if="showSubtasks" v-model="subtasks" @change="reorder">
+          <TaskTree v-for="model in subtasks" :key="model.id" :model="model">
+          </TaskTree>
+        </draggable>
+        <TaskForm :parentId="taskId" :open="true"></TaskForm>
       </div>
 
       <DescriptionField :model="task" kind="task"></DescriptionField>
@@ -123,6 +125,36 @@ export default {
     // },
   },
   methods: {
+    reorder({moved: {element, newIndex}}) {
+      const parent = this.task.id
+
+      this.$apollo.mutate({
+        mutation: UpdateTask,
+        variables: {
+          id: element.id,
+          input: {
+            order: newIndex === this.getTasks.length - 1
+              ? moment().valueOf() : this.getTasks[newIndex+1].order - 1
+          }
+        },
+        update(store, { data: { updateTask } }) {
+          const data = store.readQuery({
+            query: GetTasks,
+            variables: { parent }
+          })
+          data.getTasks = data.getTasks.filter(o => o.id !== updateTask.id)
+          data.getTasks.splice(newIndex, 0, updateTask)
+          store.writeQuery({
+            query: GetTasks,
+            variables: { parent },
+            data
+          })
+        }
+      }).then(() => {
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
   }
 }
 </script>

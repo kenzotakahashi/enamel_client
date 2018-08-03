@@ -29,6 +29,7 @@ fragment TaskFields on Task {
   duration
   importance
   status
+  order
   createdAt
 }
 

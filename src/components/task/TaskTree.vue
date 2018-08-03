@@ -23,7 +23,8 @@
       </router-link>
     </div>
 
-    <ul class="tree" v-show="open" v-if="isParent">
+    <draggable class="tree" v-show="open" v-if="isParent"
+      v-model="getTasks" @change="reorder">
       <tree
         v-for="task in getTasks"
         :key="task.id"
@@ -31,13 +32,14 @@
         @open="openArrow"
       >
       </tree>
-    </ul>
+    </draggable>
   </li>
 </template>
 
 <script>
+import moment from 'moment'
 import TaskTree from './TaskTree'
-import { GetTasks } from '@/constants/query.gql'
+import { GetTasks, UpdateTask } from '@/constants/query.gql'
 import { backgroundStrongColorMap } from '@/helpers/helpers'
 
 export default {
@@ -87,6 +89,39 @@ export default {
     openArrow() {
       this.open = true
       this.$emit('open')
+    },
+    reorder({moved: {element, newIndex}}) {
+      const parent = this.model.id
+
+      this.$apollo.mutate({
+        mutation: UpdateTask,
+        variables: {
+          id: element.id,
+          input: {
+            order: newIndex === this.getTasks.length - 1
+              ? moment().valueOf() : this.getTasks[newIndex+1].order - 1
+          }
+        },
+        update(store, { data: { updateTask } }) {
+          const data = store.readQuery({
+            query: GetTasks,
+            variables: { parent }
+          })
+          data.getTasks = data.getTasks.filter(o => o.id !== updateTask.id)
+          data.getTasks.splice(newIndex, 0, updateTask)
+          store.writeQuery({
+            query: GetTasks,
+            variables: { parent },
+            data
+          })
+        }
+      }).then(() => {
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    cancel(e) {
+      e.target.blur()
     }
   }
 };

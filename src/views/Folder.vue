@@ -6,11 +6,11 @@
           <div class="header-title folder-name">{{folder.name}}</div>
         </div>
         <TaskForm></TaskForm>
-        <div class="task-container">
+        <draggable class="task-container" v-model="getTasks" @change="reorder">
           <TaskTree
             v-for="task in getTasks" :key="task.id" :model="task">
-          </TaskTree>          
-        </div>
+          </TaskTree>
+        </draggable>     
       </div>
     </div>
     <div v-if="subRoute==='task'" class="subspace">
@@ -23,7 +23,8 @@
 </template>
 
 <script>
-import { GetFolder, GetTasks, UpdateFolder } from '../constants/query.gql'
+import moment from 'moment'
+import { GetFolder, GetTasks, UpdateFolder, UpdateTask } from '../constants/query.gql'
 import TaskTree from '@/components/task/TaskTree'
 import TaskForm from '@/components/task/TaskForm'
 import FolderDetail from './FolderDetail.vue'
@@ -97,6 +98,35 @@ export default {
         variables: { id: this.folder.id, input: {name} },
       }).then(() => {
         this.cancel(e)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    reorder({moved: {element, newIndex}}) {
+      const folder = this.folder.id
+
+      this.$apollo.mutate({
+        mutation: UpdateTask,
+        variables: {
+          id: element.id,
+          input: {
+            order: newIndex === 0 ? moment().valueOf() : this.getTasks[newIndex-1].order - 1
+          }
+        },
+        update(store, { data: { updateTask } }) {
+          const data = store.readQuery({
+            query: GetTasks,
+            variables: { folder }
+          })
+          data.getTasks = data.getTasks.filter(o => o.id !== updateTask.id)
+          data.getTasks.splice(newIndex, 0, updateTask)
+          store.writeQuery({
+            query: GetTasks,
+            variables: { folder },
+            data
+          })
+        }
+      }).then(() => {
       }).catch((error) => {
         console.log(error)
       })

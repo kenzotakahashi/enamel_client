@@ -13,6 +13,7 @@ import { enableExperimentalFragmentVariables } from 'graphql-tag'
 import VueApollo from 'vue-apollo'
 import ElementUI from 'element-ui'
 import VueAnalytics from 'vue-analytics'
+import draggable from 'vuedraggable'
 
 import App from './App.vue'
 import router from './router'
@@ -28,6 +29,7 @@ import RemoveButton from '@/components/icons/RemoveButton.vue'
 import PlusButton from '@/components/icons/PlusButton.vue'
 import Navigation from '@/components/Navigation'
 
+Vue.component('draggable', draggable)
 Vue.component('navigation', Navigation)
 Vue.component('avatar', Avatar)
 Vue.component('close-button', CloseButton)
