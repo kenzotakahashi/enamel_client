@@ -1,12 +1,28 @@
 <template>
 	<div class="grid" v-bind:style="gridConfig">
-		<div v-for="(monday, i) in getMondays" :key="i" class="week"
-			v-bind:style="{'grid-column': `${i * 7 + 1} / ${(i + 1) * 7 + 1}`}">
+		<div v-for="(monday, i) in getMondays" :key="monday" class="week"
+			v-bind:style="{'grid-column': `${i * 7 + 2} / ${(i + 1) * 7 + 2}`}">
 			{{ monday }}
 		</div>
-		<div v-for="(day, i) in days" :key="i" class="day-of-week"
-			v-bind:style="{'grid-column': `${i+1} / ${i+2}` }">
+		<div v-for="(day, i) in days" :key="`day${i}`" class="day-of-week"
+			v-bind:style="{'grid-column': `${i+2} / ${i+3}` }">
 			{{ day.format('dd')[0] }}
+		</div>
+		<div v-for="user in users" :key="user.id" class="user"
+			v-bind:style="{
+				'grid-column': `1`,
+				'grid-row': `u${user.id}`
+			}">
+			<avatar :obj="user" :size="24" class="user-avatar"></avatar>
+			<span>{{ user.name }}</span>
+		</div>
+		<div v-for="t in tasks" :key="`${t.task.id}-${t.assignee}`" class="task"
+			v-bind:style="{
+				'grid-column': `d${moment(t.task.startDate).format('YYYY-MM-DD')} /
+												d${moment(t.task.finishDate).format('YYYY-MM-DD')}`,
+				'grid-row': `u${t.assignee}`
+			}">
+			{{ t.task.name }}
 		</div>
 	</div>
 </template>
@@ -19,8 +35,11 @@ export default {
 	props: ['id'],
 	data() {
 		return {
+			moment,
 			tasks: [],
 			days: [],
+			users: [],
+			assignees: {},
 			gridConfig: {
 				'grid-template-columns': '',
 				'grid-template-rows': '',
@@ -42,11 +61,11 @@ export default {
 	    },
 	    pollInterval: 10000,
 	    result({ data: { getTasks } }) {
-	    	this.tasks = getTasks.filter(o => o.finishDate)
+	    	const tasks = getTasks.filter(o => o.finishDate)
 	    	// Last Sunday
-	    	const start = moment(Math.min(...this.tasks.map(o => o.startDate))).day(-7)
+	    	const start = moment(Math.min(...tasks.map(o => o.startDate))).day(-7)
 	    	// This Sunday
-	    	const end = moment(Math.max(...this.tasks.map(o => o.finishDate))).day(7)
+	    	const end = moment(Math.max(...tasks.map(o => o.finishDate))).day(7)
 
 	    	const days = []
 	    	for (const i of [...Array(moment.duration(end.diff(start)).days()).keys()]) {
@@ -54,15 +73,29 @@ export default {
 	    	}
 	    	this.days = days
 
-	    	this.gridConfig['grid-template-columns'] = days.map(
+	    	this.gridConfig['grid-template-columns'] = '170px ' + days.map(
 	    		 o => `[d${o.format('YYYY-MM-DD')}] 25px`).join(' ')
 
-	    	let assignees = new Set()
-	    	for (const id of [].concat(...this.tasks.map(o => o.assignees.map(p => p.id)))) {
-					assignees.add(id)	    		
+	    	const users = []
+	    	const assignees = {}
+	    	this.tasks = []
+	    	for (const task of tasks) {
+	    		for (const a of task.assignees) {
+	    			if (assignees[a.id]) {
+	    				assignees[a.id].push(task)
+	    			} else {
+	    				assignees[a.id] = [task]
+	    				users.push(a)
+	    			}
+	    			this.tasks.push({task, assignee: a.id})
+	    		}
 	    	}
-	    	assignees = [...assignees].map(o => `[u${o}] 40px`).join(' ')
-	    	this.gridConfig['grid-template-rows'] = `20px 20px ${assignees}`
+	    	this.assignees = assignees
+	    	this.users = users
+	    	console.log(users)
+
+	    	const ids = users.map(o => `[u${o.id}] 40px`).join(' ')
+	    	this.gridConfig['grid-template-rows'] = `20px 20px ${ids}`
 	    },
 	    error(error) {
 	      console.error(error)
@@ -76,7 +109,7 @@ export default {
 .grid {
 	display: grid;
 	margin-top: 10px;
-	background-color: #F6F6F6;
+	background-color: #fff;
 }
 
 .week {
@@ -85,7 +118,9 @@ export default {
 	font-size: 12px;
 	background-color: #F6F6F6;
 	border: 1px solid	rgba(0,0,0,.16);
-	border-left: none;
+	&not(:first) {
+		border-left: none;
+	}
 }
 
 .day-of-week {
@@ -95,7 +130,27 @@ export default {
 	background-color: #F6F6F6;
 	border: 1px solid	rgba(0,0,0,.16);
 	border-top: none;	
-	border-left: none;	
+	&not(:first) {
+		border-left: none;
+	}
+}
+
+.task {
+	white-space: nowrap;
+	font-size: 12px;
+	background-color: #98DCE8;
+	border: 1px solid	rgba(0,0,0,.16);
+}
+
+.user {
+	font-size: 12px;
+	display: flex;
+	align-self: center;
+	align-items: center;
+}
+
+.user-avatar {
+	margin: 0 5px;
 }
 
 </style>
