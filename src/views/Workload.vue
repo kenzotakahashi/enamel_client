@@ -11,7 +11,7 @@
 		<div v-for="user in users" :key="user.id" class="user"
 			v-bind:style="{
 				'grid-column': `1`,
-				'grid-row': `u${user.id}`
+				'grid-row': `u${user.id}-0 / span ${assignees[user.id].slots}`
 			}">
 			<avatar :obj="user" :size="24" class="user-avatar"></avatar>
 			<span>{{ user.name }}</span>
@@ -20,9 +20,9 @@
 			v-bind:style="{
 				'grid-column': `d${moment(t.task.startDate).format('YYYY-MM-DD')} /
 												d${moment(t.task.finishDate).format('YYYY-MM-DD')}`,
-				'grid-row': `u${t.assignee}`
+				'grid-row': `u${t.assignee}-${t.slot}`
 			}">
-			{{ t.task.name }}
+			<div>{{ t.task.name }}</div>
 		</div>
 	</div>
 </template>
@@ -30,6 +30,34 @@
 <script>
 import moment from 'moment'
 import { GetTasks, UpdateTask } from '../constants/query.gql'
+
+function rearrangeTasks (tasks) {
+	const sorted = tasks.sort((a,b) => a.startDate - b.startDate)
+	const rearraned = [{
+		slot: 0,
+		task: sorted[0]
+	}]
+	const slots = [sorted[0].finishDate]
+	for (const task of sorted.slice(1)) {
+		const set = false
+		for (const [i, slot] of slots.entries()) {
+			if (task.startDate >= slot) {
+				slots[i] = task.finishDate
+				rearraned.push({ slot: i, task })
+				set = true
+				break
+			}
+		}
+		if (!set) {
+			slots.push(task.finishDate)
+			rearraned.push({ slot: slots.length - 1, task })
+		}
+	}
+	return {
+		slots: slots.length,
+		tasks: rearraned
+	}
+}
 
 export default {
 	props: ['id'],
@@ -78,7 +106,6 @@ export default {
 
 	    	const users = []
 	    	const assignees = {}
-	    	this.tasks = []
 	    	for (const task of tasks) {
 	    		for (const a of task.assignees) {
 	    			if (assignees[a.id]) {
@@ -90,12 +117,19 @@ export default {
 	    			this.tasks.push({task, assignee: a.id})
 	    		}
 	    	}
+	    	this.tasks = []
+	    	let rows = []
+	    	for (const id in assignees) {
+	    		const rearraned = rearrangeTasks(assignees[id])
+	    		assignees[id] = rearraned
+	    		this.tasks = this.tasks.concat(rearraned.tasks.map(o => ({ ...o, assignee: id })))
+	    		rows = rows.concat([...Array(rearraned.slots).keys()].map(
+	    			o => `[u${id}-${o}] ${o ? 25 : 35}px`))
+	    	}
 	    	this.assignees = assignees
-	    	this.users = users
-	    	console.log(users)
+				this.users = users	    	
 
-	    	const ids = users.map(o => `[u${o.id}] 40px`).join(' ')
-	    	this.gridConfig['grid-template-rows'] = `20px 20px ${ids}`
+	    	this.gridConfig['grid-template-rows'] = `20px 20px ${rows.join(' ')}`
 	    },
 	    error(error) {
 	      console.error(error)
@@ -119,7 +153,7 @@ export default {
 	background-color: #F6F6F6;
 	border: 1px solid	rgba(0,0,0,.16);
 	&not(:first) {
-		border-left: none;
+		border-left: 0;
 	}
 }
 
@@ -129,17 +163,24 @@ export default {
 	font-size: 12px;
 	background-color: #F6F6F6;
 	border: 1px solid	rgba(0,0,0,.16);
-	border-top: none;	
+	border-top: 0;	
 	&not(:first) {
-		border-left: none;
+		border-left: 0;
 	}
 }
 
 .task {
+	align-self: center;
+	overflow: hidden;
 	white-space: nowrap;
 	font-size: 12px;
 	background-color: #98DCE8;
 	border: 1px solid	rgba(0,0,0,.16);
+	margin: 0 1px;
+	div {
+		padding: 2px 0;
+		height: 20px;
+	}
 }
 
 .user {
@@ -147,6 +188,11 @@ export default {
 	display: flex;
 	align-self: center;
 	align-items: center;
+	height: 100%;
+	border: 1px solid	rgba(0,0,0,.16);
+	+ .user {
+		border-top: 0;
+	}	
 }
 
 .user-avatar {
