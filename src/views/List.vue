@@ -32,9 +32,6 @@ export default {
       variables() {
         return { folder: this.id }
       },
-      skip() {
-        return !this.id
-      },
       pollInterval: 10000,
       error(error) {
         console.error(error)

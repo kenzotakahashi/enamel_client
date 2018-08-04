@@ -55,6 +55,7 @@ const workspace = {
         {
           path: 'workload',
           name: 'workload',
+          props: true,
           component: Workload
         }
       ]
