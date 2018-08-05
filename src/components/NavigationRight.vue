@@ -2,10 +2,10 @@
   <div class="dropdown" @click.stop="$store.dispatch('changeActiveWidget', 'account-menu')">
     <div class="user-container">
       <avatar :obj="getUser" :size="32" class="nav-avatar"></avatar>
-      <span class="name">
+<!--       <span class="name">
         {{getUser.name}}
         <i class="fas fa-angle-down"></i>
-      </span>
+      </span> -->
     </div>
     <div class="dropdown-content" v-show="activeWidget === 'account-menu'">
       <div v-if="['Owner', 'Administrator'].includes(getUser.role) && route !== 'account'">

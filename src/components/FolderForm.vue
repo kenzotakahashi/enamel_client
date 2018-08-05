@@ -1,7 +1,7 @@
 <template>
-  <div class="modal-mask white">
+  <div class="modal-mask white" @click="$emit('close')">
     <div class="modal-wrapper">
-      <div class="modal-container">
+      <div class="modal-container" @click.stop="$store.dispatch('changeActiveWidget', null)">
         <el-row>
           <el-col :span="12">
             <h3>Create {{mode}}</h3>

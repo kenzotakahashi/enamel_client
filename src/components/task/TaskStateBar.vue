@@ -84,7 +84,8 @@
 <script>
 import { mapState } from 'vuex'
 import { UpdateTask } from '@/constants/query.gql'
-import { backgroundStrongColorMap, formatDate } from '@/helpers/helpers'
+import { backgroundColorMap, backgroundStrongColorMap, borderColorMap,
+ formatDate } from '@/helpers/helpers'
 
 export default {
   props: ['task', 'users'],
@@ -93,21 +94,9 @@ export default {
       formatDate,
       searchUser: '',
       statusList: ['New', 'In Progress', 'Completed', 'On Hold', 'Cancelled'],
+      backgroundColorMap,
       backgroundStrongColorMap,
-      backgroundColorMap: {
-        New: 'rgb(227, 242, 253)',
-        'In Progress': '#e0f7fa',
-        Completed: '#f1f8e9',
-        'On Hold': '#fafafa',
-        Cancelled: '#fafafa',
-      },
-      borderColorMap: {
-        New: 'rgb(211, 228, 242)',
-        'In Progress': '#ceeaee',
-        Completed: '#e3ebd9',
-        'On Hold': '#e5e5e5',
-        Cancelled: '#e5e5e5',
-      },
+      borderColorMap,
     }
   },
   computed: {

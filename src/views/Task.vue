@@ -5,14 +5,14 @@
       <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
       <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
         :record="getRecord"
-        @toggleSubtaskView="showSubtasks = !showSubtasks"></TaskSettingBar>
+        @toggleSubtaskView="toggleSubtaskView"></TaskSettingBar>
 
-      <div>
-        <draggable v-if="showSubtasks" v-model="subtasks" @change="reorder">
+      <div v-if="showSubtasks">
+        <draggable v-model="subtasks" @change="reorder">
           <TaskTree v-for="model in subtasks" :key="model.id" :model="model">
           </TaskTree>
         </draggable>
-        <TaskForm :parentId="taskId" :open="true"></TaskForm>
+        <TaskForm :parentId="taskId" :open="openForm"></TaskForm>
       </div>
 
       <DescriptionField :model="task" kind="task"></DescriptionField>
@@ -68,6 +68,7 @@ export default {
         shareWith: []
       },
       showSubtasks: false,
+      openForm: false,
       subtasks: [],
       comments: [],
       getRecord: {},
@@ -99,6 +100,9 @@ export default {
       },
       result({ data: {getTasks} }) {
         this.subtasks = getTasks
+        if (getTasks.length) {
+          this.showSubtasks = true          
+        }
       },
     },
     getRecord: {
@@ -125,6 +129,10 @@ export default {
     // },
   },
   methods: {
+    toggleSubtaskView() {
+      this.openForm = !this.showSubtasks
+      this.showSubtasks = !this.showSubtasks
+    },
     reorder({moved: {element, newIndex}}) {
       const parent = this.task.id
 

@@ -1,35 +1,59 @@
 <template>
-	<div class="grid" v-bind:style="gridConfig">
-		<div v-for="(monday, i) in getMondays" :key="monday" class="week"
-			v-bind:style="{'grid-column': `${i * 7 + 2} / ${(i + 1) * 7 + 2}`}">
-			{{ monday }}
+	<div>
+		<div class="grid" v-bind:style="gridConfig">
+			<div v-for="(monday, i) in getMondays" :key="monday" class="week"
+				v-bind:style="{'grid-column': `${i * 7 + 2} / ${(i + 1) * 7 + 2}`}">
+				{{ monday }}
+			</div>
+			<div v-for="(day, i) in days" :key="`day${i}`" class="day-of-week"
+				v-bind:style="{'grid-column': `${i+2} / ${i+3}` }">
+				{{ day.format('dd')[0] }}
+			</div>
+			<div v-for="i in getWeekends" :key="`saturday-${i}`" class="saturday"
+				v-bind:style="{'grid-column': `${i * 7 + 7}` }">
+			</div>		
+			<div v-for="i in getWeekends" :key="`sunday-${i}`" class="sunday"
+				v-bind:style="{'grid-column': `${i * 7 + 8}` }">
+			</div>		
+
+			<div v-for="user in users" :key="user.id" class="user"
+				v-bind:style="{
+					'grid-column': `1`,
+					'grid-row': `u${user.id}-0 / span ${assignees[user.id].slots}`
+				}">
+				<avatar :obj="user" :size="24" class="user-avatar"></avatar>
+				<span>{{ user.name }}</span>
+			</div>
+			<div v-for="t in tasks" :key="`${t.task.id}-${t.assignee}`" class="task"
+				@click="showTaskModal(t.task.id)"
+				v-bind:style="{
+					'grid-column': `d${moment(t.task.startDate).format('YYYY-MM-DD')} /
+													d${moment(t.task.finishDate).format('YYYY-MM-DD')}`,
+					'grid-row': `u${t.assignee}-${t.slot}`,
+					'align-self': t.slot ? 'start' : 'center',
+					'background-color': borderColorMap[t.task.status]
+				}">
+				<div>{{ t.task.name }}</div>
+			</div>
 		</div>
-		<div v-for="(day, i) in days" :key="`day${i}`" class="day-of-week"
-			v-bind:style="{'grid-column': `${i+2} / ${i+3}` }">
-			{{ day.format('dd')[0] }}
-		</div>
-		<div v-for="user in users" :key="user.id" class="user"
-			v-bind:style="{
-				'grid-column': `1`,
-				'grid-row': `u${user.id}-0 / span ${assignees[user.id].slots}`
-			}">
-			<avatar :obj="user" :size="24" class="user-avatar"></avatar>
-			<span>{{ user.name }}</span>
-		</div>
-		<div v-for="t in tasks" :key="`${t.task.id}-${t.assignee}`" class="task"
-			v-bind:style="{
-				'grid-column': `d${moment(t.task.startDate).format('YYYY-MM-DD')} /
-												d${moment(t.task.finishDate).format('YYYY-MM-DD')}`,
-				'grid-row': `u${t.assignee}-${t.slot}`
-			}">
-			<div>{{ t.task.name }}</div>
-		</div>
+
+	  <div v-if="showTask"
+	   	class="modal-mask white" @click="showTask = false">
+	    <div class="modal-wrapper">
+	      <div class="modal-container" @click.stop="$store.dispatch('changeActiveWidget', null)">
+	      	<Task :taskId="taskId"></Task>
+	      </div>
+	    </div>
+	  </div>
 	</div>
+
 </template>
 
 <script>
 import moment from 'moment'
 import { GetTasks, UpdateTask } from '../constants/query.gql'
+import { borderColorMap } from '@/helpers/helpers'
+import Task from '@/views/Task'
 
 function rearrangeTasks (tasks) {
 	const sorted = tasks.sort((a,b) => a.startDate - b.startDate)
@@ -61,9 +85,15 @@ function rearrangeTasks (tasks) {
 
 export default {
 	props: ['id'],
+	components: {
+		Task
+	},
 	data() {
 		return {
 			moment,
+			borderColorMap,
+			showTask: false,
+			taskId: null,
 			tasks: [],
 			days: [],
 			users: [],
@@ -76,9 +106,11 @@ export default {
 	},
 	computed: {
 		getMondays() {
-			if (this.days.length === 0) return []
 			return [...Array(this.days.length / 7).keys()].map(
 				o => this.days[o * 7].format('MMM DD, YYYY'))
+		},
+		getWeekends() {
+			return [...Array(this.days.length / 7).keys()]
 		}
 	},
 	apollo: {
@@ -93,7 +125,7 @@ export default {
 	    	// Last Sunday
 	    	const start = moment(Math.min(...tasks.map(o => o.startDate))).day(-7)
 	    	// This Sunday
-	    	const end = moment(Math.max(...tasks.map(o => o.finishDate))).day(7)
+	    	const end = moment(Math.max(...tasks.map(o => o.finishDate))).day(14)
 
 	    	const days = []
 	    	for (const i of [...Array(moment.duration(end.diff(start)).days()).keys()]) {
@@ -124,17 +156,23 @@ export default {
 	    		assignees[id] = rearraned
 	    		this.tasks = this.tasks.concat(rearraned.tasks.map(o => ({ ...o, assignee: id })))
 	    		rows = rows.concat([...Array(rearraned.slots).keys()].map(
-	    			o => `[u${id}-${o}] ${o ? 25 : 35}px`))
+	    			o => `[u${id}-${o}] ${o ? 30 : 35}px`))
 	    	}
 	    	this.assignees = assignees
 				this.users = users	    	
 
-	    	this.gridConfig['grid-template-rows'] = `20px 20px ${rows.join(' ')}`
+	    	this.gridConfig['grid-template-rows'] = `20px 20px ${rows.join(' ')} [end]`
 	    },
 	    error(error) {
 	      console.error(error)
 	    }
 	  }
+	},
+	methods: {
+		showTaskModal(id) {
+			this.taskId = id
+			this.showTask = true
+		}
 	}
 }
 </script>
@@ -144,6 +182,9 @@ export default {
 	display: grid;
 	margin-top: 10px;
 	background-color: #fff;
+	border: 1px solid	rgba(0,0,0,.16);
+	border-left: 0;
+	border-right: 0;
 }
 
 .week {
@@ -152,7 +193,8 @@ export default {
 	font-size: 12px;
 	background-color: #F6F6F6;
 	border: 1px solid	rgba(0,0,0,.16);
-	&not(:first) {
+	border-top: 0;
+	+ .week {
 		border-left: 0;
 	}
 }
@@ -164,17 +206,31 @@ export default {
 	background-color: #F6F6F6;
 	border: 1px solid	rgba(0,0,0,.16);
 	border-top: 0;	
-	&not(:first) {
+	+ .day-of-week {
 		border-left: 0;
 	}
 }
 
+.saturday, .sunday {
+	grid-row: 3 / end;
+	background-color: #F3F3F3;
+}
+
+.saturday {
+	margin-right: 1px;
+}
+
+.sunday {
+	margin-left: 1px;
+	border-right: 1px solid	rgba(0,0,0,.16);
+}
+
+
 .task {
-	align-self: center;
 	overflow: hidden;
 	white-space: nowrap;
+	cursor: pointer;
 	font-size: 12px;
-	background-color: #98DCE8;
 	border: 1px solid	rgba(0,0,0,.16);
 	margin: 0 1px;
 	div {
@@ -190,13 +246,19 @@ export default {
 	align-items: center;
 	height: 100%;
 	border: 1px solid	rgba(0,0,0,.16);
-	+ .user {
-		border-top: 0;
-	}	
+	border-bottom: 0;
 }
 
 .user-avatar {
 	margin: 0 5px;
+}
+
+.modal-container {
+  width: 600px;
+  padding: 0;
+  .card {
+  	margin: 0;
+  }
 }
 
 </style>
