@@ -125,13 +125,13 @@ export default {
 	    	// Last Sunday
 	    	const start = moment(Math.min(...tasks.map(o => o.startDate))).day(-7)
 	    	// This Sunday
-	    	const end = moment(Math.max(...tasks.map(o => o.finishDate))).day(14)
+	    	const end = moment(Math.max(...tasks.map(o => o.finishDate))).day(7)
 
-	    	const days = []
-	    	for (const i of [...Array(moment.duration(end.diff(start)).days()).keys()]) {
-	    		days.push(moment(start).add(i+1, 'd'))
-	    	}
-	    	this.days = days
+				const days = []
+				for (const i of [...Array(end.diff(start, 'days')).keys()]) {
+					days.push(moment(start).add(i+1, 'd'))
+				}
+				this.days = days
 
 	    	this.gridConfig['grid-template-columns'] = '170px ' + days.map(
 	    		 o => `[d${o.format('YYYY-MM-DD')}] 25px`).join(' ')
@@ -178,6 +178,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .grid {
 	display: grid;
 	margin-top: 10px;

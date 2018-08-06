@@ -6,7 +6,6 @@ import { persistCache } from 'apollo-cache-persist'
 import { onError } from "apollo-link-error"
 import { ApolloLink, split } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
-import { withClientState } from 'apollo-link-state'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 import { enableExperimentalFragmentVariables } from 'graphql-tag'

@@ -15,7 +15,7 @@
 
 <script>
 import { GetTasks, GetTask, CreateTask } from '@/constants/query.gql'
-import shortid from 'shortid'
+// import shortid from 'shortid'
 
 export default {
   props: ['parentId', 'open'],

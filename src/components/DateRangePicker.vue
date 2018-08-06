@@ -172,18 +172,20 @@ export default {
 			return `${parsed[2]}-${parsed[0]}-${parsed[1]}`
 		},
 		updateTask(e) {
-			const startDate = this.parseDate(this.startDate)
-			const finishDate = this.parseDate(this.finishDate)
-			const duration = moment.duration(moment(finishDate).diff(moment(startDate))).asDays() + 1
+			let input
+			if (this.startDate) {
+				const startDate = this.parseDate(this.startDate)
+				const finishDate = this.parseDate(this.finishDate)
+				const duration = moment.duration(moment(finishDate).diff(moment(startDate))).asDays() + 1
+				input = { startDate, finishDate, duration}				
+			} else {
+				input = { startDate: null, finishDate: null, duration: this.duration }
+			}
 		  this.$apollo.mutate({
 		    mutation: UpdateTask,
 		    variables: {
 		    	id: this.task.id,
-		    	input: {
-		    		startDate,
-		    		finishDate,
-		    		duration
-		    	}
+		    	input
 		    },
 		  }).then(() => {
 				this.changeActiveWidget(null)
