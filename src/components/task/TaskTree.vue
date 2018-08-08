@@ -29,6 +29,7 @@
         v-for="task in getTasks"
         :key="task.id"
         :model="task"
+        :isOpen="openState[task.id]"
         @open="openArrow"
       >
       </tree>
@@ -38,6 +39,7 @@
 
 <script>
 import moment from 'moment'
+import { mapState } from 'vuex'
 import TaskTree from './TaskTree'
 import { GetTasks, UpdateTask } from '@/constants/query.gql'
 import { backgroundStrongColorMap } from '@/helpers/helpers'
@@ -47,9 +49,7 @@ export default {
   components: {
     'tree': TaskTree,
   },
-  props: {
-    model: Object
-  },
+  props: ['model', 'isOpen'],
   mounted() {
     if (this.isSeletecd) {
       this.$emit('open')
@@ -57,7 +57,7 @@ export default {
   },
   data() {
     return {
-      open: false,
+      open: this.isOpen,
       getTasks: [],
       backgroundStrongColorMap
     }
@@ -68,7 +68,8 @@ export default {
     },
     isSeletecd() {
       return this.$route.params.taskId === this.model.id
-    }
+    },
+    ...mapState(['openState'])
   },
   apollo: {
     getTasks: {
@@ -85,8 +86,10 @@ export default {
   methods: {
     toggle() {
       this.open = !this.open
+      this.$store.commit('changeOpenState', {id: this.model.id})
     },
     openArrow() {
+      this.$store.commit('changeOpenState', {id: this.model.id, val: true})
       this.open = true
       this.$emit('open')
     },

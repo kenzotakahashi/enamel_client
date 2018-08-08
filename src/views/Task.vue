@@ -9,7 +9,8 @@
 
       <div v-if="showSubtasks">
         <draggable v-model="subtasks" @change="reorder">
-          <TaskTree v-for="model in subtasks" :key="model.id" :model="model">
+          <TaskTree v-for="model in subtasks" :key="model.id" :model="model"
+            :isOpen="openState[task.id]">
           </TaskTree>
         </draggable>
         <TaskForm :parentId="taskId" :open="openForm"></TaskForm>
@@ -76,7 +77,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeWidget'])
+    ...mapState(['activeWidget','openState'])
   },
   apollo: {
     getTask: {

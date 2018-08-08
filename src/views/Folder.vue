@@ -96,7 +96,6 @@ export default {
 .folder-header {
   padding: 15px 24px 0;
   line-height: 21px;
-  min-height: 40px;
 }
 
 .folder-name {

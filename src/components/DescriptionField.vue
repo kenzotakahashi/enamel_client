@@ -3,7 +3,7 @@
     <span v-show="!showForm" class="description-text">Click to add the description</span>
     <div v-show="showForm">
       <textarea
-        cols="5"
+        cols="10"
         ref="descriptionform"
         v-model="description"
         @keyup.esc="closeForm"
@@ -61,6 +61,11 @@ export default {
     cancel(e) {
       e.target.blur()
     }
+  },
+  watch: {
+    model(newVal, oldVal) {
+      this.description = newVal.description
+    }
   }
 }
 
@@ -76,7 +81,7 @@ export default {
 
 textarea {
   width: 100%;
-  height: 100px;
+  height: 200px;
   display: block;
 }
 

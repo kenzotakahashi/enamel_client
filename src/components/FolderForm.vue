@@ -2,37 +2,19 @@
   <div class="modal-mask white" @click="$emit('close')">
     <div class="modal-wrapper">
       <div class="modal-container" @click.stop="$store.dispatch('changeActiveWidget', null)">
-        <el-row>
-          <el-col :span="12">
-            <h3>Create {{mode}}</h3>
 
-            <div>
-              <el-input type="text" name="foldername" ref="foldername" v-model="form.name"
-                :placeholder="`${mode} name`" :autofocus="true" @keyup.esc="$emit('close')">
-              </el-input>
-            </div>
-<!--             <div class="radio-group">
-              <el-radio v-model="mode" label="project">
-                Project
-              </el-radio>
-              <div class="description">
-                Use Projects to manage tasks that are part of a larger goal. Projects can have their own attributes separate from tasks, like Status and Finish Date, which you can track.
-              </div>
-              <el-radio v-model="mode" label="folder">
-                Folder
-              </el-radio>
-              <div class="description">
-                Use Folders as containers to organize and categorize work, making it easier to find and share information. Unlike Projects, Folders do not have attributes you can track.
-              </div>
-            </div> -->
+        <h3>Create {{mode}}</h3>
 
-            <div class="button-group">
-              <el-button type="primary" @click="create(mode)">Create</el-button>
-              <el-button type="text" @click="$emit('close')">Cancel</el-button>              
-            </div>
+        <el-form model="form" @submit.native.prevent="createFolder">
+          <el-input type="text" name="foldername" ref="foldername" v-model="form.name"
+            :placeholder="`${mode} name`" :autofocus="true" @keyup.esc="$emit('close')">
+          </el-input>
+        </el-form>
 
-          </el-col>
-        </el-row>
+        <div class="button-group">
+          <el-button type="primary" @click="createFolder">Create</el-button>
+          <el-button type="text" @click="$emit('close')">Cancel</el-button>              
+        </div>
 
       </div>
     </div>
@@ -40,7 +22,7 @@
 </template>
 
 <script>
-import { CreateFolder, CreateProject, GetFolders } from '../constants/query.gql'
+import { CreateFolder, GetFolders } from '../constants/query.gql'
 
 export default {
   props: ['config'],
@@ -49,7 +31,6 @@ export default {
       form: {
         name: '',
         shareWith: [],
-        owners: []
       },
       mode: this.config.mode
     }
@@ -58,17 +39,10 @@ export default {
     this.$refs.foldername.focus()
   },
   methods: {
-    create(mode) {
-      const { name, shareWith, owners } = this.form
+    createFolder() {
+      const { name, shareWith } = this.form
       if (!name) return
       const parent = this.config.parent
-      if (mode === 'folder') {
-        this.createFolder(name, parent, shareWith)
-      } else {
-        this.createProject(name, parent, shareWith, owners)
-      }
-    },
-    createFolder(name, parent, shareWith) {
       this.$apollo.mutate({
         mutation: CreateFolder,
         variables: {name, parent, shareWith},
@@ -95,33 +69,6 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
-    },
-    createProject(name, parent, shareWith, owners) {
-      this.$apollo.mutate({
-        mutation: CreateProject,
-        variables: {name, parent, shareWith, owners},
-        update: (store, { data: { createProject } }) => {
-          try {
-            const data = store.readQuery({
-              query: GetFolders,
-              variables: {parent}
-            })
-            data.getFolders.push(createProject)
-            store.writeQuery({
-              query: GetFolders,
-              variables: {parent},
-              data
-            })
-          } catch(err) {
-            console.log(err)
-          }
-        }
-      }).then(({ data: { createProject } }) => {
-        this.$emit('close')
-        this.$router.push({name: 'folder', params: {id: createProject.id} })
-      }).catch((error) => {
-        console.log(error)
-      })
     }
   }
 }
@@ -131,7 +78,7 @@ export default {
 <style scoped>
 
 .modal-container {
-  width: 600px;
+  width: 400px;
 }
 
 .radio-group {

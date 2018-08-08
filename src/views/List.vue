@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="task-container">
   	<TaskForm></TaskForm>
-  	<draggable class="task-container" v-model="getTasks" @change="reorder">
+  	<draggable v-model="getTasks" @change="reorder">
   	  <TaskTree
-  	    v-for="task in getTasks" :key="task.id" :model="task">
+  	    v-for="task in getTasks" :key="task.id" :model="task" :isOpen="openState[task.id]">
   	  </TaskTree>
   	</draggable>
   </div>
@@ -11,6 +11,7 @@
 
 <script>
 import moment from 'moment'
+import { mapState } from 'vuex'
 import { GetTasks, UpdateTask } from '../constants/query.gql'
 import TaskTree from '@/components/task/TaskTree'
 import TaskForm from '@/components/task/TaskForm'
@@ -25,6 +26,9 @@ export default {
     return {
       getTasks: []
     }
+  },
+  computed: {
+    ...mapState(['openState'])
   },
   apollo: {
     getTasks: {
@@ -83,7 +87,6 @@ export default {
 }
 
 .task-container {
-  flex-grow: 1;
   overflow: scroll;
 }
 
