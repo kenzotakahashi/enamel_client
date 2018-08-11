@@ -22,6 +22,7 @@ export default new Vuex.Store({
     changeMode(state, {type, item}) {
       state.mode = type
       state.tempItem = item
+      state.activeWidget = null
     }
   },
   actions: {

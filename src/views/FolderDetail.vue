@@ -11,7 +11,7 @@
 
 
       <div class="tooltip">
-        <div v-show="activeWidget === 'addFolderShareTooltip'" class="tooltip-content bottom" @click.stop="">
+        <div v-if="activeWidget === 'addFolderShareTooltip'" class="tooltip-content bottom" @click.stop="">
           <div class="group-field">
             <div class="add-additional">
               <avatar v-for="group in shareWith" :key="group.id" 

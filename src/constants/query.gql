@@ -49,6 +49,7 @@ fragment FolderFields on Folder {
   parent
   description
   shareWith
+  createdAt
 }
 
 fragment ProjectFields on Project {

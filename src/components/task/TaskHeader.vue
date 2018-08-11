@@ -25,7 +25,7 @@
         <span class="icon dropdown" @click.stop="$store.dispatch('changeActiveWidget', 'task-menu')">
           <i class="fas fa-ellipsis-h"></i>
           <div class="dropdown-content right" v-show="activeWidget === 'task-menu'">
-            <div @click="$store.commit('changeMode', {type: 'task', item: task})">Move task</div>
+            <div @click="$store.commit('changeMode', {type: 'task', item: task})">Move</div>
             <!-- <div>Duplicate task</div> -->
             <!-- <div>Request status update</div> -->
             <!-- <div>Print</div> -->
@@ -33,7 +33,7 @@
             <!-- <div>Enter full screeen</div> -->
             <!-- <div>Open task in separate tab</div> -->
             <!-- <hr></hr> -->
-            <div @click="deleteTask">Delete task</div>
+            <div @click="deleteTask">Delete</div>
             <!-- <hr></hr> -->
             <!-- <div>Close panel</div> -->
           </div>

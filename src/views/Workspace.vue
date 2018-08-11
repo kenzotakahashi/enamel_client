@@ -29,10 +29,10 @@
       <div v-if="mode === 'default'" class="workspace-main">
         <router-view :key="$route.fullPath"></router-view>
       </div>
-      <div v-else-if="mode === 'task'" class="modal-mask move">
+      <div v-else class="modal-mask move">
         <div class="modal-wrapper">
           <div class="modal-container">
-            <div>Select the folder you want to move your task to</div>
+            <div>Select the folder you want to move your {{mode}} to</div>
             <el-button type="text" class="cancel-button" size="small"
               @click="$store.commit('changeMode', {type: 'default'})">Cancel</el-button>
           </div>

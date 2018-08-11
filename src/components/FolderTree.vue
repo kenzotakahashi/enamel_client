@@ -12,7 +12,8 @@
         <span class="folder no-select-color">{{ model.name }}</span>
 
         <div class="dropdown-content left" v-show="activeWidget === `folder${model.id}`">
-          <div @click="openModal('folder')">Add Folder</div>
+          <div @click="openModal">Add Folder</div>
+          <div @click.stop="$store.commit('changeMode', {type: 'folder', item: model})">Move</div>
           <!-- <div @click="openModal('project')">Add Project</div> -->
           <!-- <div>Share</div> -->
           <!-- <div>Rename</div> -->
@@ -41,7 +42,8 @@
 import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
 import FolderForm from './FolderForm'
-import { GetFolders, DeleteFolder, UpdateTask, GetTasks } from '../constants/query.gql'
+import { GetFolders, UpdateFolder, DeleteFolder, UpdateTask,
+  GetTasks } from '../constants/query.gql'
 
 export default {
   name: 'tree',
@@ -54,7 +56,8 @@ export default {
     return {
       open: false,
       modalConfig: {
-        mode: 'folder'
+        mode: 'folder',
+        parent: this.model.id
       },
       showModal: false,
       getFolders: []
@@ -97,23 +100,20 @@ export default {
         this.open = !this.open
       }
     },
-    openModal(mode) {
+    openModal() {
       this.$store.dispatch('changeActiveWidget', null)
       this.showModal = true
-      this.modalConfig = {
-        mode,
-        parent: this.model.id
-      }
     },
     openArrow() {
       this.open = true
       this.$emit('open')
     },
     leftClick() {
-      if (this.mode === 'task') {
-        const folder = this.model.id
-        const item = this.tempItem
-
+      const folder = this.model.id
+      const item = this.tempItem
+      if (this.mode === 'default') {
+        this.$router.push({name: 'folder', params: {id: this.model.id}})
+      } else if (this.mode === 'task') {
         this.$apollo.mutate({
           mutation: UpdateTask,
           variables: {
@@ -152,11 +152,52 @@ export default {
           }
         }).then(() => {
           this.$store.commit('changeMode', {type: 'default'})
+          this.$router.push({name: 'folder', params: {id: this.model.id}})
+        }).catch((error) => {
+          console.log(error)
+        })
+      } else if (this.mode === 'folder') {
+        this.$apollo.mutate({
+          mutation: UpdateFolder,
+          variables: {
+            id: item.id,
+            input: {
+              parent: folder,
+              shareWith: []
+            }
+          },
+          update(store, { data: { updateFolder } }) {
+            const data = store.readQuery({
+              query: GetFolders,
+              variables: { parent: folder }
+            })
+            data.getFolders.push(updateFolder)
+            data.getFolders.sort((a,b) => a.createdAt - b.createdAt)
+            store.writeQuery({
+              query: GetFolders,
+              variables: { parent: folder },
+              data
+            })
+
+            const variables = item.parent ? { parent: item.parent.id } : {}
+            const data2 = store.readQuery({
+              query: GetFolders,
+              variables
+            })
+            data2.getFolders = data2.getFolders.filter(o => o.id !== updateFolder.id)
+            store.writeQuery({
+              query: GetFolders,
+              variables,
+              data: data2
+            })
+          }
+        }).then(() => {
+          this.$store.commit('changeMode', {type: 'default'})
+          this.$router.push({name: 'folder', params: {id: item.id}})
         }).catch((error) => {
           console.log(error)
         })
       }
-      this.$router.push({name: 'folder', params: {id: this.model.id}})
     },
     deleteFolder() {
       const { id, parent } = this.model
