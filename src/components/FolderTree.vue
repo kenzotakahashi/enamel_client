@@ -42,8 +42,8 @@
 import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
 import FolderForm from './FolderForm'
-import { GetFolders, UpdateFolder, DeleteFolder, UpdateTask,
-  GetTasks } from '../constants/query.gql'
+import { GetFolders, UpdateFolder, DeleteFolder } from '../constants/query.gql'
+import { moveTask } from '@/helpers/helpers'
 
 export default {
   name: 'tree',
@@ -112,51 +112,12 @@ export default {
       const folder = this.model.id
       const item = this.tempItem
       if (this.mode === 'default') {
-        this.$router.push({name: 'folder', params: {id: this.model.id}})
+        this.$store.dispatch('changeActiveWidget', null)
+        this.$router.push({name: 'folder', params: {id: folder}})
       } else if (this.mode === 'task') {
-        this.$apollo.mutate({
-          mutation: UpdateTask,
-          variables: {
-            id: item.id,
-            input: {
-              parent: null,
-              folders: [folder]
-            }
-          },
-          update(store, { data: { updateTask } }) {
-            const data = store.readQuery({
-              query: GetTasks,
-              variables: { folder }
-            })
-            data.getTasks.push(updateTask)
-            data.getTasks.sort((a,b) => a.order - b.order)
-            store.writeQuery({
-              query: GetTasks,
-              variables: { folder },
-              data
-            })
-
-            const variables = item.parent
-              ? { parent: item.parent.id }
-              : { folder: item.folders[0].id }
-            const data2 = store.readQuery({
-              query: GetTasks,
-              variables
-            })
-            data2.getTasks = data2.getTasks.filter(o => o.id !== updateTask.id)
-            store.writeQuery({
-              query: GetTasks,
-              variables,
-              data: data2
-            })
-          }
-        }).then(() => {
-          this.$store.commit('changeMode', {type: 'default'})
-          this.$router.push({name: 'folder', params: {id: this.model.id}})
-        }).catch((error) => {
-          console.log(error)
-        })
+        moveTask(this, folder, item)
       } else if (this.mode === 'folder') {
+        if (folder === item.id) return
         this.$apollo.mutate({
           mutation: UpdateFolder,
           variables: {
@@ -167,27 +128,20 @@ export default {
             }
           },
           update(store, { data: { updateFolder } }) {
-            const data = store.readQuery({
+            const variables = item.parent ? { parent: item.parent } : {}
+            const data = store.readQuery({ query: GetFolders, variables })
+            data.getFolders = data.getFolders.filter(o => o.id !== updateFolder.id)
+            store.writeQuery({ query: GetFolders, variables, data })
+
+            const data2 = store.readQuery({
               query: GetFolders,
               variables: { parent: folder }
             })
-            data.getFolders.push(updateFolder)
-            data.getFolders.sort((a,b) => a.createdAt - b.createdAt)
+            data2.getFolders.push(updateFolder)
+            data2.getFolders.sort((a,b) => a.createdAt - b.createdAt)
             store.writeQuery({
               query: GetFolders,
               variables: { parent: folder },
-              data
-            })
-
-            const variables = item.parent ? { parent: item.parent.id } : {}
-            const data2 = store.readQuery({
-              query: GetFolders,
-              variables
-            })
-            data2.getFolders = data2.getFolders.filter(o => o.id !== updateFolder.id)
-            store.writeQuery({
-              query: GetFolders,
-              variables,
               data: data2
             })
           }

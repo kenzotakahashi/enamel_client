@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { UpdateTask, GetTasks } from '@/constants/query.gql'
 
 export const formatDate = (date) => {
   const day = moment(date).format('MMM DD')
@@ -37,4 +38,52 @@ export const borderColorMap = {
 export function validateEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase())
+}
+
+export function moveTask(vm, folder, item) {
+  vm.$apollo.mutate({
+    mutation: UpdateTask,
+    variables: {
+      id: item.id,
+      input: {
+        parent: null,
+        folders: [folder]
+      }
+    },
+    update(store, { data: { updateTask } }) {
+      try {
+        const data = store.readQuery({
+          query: GetTasks,
+          variables: { folder }
+        })
+        data.getTasks.push(updateTask)
+        data.getTasks.sort((a,b) => a.order - b.order)
+        store.writeQuery({
+          query: GetTasks,
+          variables: { folder },
+          data
+        })
+
+        const variables = item.parent
+          ? { parent: item.parent.id }
+          : { folder: item.folders[0].id }
+        const data2 = store.readQuery({
+          query: GetTasks,
+          variables
+        })
+        data2.getTasks = data2.getTasks.filter(o => o.id !== updateTask.id)
+        store.writeQuery({
+          query: GetTasks,
+          variables,
+          data: data2
+        })        
+      } catch(error) {
+      }
+    }
+  }).then(() => {
+    vm.$store.commit('changeMode', {type: 'default'})
+    vm.$router.push({name: 'folder', params: {id: folder}})
+  }).catch((error) => {
+    console.log(error)
+  })
 }

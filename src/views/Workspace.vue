@@ -5,15 +5,15 @@
     <div class="container">
       <aside class="tree-root">
         <div v-if="getTeam.id" class="tree-item"
-            @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${getTeam.id}`)"
-            @click.left.stop="$router.push({name: 'folder', params: {id: getTeam.id}})">
+            @click.right.stop.prevent="changeActiveWidget"
+            @click.left.stop="leftClick">
           <div class="tree-plate"  v-bind:class="{active: $route.params.id === getTeam.id}">
             <div class="circle"></div>              
             <span class="folder no-select-color teamname">{{ getTeam.name }}</span>
-            <plus-button @click="openModal('folder')" color="white"></plus-button>
+            <plus-button @click="openModal" color="white"></plus-button>
 
             <div class="dropdown-content left" v-show="activeWidget === `folder${getTeam.id}`">
-              <div @click="openModal('folder')">Add Folder</div>
+              <div @click="openModal">Add Folder</div>
             </div>
           </div>
         </div>
@@ -50,18 +50,22 @@
 import { mapState } from  'vuex'
 import Tree from '@/components/FolderTree'
 import FolderForm from '@/components/FolderForm'
-import { GetFolders, GetTeam } from '../constants/query.gql'
+import { UpdateFolder, GetFolders, GetTeam } from '../constants/query.gql'
+import { moveTask } from '@/helpers/helpers'
 
 export default {
   components: {
     Tree,
     FolderForm,
   },
-  computed: mapState(['activeWidget', 'mode']),
+  computed: mapState(['activeWidget', 'mode', 'tempItem']),
   data() {
     return {
       showModal: false,
-      modalConfig: {},
+      modalConfig: {
+        mode: 'folder',
+        parent: ''
+      },
       getFolders: [],
       getTeam: {}
     }
@@ -72,19 +76,55 @@ export default {
     },
     getFolders: {
       query: GetFolders,
-      pollInterval: 90000,
-      error(error) {
-        console.error(error)
-      },
+      pollInterval: 90000
     }
   },
   methods: {
-    openModal(mode) {
+    openModal() {
       this.$store.dispatch('changeActiveWidget', null)
       this.showModal = true
-      this.modalConfig = {
-        mode,
-        parent: ''
+    },
+    changeActiveWidget() {
+      if (this.mode === 'default') {
+        this.$store.dispatch('changeActiveWidget', `folder${this.getTeam.id}`)        
+      }
+    },
+    leftClick() {
+      const folder = this.getTeam.id
+      const item = this.tempItem
+      if (this.mode === 'default') {
+        this.$store.dispatch('changeActiveWidget', null)
+        this.$router.push({name: 'folder', params: {id: folder}})
+      } else if (this.mode === 'task') {
+        moveTask(this, folder, item)
+      } else if (this.mode === 'folder') {
+        if (!item.parent) return
+        this.$apollo.mutate({
+          mutation: UpdateFolder,
+          variables: {
+            id: item.id,
+            input: {
+              parent: null,
+              shareWith: [{ kind: 'Team', item: folder }]
+            }
+          },
+          update(store, { data: { updateFolder } }) {
+            const variables = { parent: item.parent }
+            const data = store.readQuery({ query: GetFolders, variables })
+            data.getFolders = data.getFolders.filter(o => o.id !== updateFolder.id)
+            store.writeQuery({ query: GetFolders, variables, data })
+
+            const data2 = store.readQuery({ query: GetFolders })
+            data2.getFolders.push(updateFolder)
+            data2.getFolders.sort((a,b) => a.createdAt - b.createdAt)
+            store.writeQuery({ query: GetFolders, data: data2 })
+          }
+        }).then(() => {
+          this.$store.commit('changeMode', {type: 'default'})
+          this.$router.push({name: 'folder', params: {id: item.id}})
+        }).catch((error) => {
+          console.log(error)
+        })
       }
     },
   }
