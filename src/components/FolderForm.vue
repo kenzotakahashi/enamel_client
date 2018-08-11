@@ -5,7 +5,7 @@
 
         <h3>Create {{mode}}</h3>
 
-        <el-form model="form" @submit.native.prevent="createFolder">
+        <el-form :model="form" @submit.native.prevent="createFolder">
           <el-input type="text" name="foldername" ref="foldername" v-model="form.name"
             :placeholder="`${mode} name`" :autofocus="true" @keyup.esc="$emit('close')">
           </el-input>
@@ -13,7 +13,7 @@
 
         <div class="button-group">
           <el-button type="primary" @click="createFolder">Create</el-button>
-          <el-button type="text" @click="$emit('close')">Cancel</el-button>              
+          <el-button type="text" @click="$emit('close')">Cancel</el-button>
         </div>
 
       </div>

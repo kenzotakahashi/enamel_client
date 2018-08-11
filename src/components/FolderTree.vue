@@ -1,9 +1,9 @@
 <template name="tree">
   <li>
     <div class="tree-item"
-        @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${model.id}`)"
-        @click.left.stop="$router.push({name: 'folder', params: {id: model.id}})">
-      <span @click="toggle" class="fold-button"
+        @click.right.stop.prevent="changeActiveWidget"
+        @click.left.stop="leftClick">
+      <span @click.stop="toggle" class="fold-button"
         v-bind:class="{active: $route.params.id === model.id}"
         v-bind:style="{visibility: isFolder ? 'visible' : 'hidden'}">
         <i :class="`fas fa-angle-${open ? 'down' : 'right'}`"></i>
@@ -41,7 +41,7 @@
 import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
 import FolderForm from './FolderForm'
-import { GetFolders, DeleteFolder } from '../constants/query.gql'
+import { GetFolders, DeleteFolder, UpdateTask, GetTasks } from '../constants/query.gql'
 
 export default {
   name: 'tree',
@@ -72,7 +72,7 @@ export default {
     isSeletecd() {
       return this.$route.params.id === this.model.id
     },
-    ...mapState(['activeWidget'])
+    ...mapState(['activeWidget', 'mode', 'tempItem'])
   },
   apollo: {
     getFolders: {
@@ -87,6 +87,11 @@ export default {
     }
   },
   methods: {
+    changeActiveWidget() {
+      if (this.mode === 'default') {
+        this.$store.dispatch('changeActiveWidget', `folder${this.model.id}`)        
+      }
+    },
     toggle() {
       if (this.isFolder) {
         this.open = !this.open
@@ -103,6 +108,55 @@ export default {
     openArrow() {
       this.open = true
       this.$emit('open')
+    },
+    leftClick() {
+      if (this.mode === 'task') {
+        const folder = this.model.id
+        const item = this.tempItem
+
+        this.$apollo.mutate({
+          mutation: UpdateTask,
+          variables: {
+            id: item.id,
+            input: {
+              parent: null,
+              folders: [folder]
+            }
+          },
+          update(store, { data: { updateTask } }) {
+            const data = store.readQuery({
+              query: GetTasks,
+              variables: { folder }
+            })
+            data.getTasks.push(updateTask)
+            data.getTasks.sort((a,b) => a.order - b.order)
+            store.writeQuery({
+              query: GetTasks,
+              variables: { folder },
+              data
+            })
+
+            const variables = item.parent
+              ? { parent: item.parent.id }
+              : { folder: item.folders[0].id }
+            const data2 = store.readQuery({
+              query: GetTasks,
+              variables
+            })
+            data2.getTasks = data2.getTasks.filter(o => o.id !== updateTask.id)
+            store.writeQuery({
+              query: GetTasks,
+              variables,
+              data: data2
+            })
+          }
+        }).then(() => {
+          this.$store.commit('changeMode', {type: 'default'})
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
+      this.$router.push({name: 'folder', params: {id: this.model.id}})
     },
     deleteFolder() {
       const { id, parent } = this.model

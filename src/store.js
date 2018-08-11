@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     userId: localStorage.getItem('user-id'),
     activeWidget: null,
-    openState: {}
+    openState: {},
+    mode: 'default',
+    tempItem: null
   },
   mutations: {
     changeActiveWidget(state, key) {
@@ -16,7 +18,10 @@ export default new Vuex.Store({
     changeOpenState(state, {id, val}) {
       const open = state.openState[id]
       state.openState[id] = val || (open === undefined ? true : !open)
-      console.log(state.openState)
+    },
+    changeMode(state, {type, item}) {
+      state.mode = type
+      state.tempItem = item
     }
   },
   actions: {

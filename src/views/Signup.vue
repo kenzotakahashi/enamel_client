@@ -22,7 +22,7 @@
             <el-input v-model="form.password" type="password" placeholder="Password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click.once="signup">Complete</el-button>
+            <el-button type="primary" @click="signup">Complete</el-button>
           </el-form-item>
         </el-form>
 

@@ -1,7 +1,7 @@
 body {
   color: #eff2f4;
   margin: 0;
-  background-color: #4A4090;
+  background-color: $theme-purple;
   -webkit-font-smoothing: antialiased;
   font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN",
               "Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
@@ -155,6 +155,7 @@ input.no-outline {
 
 .tree-root {
   position: relative;
+  z-index: 10;
 }
 
 .teamname {

@@ -2,7 +2,7 @@
   <div>
     <navigation :auth="true"></navigation>
 
-    <div class="container" :style="styleObj">
+    <div class="container">
       <aside class="tree-root">
         <div v-if="getTeam.id" class="tree-item"
             @click.right.stop.prevent="$store.dispatch('changeActiveWidget', `folder${getTeam.id}`)"
@@ -26,8 +26,17 @@
         </Tree>
       </aside>
 
-      <div class="workspace-main">
+      <div v-if="mode === 'default'" class="workspace-main">
         <router-view :key="$route.fullPath"></router-view>
+      </div>
+      <div v-else-if="mode === 'task'" class="modal-mask move">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div>Select the folder you want to move your task to</div>
+            <el-button type="text" class="cancel-button" size="small"
+              @click="$store.commit('changeMode', {type: 'default'})">Cancel</el-button>
+          </div>
+        </div>
       </div>
 
       <FolderForm v-if="showModal" :config="modalConfig" @close="showModal = false"></FolderForm>
@@ -48,17 +57,13 @@ export default {
     Tree,
     FolderForm,
   },
-  computed: mapState(['activeWidget']),
+  computed: mapState(['activeWidget', 'mode']),
   data() {
     return {
       showModal: false,
       modalConfig: {},
       getFolders: [],
-      getTeam: {},
-      styleObj: {
-        width: '100%',
-        height: `${window.innerHeight - 52}px`
-      }
+      getTeam: {}
     }
   },
   apollo: {
@@ -86,7 +91,30 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.modal-mask.move {
+  z-index: 9;
+  background-color: rgba(0, 0, 0, 0.75);
+  div {
+    .modal-container {
+      width: 500px;
+      background-color: inherit;
+    }
+  }
+}
+
+.cancel-button, .cancel-button:hover {
+  width: 100px;
+  color: #fff;
+  border: 1px solid #fff;
+  margin-top: 10px;
+}
+
+.container {
+  width: 100%;
+  height: calc(100% - 52px);
+}
+
 .plus-button {
   position: absolute;
   right: 0;

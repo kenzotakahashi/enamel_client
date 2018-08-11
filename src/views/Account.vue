@@ -2,7 +2,7 @@
   <div>
     <navigation :auth="true"></navigation>
 
-    <div class="container white account" :style="styleObj">
+    <div class="container white account">
       <div></div>
       <h2 class="users-and-groups-header">Users & Groups</h2>
       <el-row>
@@ -167,11 +167,7 @@ export default {
       ],
       getUser: {},
       getUsers: [],
-      getGroups: [],
-      styleObj: {
-        width: `${window.innerWidth}px`,
-        height: `${window.innerHeight - 52}px`
-      }
+      getGroups: []
     }
   },
   apollo: {
@@ -251,6 +247,11 @@ export default {
 </script>
 
 <style scoped>
+
+.container {
+  width: 100%;
+  height: calc(100% - 52px);
+}
 
 .account {
   padding: 30px 60px 0;
