@@ -7,7 +7,7 @@
         @keydown.ctrl.enter="createComment"
         @keydown.meta.enter="createComment"></textarea>
     </div>
-    <div class="button">
+    <div v-show="form.body" class="button">
       <el-button type="primary" size="small" @click="createComment">Send</el-button>
     </div>
   </div>

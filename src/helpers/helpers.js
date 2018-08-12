@@ -57,7 +57,7 @@ export function moveTask(vm, folder, item) {
           variables: { folder }
         })
         data.getTasks.push(updateTask)
-        data.getTasks.sort((a,b) => a.order - b.order)
+        data.getTasks.sort((a,b) => b.order - a.order)
         store.writeQuery({
           query: GetTasks,
           variables: { folder },
