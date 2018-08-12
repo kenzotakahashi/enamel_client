@@ -9,7 +9,8 @@ export default new Vuex.Store({
     activeWidget: null,
     openState: {},
     mode: 'default',
-    tempItem: null
+    tempItem: null,
+    notification: false
   },
   mutations: {
     changeActiveWidget(state, key) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
       state.mode = type
       state.tempItem = item
       state.activeWidget = null
+    },
+    setNotification(state, val) {
+      state.notification = val
     }
   },
   actions: {

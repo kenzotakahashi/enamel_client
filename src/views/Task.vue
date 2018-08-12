@@ -77,7 +77,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeWidget','openState'])
+    ...mapState(['activeWidget','openState','notification'])
   },
   apollo: {
     getTask: {
@@ -88,7 +88,7 @@ export default {
       pollInterval: 10000,
       result({ data: { getTask } }) {
         this.task = getTask
-        document.title = `${getTask.name} - enamel`
+        document.title = `${this.$store.state.notification ? '*' : ''} ${getTask.name} - enamel`
       }
     },
     getTasks: {

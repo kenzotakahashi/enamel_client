@@ -69,7 +69,7 @@ export default {
       result ({data: { getFolder }}) {
         this.folder = getFolder
         if (this.isTeam) {
-          document.title = `${this.folder.name} - enamel`          
+          document.title = `${this.$store.state.notification ? '*' : ''} ${this.folder.name} - enamel`          
         }
       },
     }

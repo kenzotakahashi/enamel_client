@@ -77,6 +77,7 @@ fragment UserFields on User {
   rate
   rateType
   status
+  readNotificationsAt
   createdAt
 }
 
@@ -195,7 +196,7 @@ mutation DeleteGroup($id: String!) {
   deleteGroup(id: $id)
 }
 
-mutation UpdateUser($id: String!, $input: UserInput) {
+mutation UpdateUser($id: String, $input: UserInput) {
   updateUser(id: $id, input: $input) { ...UserFields }
 }
 
@@ -252,6 +253,21 @@ query GetComments($parent: String) {
 
 query GetRecord($id: String, $task: String, $date: String) {
   getRecord(id: $id, task: $task, date: $date) { ...RecordFields }
+}
+
+query GetLogs {
+  getLogs {
+    id
+    body
+    user {
+      id
+      firstname
+      lastname
+      avatarColor
+    }
+    target
+    createdAt
+  }
 }
 
 mutation CreateComment($body: String, $parent: ShareInput) {

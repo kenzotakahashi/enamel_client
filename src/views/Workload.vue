@@ -126,9 +126,11 @@ export default {
 	    	const start = moment(Math.min(...tasks.map(o => o.startDate))).day(-7)
 	    	// This Sunday
 	    	const end = moment(Math.max(...tasks.map(o => o.finishDate))).day(7)
+				const diff = end.diff(start, 'days') 
+				if (!diff) return
 
 				const days = []
-				for (const i of [...Array(end.diff(start, 'days')).keys()]) {
+				for (const i of [...Array(diff).keys()]) {
 					days.push(moment(start).add(i+1, 'd'))
 				}
 				this.days = days

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store'
 import Home from './views/Home.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
@@ -11,6 +12,7 @@ import FolderDetail from './views/FolderDetail.vue'
 import Task from './views/Task.vue'
 import Account from './views/Account.vue'
 import Decline from './views/Decline.vue'
+import Notifications from './views/Notifications.vue'
 
 Vue.use(Router)
 
@@ -22,7 +24,7 @@ const login = {
 }
 
 const workspace = {
-  path: '/workspace',
+  path: '/w',
   name: 'workspace',
   component: Workspace,
   meta: { title: 'Workspace - enamel', requiresAuth: true },
@@ -54,8 +56,23 @@ const workspace = {
         {
           path: 'workload',
           name: 'workload',
-          props: true,
-          component: Workload
+          component: Workload,
+          props: true
+        }
+      ]
+    },
+    {
+      path: 'notifications',
+      name: 'notifications',
+      component: Notifications,
+      meta: { title: 'Notifications - enamel' },
+      props: true,
+      children: [
+        {
+          path: ':taskId',
+          name: 'notification-task',
+          component: Task,
+          props: true
         }
       ]
     }
@@ -90,8 +107,7 @@ const router = new Router({
       name: 'account',
       component: Account,
       meta: { title: 'Accounts - enamel', requiresAuth: true }
-    },
-
+    }
   ]
 })
 
@@ -110,7 +126,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
-  document.title = to.meta.title
+  document.title = `${store.state.notification ? '*' : ''} ${to.meta.title}`
 })
 
 export default router
