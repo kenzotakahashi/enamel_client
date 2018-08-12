@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     async login() {
+      this.$apollo.provider.clients.defaultClient.cache.reset()
       // const validated = await this.$validator.validate()
       const { email, password } = this.form
       if (email && password) {

@@ -73,7 +73,7 @@ export default {
 			query: GetLogs,
 			pollInterval: 10000,
 			result({data: {getLogs}}) {
-				// console.log(getLogs)
+				console.log(getLogs)
 			}
 		}
 	}

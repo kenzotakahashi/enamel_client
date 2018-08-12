@@ -8,6 +8,9 @@
         v-model="description"
         @keyup.esc="closeForm"
         @focus="showButton = true"
+        @keydown.shift.enter="updateDescription"
+        @keydown.ctrl.enter="updateDescription"
+        @keydown.meta.enter="updateDescription"
       >
       </textarea>
       <div class="save-button" v-bind:style="{visibility: showButton ? 'visible' : 'hidden'}" >

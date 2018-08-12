@@ -14,7 +14,7 @@
         <div v-if="route !== 'workspace'">
           <router-link :to="{name: 'workspace'}">Workspace</router-link></div>
         <div>
-          <a @click="logout" :href="`${url}login`">Logout</a>
+          <span @click="logout">Logout</span>
         </div>
       </div>
     </div>    
@@ -31,7 +31,6 @@ export default {
   props: ['auth'],
   data() {
     return {
-      url: process.env.BASE_URL,
       route: this.$route.name,
       modalConfig: {},
       getTeam: {},
@@ -70,6 +69,8 @@ export default {
       localStorage.removeItem('user-id')
       localStorage.removeItem('user-token')
       this.$root.$data.userId = localStorage.getItem('user-id')
+      this.$router.push({name: 'login'})
+      this.$apollo.provider.clients.defaultClient.cache.reset()
     }
   }
 }
@@ -107,7 +108,7 @@ export default {
   right: 10px;
   > div {
     padding: 0;
-    > a {
+    > * {
       padding: 5px 16px;
       width: 100%;
     }
