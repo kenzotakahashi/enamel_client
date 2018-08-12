@@ -86,6 +86,11 @@ export default {
   height: 100%;
 }
 
+.subspace {
+  width: 50%;
+  height: 100%;
+}
+
 .wrapper {
 	width: 50%;
 }
@@ -97,12 +102,13 @@ export default {
 .white.card {
   display: flex;
   flex-direction: column;
+  overflow: scroll;
 }
 
 .notification-container {
 	box-sizing: border-box;
   display: grid;
-  grid-template-columns: 44px auto;
+  grid-template-columns: 44px 1fr;
   grid-template-rows: 24px 32px;
   grid-row-gap: 4px;
   align-items: center;
@@ -128,7 +134,9 @@ export default {
 	grid-row: 1;
 	font-size: 14px;
 	color: rgba(0, 0, 0, 0.56);
+  text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 .notification-avatar {
@@ -142,6 +150,9 @@ export default {
 	grid-column: 2;
 	grid-row: 2;
 	color: rgba(0,0,0,.9);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .user-name {

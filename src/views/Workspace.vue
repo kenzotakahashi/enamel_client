@@ -169,6 +169,6 @@ aside {
 }
 
 .workspace-main {
-  flex-grow: 1;
+  flex: 1 1;
 }
 </style>

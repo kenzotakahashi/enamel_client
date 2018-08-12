@@ -124,6 +124,7 @@ export default {
 
 <style scoped>
 .task-view-header {
+  box-sizing: border-box;
   padding: 12px 12px 12px 24px;
 }
 
