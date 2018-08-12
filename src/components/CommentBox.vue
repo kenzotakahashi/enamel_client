@@ -1,13 +1,16 @@
 <template>
-  <el-row class="comment-box">
-    <el-col :span="20">
-      <input class="no-outline" type="text" name="comment" v-model="form.body"
-        placeholder="Add comment"></input>
-    </el-col>
-    <el-col :span="4">
+  <div class="comment-box">
+    <div class="text-form">
+      <textarea class="no-outline" type="text" name="comment" v-model="form.body"
+        placeholder="Add comment"
+        @keydown.shift.enter="createComment"
+        @keydown.ctrl.enter="createComment"
+        @keydown.meta.enter="createComment"></textarea>
+    </div>
+    <div class="button">
       <el-button type="primary" size="small" @click="createComment">Send</el-button>
-    </el-col>
-  </el-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -64,6 +67,7 @@ export default {
 
 <style scoped lang="scss">
 .comment-box {
+  display: flex;
   color: rgba(0,0,0,.56);
   margin-top: 10px;
   padding: 12px;
@@ -73,4 +77,13 @@ export default {
   bottom: 0;
   left: 0;
 }
+
+.text-form {
+  flex: 1 1;
+  textarea {
+    width: 100%;
+  }
+}
 </style>
+
+

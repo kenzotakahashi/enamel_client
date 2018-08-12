@@ -15,7 +15,7 @@
           <div class="task-title">{{ log.target.item.name }}</div>
         </div>
 
-        <div v-if="log.body" class="action-wrapper">
+        <div v-if="log.body && getUser.id === log.user.id" class="action-wrapper">
           <span @click="deleteComment(log.id)"><i class="far fa-trash-alt"></i></span>
         </div>
       </div>
@@ -25,14 +25,18 @@
 
 <script>
 import { formatDate } from '@/helpers/helpers'
-import { DeleteComment, GetComments } from '@/constants/query.gql'
+import { DeleteComment, GetComments, GetUser } from '@/constants/query.gql'
 
 export default {
   props: ['id', 'comments'],
   data() {
     return {
-      formatDate
+      formatDate,
+      getUser: {}
     }
+  },
+  apollo: {
+    getUser: GetUser,
   },
   methods: {
     deleteComment(id) {
