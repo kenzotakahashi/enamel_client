@@ -1,7 +1,8 @@
 <template>
   <div @click="openForm" class="description-field">
-    <span v-show="!showForm" class="description-text">Click to add the description</span>
-    <div v-show="showForm">
+    <span v-if="!isFormOpen && !description" class="description-text">Click to add the description</span>
+    <pre v-else-if="!isFormOpen && description">{{ description }}</pre>
+    <div v-else>
       <textarea
         cols="10"
         ref="descriptionform"
@@ -31,11 +32,6 @@ export default {
       showButton: false,
       isFormOpen: false,
       description: this.model.description
-    }
-  },
-  computed: {
-    showForm() {
-      return this.isFormOpen || this.description
     }
   },
   methods: {
@@ -76,6 +72,7 @@ export default {
 
 <style scoped>
 .description-field {
+  font-size: 14px;
   padding: 30px 30px;
   border-bottom: 1px solid;
   border-color: rgba(0,0,0,.16);

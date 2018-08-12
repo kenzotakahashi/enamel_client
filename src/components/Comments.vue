@@ -8,7 +8,7 @@
           <div class="date">{{ formatDate(log.createdAt) }}</div>                 
         </div>
         <div v-if="log.body">
-          <div>{{ log.body }}</div>
+          <pre>{{ log.body }}</pre>
         </div>
         <div v-else>
           <div>created task</div>

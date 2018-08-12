@@ -1,7 +1,7 @@
 <template>
   <div class="white card max-height">
     <TaskHeader :task="task"></TaskHeader>
-    <div class="scroll">
+    <div id="scroll">
       <TaskStateBar :task="task" :users="getUsers"></TaskStateBar>
       <TaskSettingBar :task="task" :subtasks="subtasks" :showSubtasks="showSubtasks"
         :record="getRecord"
@@ -21,7 +21,7 @@
       <Comments :id="task.id" :comments="getComments"></Comments>
     </div>
 
-    <CommentBox :parent="task.id" class="stick-bottom"></CommentBox>
+    <CommentBox :parent="task.id" class="stick-bottom" @scrollComment="scrollComment"></CommentBox>
 
     <Record v-if="activeWidget === 'record-form'" :task="task" :record="getRecord"></Record>
     <DateRangePicker v-if="activeWidget === 'daterange'" :task="task"></DateRangePicker>
@@ -137,6 +137,10 @@ export default {
       this.openForm = !this.showSubtasks
       this.showSubtasks = !this.showSubtasks
     },
+    scrollComment() {
+      const container = this.$el.querySelector("#scroll")
+      container.scrollTop = container.scrollHeight
+    },
     reorder({moved: {element, newIndex}}) {
       const parent = this.task.id
 
@@ -177,7 +181,7 @@ export default {
   position: relative;
 }
 
-.scroll {
+#scroll {
   flex-grow: 1;
   overflow: scroll;
 }

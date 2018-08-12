@@ -1,10 +1,13 @@
-body {
-  color: #eff2f4;
-  margin: 0;
-  background-color: $theme-purple;
+body, pre, textarea {
   -webkit-font-smoothing: antialiased;
   font-family: "Open sans","lucida grande","Segoe UI",arial,verdana,tahoma,"Hiragino Kaku Gothic ProN",
               "Osaka","Meiryo UI","Yu Gothic UI",sans-serif;
+  margin: 0;
+}
+
+body {
+  color: #eff2f4;
+  background-color: $theme-purple;
 }
 
 .white {

@@ -56,6 +56,7 @@ export default {
         }
       }).then(() => {
         this.form.body = ''
+        this.$emit('scrollComment')
       }).catch((error) => {
         console.log(error)
       })
