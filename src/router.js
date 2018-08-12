@@ -69,7 +69,7 @@ const workspace = {
       props: true,
       children: [
         {
-          path: ':taskId',
+          path: ':id/:taskId',
           name: 'notification-task',
           component: Task,
           props: true

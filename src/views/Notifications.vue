@@ -2,26 +2,22 @@
 	<div class="inner-space">
 	  <div class="max-height wrapper">
 	    <div class="white card max-height">
-	    	<div v-for="log in getLogs" class="tree-item"
-	    		v-bind:class="{active: $route.params.taskId === log.target.item._id}">
-    			<router-link :to="{name: 'notification-task', params: {taskId: log.target.item._id}}"
-    			  class="notification-container">
-			      <avatar :obj="log.user" :size="32" class="task-avatar"></avatar>
-  			    <div class="notification-body">
-  			    	<div>
-								<div class="user-name">{{ log.user.firstname }} {{ log.user.lastname }}</div>
-								<div class="date">{{ formatDate(log.createdAt) }}</div>    			    		
-  			    	</div>
-  			    	<div v-if="log.body">
-  			    		<div>{{ log.body }}</div>
-  			    	</div>
-  			    	<div v-else>
-  			    		<div>created task</div>
-  			    		<div class="task-title">{{ log.target.item.name }}</div>
-  			    	</div>
-  			    </div>
-    			</router-link>
-	    	</div>
+	    	<router-link
+	    		:to="{name: 'notification-task', params: {id: log.id, taskId: log.target.item._id}}"
+	    		v-for="log in getLogs" :key="log.id"
+	    		class="notification-container"
+	    		v-bind:class="{active: $route.params.id === log.id}">
+
+					<div class="date">{{ formatDate(log.createdAt) }}</div>    			    		
+	    		<div class="task-title">{{ log.target.item.name }}</div>
+
+		      <avatar class="notification-avatar" :obj="log.user" :size="32" ></avatar>
+			    <div class="notification-body">
+						<span class="user-name">{{ log.user.firstname }} {{ log.user.lastname[0] }}</span>
+			    	<span v-if="log.body">{{ log.body }}</span>
+			    	<span v-else>created task</span>
+			    </div>
+  			</router-link>
 	    </div>
 		</div>
 		<div v-if="subRoute==='task'" class="subspace">
@@ -103,50 +99,55 @@ export default {
   flex-direction: column;
 }
 
-.tree-item:hover {
-  background-color: $hover;
+.notification-container {
+	box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 44px auto;
+  grid-template-rows: 24px 32px;
+  grid-row-gap: 4px;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+	font-size: 12px;
+  &:hover {
+    background-color: $hover;
+  }
+  &.active {
+    background-color: #4488ff29;
+  }
 }
-.tree-item.active {
-  background-color: #4488ff29;
+
+.date {
+	grid-column: 1;
+	grid-row: 1;
+	color: rgba(0, 0, 0, 0.56);
 }
 
 .task-title {
-	padding-left: 10px;
-	color: rgba(0,0,0,.9);
+	grid-column: 2;
+	grid-row: 1;
+	font-size: 14px;
+	color: rgba(0, 0, 0, 0.56);
   white-space: nowrap;
 }
 
-.task-avatar {
+.notification-avatar {
+  grid-column: 1;
+  grid-row: 2;
   margin-right: 10px;
   align-self: center;
 }
 
-.user-name {
-	font-weight: 600;
-	font-size: 12px;
+.notification-body {
+	grid-column: 2;
+	grid-row: 2;
 	color: rgba(0,0,0,.9);
 }
 
-.date {
-	margin-left: 10px;
+.user-name {
+	margin-right: 5px;
+	font-weight: 600;
 	font-size: 12px;
-	color: rgba(0, 0, 0, 0.56);
-}
-
-.notification-container {
-  display: flex;
-  width: 100%;
-  padding: 5px 0 5px 10px;
-}
-
-.notification-body {
-	div {
-		display: flex;
-		line-height: 22px;
-	}
-	&:last-child {
-		font-size: 14px;
-	}
 }
 
 </style>
