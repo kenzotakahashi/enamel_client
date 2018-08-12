@@ -18,8 +18,8 @@
 
       <DescriptionField :model="task" kind="task"></DescriptionField>
     </div>
-<!--     <Comments :comments="getComments"></Comments>
-    <CommentBox :parent="task.id" class="stick-bottom"></CommentBox> -->
+    <Comments :comments="getComments"></Comments>
+    <CommentBox :parent="task.id" class="stick-bottom"></CommentBox>
 
     <Record v-if="activeWidget === 'record-form'" :task="task" :record="getRecord"></Record>
     <DateRangePicker v-if="activeWidget === 'daterange'" :task="task"></DateRangePicker>
@@ -30,7 +30,8 @@
 <script>
 import moment from 'moment'
 import { mapState } from 'vuex'
-import { GetTask, GetTasks, GetUsers, GetRecord, UpdateTask } from '../constants/query.gql'
+import { GetTask, GetTasks, GetUsers, GetRecord, UpdateTask,
+  GetComments } from '../constants/query.gql'
 import TaskHeader from '@/components/task/TaskHeader'
 import TaskStateBar from '@/components/task/TaskStateBar'
 import TaskSettingBar from '@/components/task/TaskSettingBar'
@@ -39,8 +40,8 @@ import TaskForm from '@/components/task/TaskForm'
 import DescriptionField from '@/components/DescriptionField'
 import DateRangePicker from '@/components/DateRangePicker'
 import Record from '@/components/Record'
-// import Comments from '@/components/Comments'
-// import CommentBox from '@/components/CommentBox'
+import Comments from '@/components/Comments'
+import CommentBox from '@/components/CommentBox'
 
 export default {
   components: {
@@ -52,8 +53,8 @@ export default {
     DescriptionField,
     DateRangePicker,
     Record,
-    // Comments,
-    // CommentBox
+    Comments,
+    CommentBox
   },
   props: ['taskId'],
   data() {
@@ -118,16 +119,16 @@ export default {
         console.log(err)
       }
     },
-    getUsers: GetUsers
-    // getComments: {
-    //   query: GetComments,
-    //   variables() {
-    //     return { parent: this.task.id }
-    //   },
-    //   skip() {
-    //     return !this.task.id
-    //   },
-    // },
+    getUsers: GetUsers,
+    getComments: {
+      query: GetComments,
+      variables() {
+        return { target: this.task.id }
+      },
+      skip() {
+        return !this.task.id
+      },
+    },
   },
   methods: {
     toggleSubtaskView() {

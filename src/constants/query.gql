@@ -33,14 +33,17 @@ fragment TaskFields on Task {
   createdAt
 }
 
-fragment CommentFields on Comment {
+fragment LogFields on Log {
   id
   body
   user {
     id
-    name
+    firstname
+    lastname
     avatarColor
   }
+  target
+  createdAt
 }
 
 fragment FolderFields on Folder {
@@ -247,29 +250,18 @@ query GetTask($id: String!) {
   getTask(id: $id) { ...TaskFields }
 }
 
-query GetComments($parent: String) {
-  getComments(parent: $parent) { ...CommentFields }
-}
-
 query GetRecord($id: String, $task: String, $date: String) {
   getRecord(id: $id, task: $task, date: $date) { ...RecordFields }
 }
 
 query GetLogs {
-  getLogs {
-    id
-    body
-    user {
-      id
-      firstname
-      lastname
-      avatarColor
-    }
-    target
-    createdAt
-  }
+  getLogs { ...LogFields }
 }
 
-mutation CreateComment($body: String, $parent: ShareInput) {
-  createComment(body: $body, parent: $parent) { ...CommentFields }
+query GetComments($target: String) {
+  getComments(target: $target) { ...LogFields }
+}
+
+mutation CreateComment($body: String, $target: ShareInput) {
+  createComment(body: $body, target: $target) { ...LogFields }
 }

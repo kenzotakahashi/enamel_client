@@ -12,9 +12,12 @@
 								<div class="user-name">{{ log.user.firstname }} {{ log.user.lastname }}</div>
 								<div class="date">{{ formatDate(log.createdAt) }}</div>    			    		
   			    	</div>
-  			    	<div>
-								<div class="">created task</div>
-								<div class="task-title">{{ log.target.item.name }}</div>    			    		
+  			    	<div v-if="log.body">
+  			    		<div>{{ log.body }}</div>
+  			    	</div>
+  			    	<div v-else>
+  			    		<div>created task</div>
+  			    		<div class="task-title">{{ log.target.item.name }}</div>
   			    	</div>
   			    </div>
     			</router-link>
@@ -72,13 +75,11 @@ export default {
 	apollo: {
 		getLogs: {
 			query: GetLogs,
-			pollInterval: 10000, 
+			pollInterval: 10000,
 			result({data: {getLogs}}) {
 				console.log(getLogs)
 			}
 		}
-	},
-	methods: {
 	}
 }
 </script>

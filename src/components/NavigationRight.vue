@@ -55,8 +55,6 @@ export default {
       pollInterval: 10000, 
       result({data: {getLogs}}) {
         if (getLogs.length === 0) return
-          console.log(moment(getLogs[0].createdAt).format('YYYY-MM-DD HH:mm'))
-          console.log(moment(this.getUser.readNotificationsAt).format('YYYY-MM-DD HH:mm'))
         if (!this.getUser.readNotificationsAt
           || moment(getLogs[0].createdAt).isAfter(moment(this.getUser.readNotificationsAt))) {
           this.$store.commit('setNotification', true)

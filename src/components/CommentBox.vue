@@ -25,13 +25,13 @@ export default {
   methods: {
     createComment() {
       if (!this.form.body) return
-      const parent = this.parent
+      const target = this.parent
       this.$apollo.mutate({
         mutation: CreateComment,
         variables: {
-          parent: {
+          target: {
             "kind": "Task",
-            "item": parent
+            "item": target
           },
           body: this.form.body
         },
@@ -39,12 +39,12 @@ export default {
           try {
             const data = store.readQuery({
               query: GetComments,
-              variables: {parent}
+              variables: {target}
             })
             data.getComments.push(createComment)
             store.writeQuery({
               query: GetComments,
-              variables: {parent},
+              variables: {target},
               data
             })
           } catch(err) {
@@ -62,6 +62,15 @@ export default {
 
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.comment-box {
+  color: rgba(0,0,0,.56);
+  margin-top: 10px;
+  padding: 12px;
+  border-top: 1px solid;
+  border-color: rgba(0,0,0,.16);
+  position: relative;
+  bottom: 0;
+  left: 0;
+}
 </style>
