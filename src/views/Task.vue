@@ -18,7 +18,7 @@
 
       <DescriptionField :model="task" kind="task"></DescriptionField>
     </div>
-    <Comments :comments="getComments"></Comments>
+    <Comments :id="task.id" :comments="getComments"></Comments>
     <CommentBox :parent="task.id" class="stick-bottom"></CommentBox>
 
     <Record v-if="activeWidget === 'record-form'" :task="task" :record="getRecord"></Record>

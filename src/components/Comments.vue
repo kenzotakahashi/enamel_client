@@ -14,20 +14,45 @@
           <div>created task</div>
           <div class="task-title">{{ log.target.item.name }}</div>
         </div>
+
+        <div v-if="log.body" class="action-wrapper">
+          <span @click="deleteComment(log.id)"><i class="far fa-trash-alt"></i></span>
+        </div>
       </div>
     </div>
-
   </div> 
 </template>
 
 <script>
 import { formatDate } from '@/helpers/helpers'
+import { DeleteComment, GetComments } from '@/constants/query.gql'
 
 export default {
-  props: ['comments'],
+  props: ['id', 'comments'],
   data() {
     return {
       formatDate
+    }
+  },
+  methods: {
+    deleteComment(id) {
+      const target = this.id
+      this.$apollo.mutate({
+        mutation: DeleteComment,
+        variables: {id},
+        update: (store) => {
+          const data = store.readQuery({
+            query: GetComments,
+            variables: { target }
+          })
+          data.getComments = data.getComments.filter(o => o.id !== id)
+          store.writeQuery({
+            query: GetComments,
+            variables: { target },
+            data
+          })
+        }
+      })
     }
   }
 }
@@ -70,9 +95,9 @@ export default {
 
 .notification-body {
   box-sizing: border-box;
+  position: relative;
   min-width: 70%;
   padding: 8px 10px;
-  // margin: 5px 0;
   div {
     display: flex;
     line-height: 22px;
@@ -82,6 +107,34 @@ export default {
   }
   &.comment {
     background-color: rgba(0,0,0,.04);    
+  }
+  &:hover {
+    .action-wrapper {
+      visibility: visible;
+    }
+  }
+}
+
+.action-wrapper {
+  right: -8px;
+  top: -10px;
+  box-sizing: content-box;
+  visibility: hidden;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 20px;
+  position: absolute;
+  z-index: 30;
+  background: #fff;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,.16);
+  span {
+    padding: 2px 7px;
+    cursor: pointer;
   }
 }
 

@@ -149,6 +149,7 @@ input.no-outline {
 .folder {
   font-size: 13px;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   letter-spacing: .325px;
 }
@@ -199,7 +200,7 @@ input.no-outline {
 .tree-plate {
   display: flex;
   position: static;
-  width: 100%;
+  width: 90%;
   height: auto;
 }
 

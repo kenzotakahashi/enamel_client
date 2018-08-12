@@ -265,3 +265,7 @@ query GetComments($target: String) {
 mutation CreateComment($body: String, $target: ShareInput) {
   createComment(body: $body, target: $target) { ...LogFields }
 }
+
+mutation DeleteComment($id: String!) {
+  deleteComment(id: $id)
+}

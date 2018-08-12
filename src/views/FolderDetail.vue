@@ -234,6 +234,7 @@ export default {
 
 <style scoped>
 .folder-header {
+  box-sizing: border-box;
   padding: 15px 24px 0;
   line-height: 21px;
   min-height: 40px;
