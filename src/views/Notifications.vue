@@ -4,7 +4,7 @@
 	    <div class="white card max-height">
 	    	<router-link
 	    		:to="{name: 'notification-task', params: {id: log.id, taskId: log.target.item._id}}"
-	    		v-for="log in getLogs" :key="log.id"
+	    		v-for="log in getLogs" :key="log.id" v-if="log.target.item"
 	    		class="notification-container"
 	    		v-bind:class="{active: $route.params.id === log.id}">
 

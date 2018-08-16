@@ -64,16 +64,13 @@ export default {
     }
   },
   mounted() {
-    if (this.isSeletecd) {
+    if (this.$route.params.id === this.model.id) {
       this.$emit('open')
     }
   },
   computed: {
     isFolder: function () {
       return this.getFolders.length > 0
-    },
-    isSeletecd() {
-      return this.$route.params.id === this.model.id
     },
     ...mapState(['activeWidget', 'mode', 'tempItem'])
   },
@@ -180,6 +177,13 @@ export default {
         console.log(error)
       })
     },
+  },
+  watch: {
+    '$route' (to, from) {
+      if (to.params.id === this.model.id) {
+        this.$emit('open')
+      }
+    }
   }
 };
 </script>
