@@ -41,7 +41,7 @@ export default {
     createTask() {
       if (!this.newTaskName) return
       const parent = this.parentId
-      const folder = parent ? undefined : this.$route.params.id
+      const folder = this.$route.params.id
       this.$apollo.mutate({
         mutation: CreateTask,
         variables: {

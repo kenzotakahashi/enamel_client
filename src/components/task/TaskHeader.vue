@@ -2,7 +2,11 @@
   <div class="task-view-header">
     <div class="task-header-wrap">
       <div class="task-header">
-        <div v-if="task.parent" class="parent-task">{{task.parent.name}}</div>
+        <router-link :to="{name: 'task', params: {id: task.folders[0].id, taskId: task.id}}"
+          v-if="task.folders.length" class="folder-belonged">
+          {{task.folders[0].name}}
+        </router-link>
+        <!-- <div v-if="task.folders.length" class="folder-belonged">{{task.folders[0].name}}</div> -->
         <div>
           <form @submit.prevent="updateTask">
             <input class="no-outline header-title task-name" type="text" name="taskname" ref="taskname"
@@ -167,7 +171,7 @@ export default {
   opacity: .75;
 }
 
-.parent-task {
+.folder-belonged {
   font-size: 12px;
   color: rgba(0,0,0,.56);
 
