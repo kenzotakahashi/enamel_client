@@ -1,7 +1,7 @@
 <template>
   <div @click="openForm" class="description-field">
     <span v-if="!isFormOpen && !description" class="description-text">Click to add the description</span>
-    <pre v-else-if="!isFormOpen && description">{{ description }}</pre>
+    <pre v-else-if="!isFormOpen && description" v-html="description" v-linkified></pre>
     <div v-else>
       <textarea
         cols="10"

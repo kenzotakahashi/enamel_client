@@ -13,6 +13,9 @@ import VueApollo from 'vue-apollo'
 import ElementUI from 'element-ui'
 import VueAnalytics from 'vue-analytics'
 import draggable from 'vuedraggable'
+import linkify from 'vue-linkify'
+
+Vue.directive('linkified', linkify)
 
 import App from './App.vue'
 import router from './router'
