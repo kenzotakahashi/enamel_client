@@ -4,15 +4,23 @@
       <div class="white card max-height">
         <div class="folder-header">
           <div class="header-title folder-name">{{folder.name}}</div>
-          <div>
-            <span class="menu-title" v-bind:class="{active: view === 'list'}"
-              @click="$router.push({name: 'folder', params: {id}})">
-              List
-            </span>
-            <span class="menu-title" v-bind:class="{active: view === 'workload'}"
-              @click="$router.push({name: 'workload', params: {id}})">
-              Workload
-            </span>
+          <div class="folder-sub-header">
+            <div class="menu-titles">
+              <span class="menu-title" v-bind:class="{active: view === 'list'}"
+                @click="$router.push({name: 'folder', params: {id}})">
+                List
+              </span>
+              <span class="menu-title" v-bind:class="{active: view === 'workload'}"
+                @click="$router.push({name: 'workload', params: {id}})">
+                Workload
+              </span>
+            </div>
+            <div class="filter">
+              <span @click="changeFilter">
+                <i class="fas fa-filter"></i>
+                <span class="text">{{filterText}}</span>
+              </span>
+            </div>
           </div>
         </div>
         <router-view></router-view>
@@ -28,6 +36,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { GetFolder } from '../constants/query.gql'
 import Task from './Task.vue'
 import FolderDetail from './FolderDetail.vue'
@@ -46,6 +55,12 @@ export default {
       folder: {
         shareWith: []
       },
+    }
+  },
+  computed: {
+    ...mapState(['filterAll']),
+    filterText() {
+      return this.filterAll.includes(this.id) ? 'All' : 'All active'
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -77,6 +92,13 @@ export default {
   methods: {
     isTeam(folder) {
       return !folder.parent && folder.shareWith.length === 0
+    },
+    changeFilter() {
+      if (this.filterAll.includes(this.id)) {
+        this.$store.commit('removeFromFilter', this.id)
+      } else {
+        this.$store.commit('addToFilter', this.id)
+      }
     }
   }
 }
@@ -96,6 +118,24 @@ export default {
 .folder-header {
   padding: 15px 24px 0;
   line-height: 21px;
+}
+
+.folder-sub-header {
+  display: flex;
+  .menu-titles {
+    flex: 1 1;
+  }
+  .filter {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.56);
+    cursor: pointer;
+    &:hover {
+      color: $blue-hover;
+    }
+    .text {
+      margin-left: 8px;
+    }
+  }
 }
 
 .folder-name {

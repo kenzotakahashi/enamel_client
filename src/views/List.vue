@@ -3,7 +3,7 @@
   	<TaskForm></TaskForm>
   	<draggable v-model="getTasks" @change="reorder">
   	  <TaskTree
-  	    v-for="task in getTasks" :key="task.id" :model="task" :isOpen="openState[task.id]">
+  	    v-for="task in filteredTasks" :key="task.id" :model="task" :isOpen="openState[task.id]">
   	  </TaskTree>
   	</draggable>
   </div>
@@ -28,7 +28,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['openState'])
+    ...mapState(['openState', 'filterAll']),
+    filteredTasks() {
+      return this.filterAll.includes(this.id)
+        ? this.getTasks
+        : this.getTasks.filter(o => o.status !== 'Completed') 
+    }
   },
   apollo: {
     getTasks: {

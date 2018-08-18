@@ -10,7 +10,8 @@ export default new Vuex.Store({
     openState: {},
     mode: 'default',
     tempItem: null,
-    notification: false
+    notification: false,
+    filterAll: []
   },
   mutations: {
     changeActiveWidget(state, key) {
@@ -27,6 +28,12 @@ export default new Vuex.Store({
     },
     setNotification(state, val) {
       state.notification = val
+    },
+    addToFilter(state, id) {
+      state.filterAll.push(id)
+    },
+    removeFromFilter(state, id) {
+      state.filterAll = state.filterAll.filter(o => o !== id)
     }
   },
   actions: {
