@@ -102,6 +102,7 @@ export default {
       skip() {
         return !this.task.id
       },
+      pollInterval: 10000,
       result({ data: {getTasks} }) {
         this.subtasks = getTasks
         if (getTasks.length) {
@@ -127,6 +128,7 @@ export default {
       variables() {
         return { target: this.task.id }
       },
+      pollInterval: 10000,
       skip() {
         return !this.task.id
       },
