@@ -35,6 +35,8 @@
 				}">
 				<div>{{ t.task.name }}</div>
 			</div>
+
+			<div class="today" v-bind:style="{'grid-column': `d${moment().format('YYYY-MM-DD')}` }"></div>
 		</div>
 
 	  <div v-if="showTask"
@@ -228,6 +230,10 @@ export default {
 	border-right: 1px solid	rgba(0,0,0,.16);
 }
 
+.today {
+	grid-row: 1 / end;
+	border-left: 1px solid red;
+}
 
 .task {
 	overflow: hidden;
