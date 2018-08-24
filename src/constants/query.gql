@@ -203,6 +203,12 @@ mutation UpdateUser($id: String, $input: UserInput) {
   updateUser(id: $id, input: $input) { ...UserFields }
 }
 
+mutation SortTasks($tasks: [String], $orders: [Float], $parent: String, $folder: String) {
+  sortTasks(tasks: $tasks, orders: $orders, parent: $parent, folder: $folder) {
+    ...TaskFields
+  }
+}
+
 mutation CreateRecord($input: RecordInput) {
   createRecord(input: $input) { ...RecordFields }
 }

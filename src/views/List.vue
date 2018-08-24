@@ -12,7 +12,7 @@
 <script>
 import moment from 'moment'
 import { mapState } from 'vuex'
-import { GetTasks, UpdateTask } from '../constants/query.gql'
+import { GetTasks, SortTasks } from '../constants/query.gql'
 import TaskTree from '@/components/task/TaskTree'
 import TaskForm from '@/components/task/TaskForm'
 
@@ -48,24 +48,22 @@ export default {
     }
   },
   methods: {
-    reorder({moved: {element, newIndex}}) {
+    reorder() {
       const folder = this.id
-
+      const today = moment().valueOf()
       this.$apollo.mutate({
-        mutation: UpdateTask,
+        mutation: SortTasks,
         variables: {
-          id: element.id,
-          input: {
-            order: newIndex === 0 ? moment().valueOf() : this.getTasks[newIndex-1].order - 1
-          }
+          tasks: this.getTasks.map(o => o.id),
+          orders: this.getTasks.map((o, i) => today - i),
+          folder          
         },
-        update(store, { data: { updateTask } }) {
+        update(store, { data: { sortTasks } }) {
           const data = store.readQuery({
             query: GetTasks,
             variables: { folder }
           })
-          data.getTasks = data.getTasks.filter(o => o.id !== updateTask.id)
-          data.getTasks.splice(newIndex, 0, updateTask)
+          data.getTasks = sortTasks
           store.writeQuery({
             query: GetTasks,
             variables: { folder },

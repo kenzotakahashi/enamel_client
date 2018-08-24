@@ -32,7 +32,7 @@
 <script>
 import moment from 'moment'
 import { mapState } from 'vuex'
-import { GetTask, GetTasks, GetUsers, GetRecord, UpdateTask,
+import { GetTask, GetTasks, GetUsers, GetRecord, SortTasks,
   GetComments } from '../constants/query.gql'
 import TaskHeader from '@/components/task/TaskHeader'
 import TaskStateBar from '@/components/task/TaskStateBar'
@@ -143,25 +143,22 @@ export default {
       const container = this.$el.querySelector("#scroll")
       container.scrollTop = container.scrollHeight
     },
-    reorder({moved: {element, newIndex}}) {
+    reorder() {
       const parent = this.task.id
-
+      const today = moment().valueOf() - this.subtasks.length
       this.$apollo.mutate({
-        mutation: UpdateTask,
+        mutation: SortTasks,
         variables: {
-          id: element.id,
-          input: {
-            order: newIndex === this.getTasks.length - 1
-              ? moment().valueOf() : this.getTasks[newIndex+1].order - 1
-          }
+          tasks: this.subtasks.map(o => o.id),
+          orders: this.subtasks.map((o, i) => today + i),
+          parent          
         },
-        update(store, { data: { updateTask } }) {
+        update(store, { data: { sortTasks } }) {
           const data = store.readQuery({
             query: GetTasks,
             variables: { parent }
           })
-          data.getTasks = data.getTasks.filter(o => o.id !== updateTask.id)
-          data.getTasks.splice(newIndex, 0, updateTask)
+          data.getTasks = sortTasks
           store.writeQuery({
             query: GetTasks,
             variables: { parent },

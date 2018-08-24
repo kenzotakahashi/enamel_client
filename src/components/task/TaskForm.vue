@@ -42,18 +42,18 @@ export default {
       if (!this.newTaskName) return
       const parent = this.parentId
       const folder = this.$route.params.id
+      const variables = parent ? {parent} : {folder}
       this.$apollo.mutate({
         mutation: CreateTask,
         variables: {
-          folder,
-          parent,
+          ...variables,
           name: this.newTaskName
         },
         update: (store, { data: { createTask } }) => {
           try {
             const data = store.readQuery({
               query: GetTasks,
-              variables: {folder, parent}
+              variables
             })
             if (parent) {
               data.getTasks.push(createTask)
@@ -62,7 +62,7 @@ export default {
             }
             store.writeQuery({
               query: GetTasks,
-              variables: {folder, parent},
+              variables,
               data
             })
           } catch(err) {
