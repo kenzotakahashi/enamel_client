@@ -18,12 +18,14 @@
           </div>
         </div>
 
-        <Tree
-          v-for="folder in getFolders"
-          :key="folder.id"
-          :model="folder"
-          :team="getTeam.id" >
-        </Tree>
+        <draggable v-model="getFolders" @change="reorder">
+          <Tree
+            v-for="folder in getFolders"
+            :key="folder.id"
+            :model="folder"
+            :team="getTeam.id" >
+          </Tree>
+        </draggable>
       </aside>
 
       <div v-if="mode === 'default'" class="workspace-main">
@@ -47,10 +49,11 @@
 </template>
 
 <script>
-import { mapState } from  'vuex'
+import moment from 'moment'
+import { mapState } from 'vuex'
 import Tree from '@/components/FolderTree'
 import FolderForm from '@/components/FolderForm'
-import { UpdateFolder, GetFolders, GetTeam } from '../constants/query.gql'
+import { UpdateFolder, GetFolders, GetTeam, SortFolders } from '../constants/query.gql'
 import { moveTask } from '@/helpers/helpers'
 
 export default {
@@ -126,6 +129,29 @@ export default {
           console.log(error)
         })
       }
+    },
+    reorder() {
+      const today = moment().valueOf() - this.getFolders.length
+      this.$apollo.mutate({
+        mutation: SortFolders,
+        variables: {
+          folders: this.getFolders.map(o => o.id),
+          orders: this.getFolders.map((o, i) => today + i)
+        },
+        update(store, { data: { sortFolders } }) {
+          const data = store.readQuery({
+            query: GetFolders,
+          })
+          data.getFolders = sortFolders
+          store.writeQuery({
+            query: GetFolders,
+            data
+          })
+        }
+      }).then(() => {
+      }).catch((error) => {
+        console.log(error)
+      })
     },
   }
 }

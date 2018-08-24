@@ -25,13 +25,15 @@
     </div>
 
     <ul class="tree" v-show="open" v-if="isFolder">
-      <tree
-        v-for="folder in getFolders"
-        :key="folder.id"
-        :model="folder"
-        @open="openArrow"
-      >
-      </tree>
+      <draggable v-model="getFolders" @change="reorder">
+        <tree
+          v-for="folder in getFolders"
+          :key="folder.id"
+          :model="folder"
+          @open="openArrow"
+        >
+        </tree>
+      </draggable>
     </ul>
 
     <FolderForm v-if="showModal" :config="modalConfig" @close="showModal = false"></FolderForm>
@@ -39,10 +41,11 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { mapState } from 'vuex'
 import FolderTree from './FolderTree'
 import FolderForm from './FolderForm'
-import { GetFolders, UpdateFolder, DeleteFolder } from '../constants/query.gql'
+import { GetFolders, UpdateFolder, DeleteFolder, SortFolders } from '../constants/query.gql'
 import { moveTask } from '@/helpers/helpers'
 
 export default {
@@ -177,6 +180,34 @@ export default {
         console.log(error)
       })
     },
+    reorder() {
+      const today = moment().valueOf() - this.getFolders.length
+      const parent = this.model.id
+      this.$apollo.mutate({
+        mutation: SortFolders,
+        variables: {
+          folders: this.getFolders.map(o => o.id),
+          orders: this.getFolders.map((o, i) => today + i),
+          parent
+        },
+        update(store, { data: { sortFolders } }) {
+          const data = store.readQuery({
+            query: GetFolders,
+            variables: { parent }
+          })
+          data.getFolders = sortFolders
+          store.writeQuery({
+            query: GetFolders,
+            variables: { parent },
+            data
+          })
+        }
+      }).then(() => {
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+
   },
   watch: {
     '$route' (to, from) {

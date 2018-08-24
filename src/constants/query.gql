@@ -167,6 +167,13 @@ mutation UpdateFolder($id: String!, $input: FolderInput) {
   updateFolder(id: $id, input: $input) { ...FolderFields }
 }
 
+mutation SortFolders($folders: [String], $orders: [Float], $parent: String) {
+  sortFolders(folders: $folders, orders: $orders, parent: $parent) {
+    ...FolderFields
+  }
+}
+
+
 mutation DeleteFolder($id: String!) {
   deleteFolder(id: $id)
 }
