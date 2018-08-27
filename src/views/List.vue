@@ -32,7 +32,7 @@ export default {
     filteredTasks() {
       return this.filterAll.includes(this.id)
         ? this.getTasks
-        : this.getTasks.filter(o => o.status !== 'Completed') 
+        : this.getTasks.filter(o => !['Completed', 'On Hold'].includes(o.status)) 
     }
   },
   apollo: {
