@@ -157,15 +157,13 @@ export default {
 }
 
 .task-info-wrapper {
-  flex-grow: 1;
-  display: flex;
+  flex: 1 1;
   align-items: center;
   width: 0;
   overflow: hidden;
 }
 
 .task-status {
-  flex-shrink: 0;
   width: 100px;
   max-width: 128px;
   margin: 0 8px;

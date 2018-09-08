@@ -8,15 +8,17 @@
 	    		class="notification-container"
 	    		v-bind:class="{active: $route.params.id === log.id}">
 
-					<div class="date">{{ formatDate(log.createdAt) }}</div>    			    		
-	    		<div class="task-title">{{ log.target.item.name }}</div>
+	    		<div class="notification-wrapper">
+						<div class="date">{{ formatDate(log.createdAt) }}</div>    			    		
+		    		<div class="task-title">{{ log.target.item.name }}</div>
 
-		      <avatar class="notification-avatar" :obj="log.user" :size="32" ></avatar>
-			    <div class="notification-body">
-						<span class="user-name">{{ log.user.firstname }} {{ log.user.lastname[0] }}</span>
-			    	<span v-if="log.body">{{ log.body }}</span>
-			    	<span v-else>created task</span>
-			    </div>
+			      <avatar class="notification-avatar" :obj="log.user" :size="32" ></avatar>
+				    <div class="notification-body">
+							<span class="user-name">{{ log.user.firstname }} {{ log.user.lastname[0] }}</span>
+				    	<span v-if="log.body">{{ log.body }}</span>
+				    	<span v-else>created task</span>
+				    </div>
+	    		</div>
   			</router-link>
 	    </div>
 		</div>
@@ -106,13 +108,16 @@ export default {
 }
 
 .notification-container {
-	box-sizing: border-box;
+  width: 100%;	
+}
+
+.notification-wrapper {
+	box-sizing: content-box;
   display: grid;
   grid-template-columns: 44px 1fr;
   grid-template-rows: 24px 32px;
   grid-row-gap: 4px;
   align-items: center;
-  width: 100%;
   padding: 10px 20px;
 	font-size: 12px;
   &:hover {
@@ -120,7 +125,7 @@ export default {
   }
   &.active {
     background-color: #4488ff29;
-  }
+  }	
 }
 
 .date {
