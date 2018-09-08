@@ -263,6 +263,10 @@ query GetTask($id: String!) {
   getTask(id: $id) { ...TaskFields }
 }
 
+query GetAllTasks($folder: String!) {
+  getAllTasks(folder: $folder) { ...TaskFields }
+}
+
 query GetRecord($id: String, $task: String, $date: String) {
   getRecord(id: $id, task: $task, date: $date) { ...RecordFields }
 }

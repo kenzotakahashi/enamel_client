@@ -53,7 +53,7 @@
 
 <script>
 import moment from 'moment'
-import { GetTasks, UpdateTask } from '../constants/query.gql'
+import { GetAllTasks, UpdateTask } from '../constants/query.gql'
 import { borderColorMap } from '@/helpers/helpers'
 import Task from '@/views/Task'
 
@@ -116,14 +116,14 @@ export default {
 		}
 	},
 	apollo: {
-	  getTasks: {
-	    query: GetTasks,
+	  getAllTasks: {
+	    query: GetAllTasks,
 	    variables() {
 	      return { folder: this.id }
 	    },
 	    pollInterval: 10000,
-	    result({ data: { getTasks } }) {
-	    	const tasks = getTasks.filter(o => o.finishDate)
+	    result({ data: { getAllTasks } }) {
+	    	const tasks = getAllTasks.filter(o => o.finishDate)
 	    	// Last Sunday
 	    	const start = moment(Math.min(...tasks.map(o => o.startDate))).day(-7)
 	    	// This Sunday
