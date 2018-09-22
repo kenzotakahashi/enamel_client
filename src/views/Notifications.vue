@@ -16,6 +16,7 @@
 				    <div class="notification-body">
 							<span class="user-name">{{ log.user.firstname }} {{ log.user.lastname[0] }}</span>
 				    	<span v-if="log.body">{{ log.body }}</span>
+				    	<span v-else-if="log.status">changed status to {{ log.status }}</span>
 				    	<span v-else>created task</span>
 				    </div>
 	    		</div>

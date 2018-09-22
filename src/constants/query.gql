@@ -36,6 +36,7 @@ fragment TaskFields on Task {
 fragment LogFields on Log {
   id
   body
+  status
   user {
     id
     firstname
