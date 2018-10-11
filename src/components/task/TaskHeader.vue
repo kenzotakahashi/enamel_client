@@ -10,7 +10,7 @@
         <div>
           <form @submit.prevent="updateTask">
             <input class="no-outline header-title task-name" type="text" name="taskname" ref="taskname"
-              v-model="taskName" @keyup.esc="cancel">
+              v-model="taskName" @keyup.esc="cancel" @blur="updateTask">
             </input>
           </form>
         </div>
