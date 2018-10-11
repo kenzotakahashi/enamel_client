@@ -135,11 +135,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .record-form {
   box-sizing: border-box;
   text-align: center;
-  background-color: #fff;
+  background-color: inherit;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.16);
 
   /* Position the tooltip */

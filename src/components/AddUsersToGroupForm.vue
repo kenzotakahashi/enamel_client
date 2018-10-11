@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-mask white" @click="$emit('close')">
+  <div class="modal-mask" @click="$emit('close')">
     <div class="modal-wrapper">
       <div class="modal-container" @click.stop="changeActiveWidget(null)">
         <h3>Add users to group</h3>

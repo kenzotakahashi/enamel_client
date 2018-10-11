@@ -137,6 +137,9 @@ export default {
     }
   }
 }
+.Dark .folder-sub-header > .filter {
+  color: $dark-text2;
+}
 
 .folder-name {
   padding: 0;

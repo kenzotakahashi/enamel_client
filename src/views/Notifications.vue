@@ -128,6 +128,9 @@ export default {
     background-color: #4488ff29;
   }	
 }
+.Dark .notification-wrapper:hover {
+  background-color: $dark-hover;
+}
 
 .date {
 	grid-column: 1;
@@ -155,7 +158,7 @@ export default {
 .notification-body {
 	grid-column: 2;
 	grid-row: 2;
-	color: rgba(0,0,0,.9);
+	// color: rgba(0,0,0,.9);
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -166,5 +169,10 @@ export default {
 	font-weight: 600;
 	font-size: 12px;
 }
+
+.Dark .date, .Dark .task-title {
+	color: $dark-text;
+}
+
 
 </style>

@@ -13,6 +13,7 @@ import Task from './views/Task.vue'
 import Account from './views/Account.vue'
 import Decline from './views/Decline.vue'
 import Notifications from './views/Notifications.vue'
+import Settings from './views/Settings.vue'
 
 Vue.use(Router)
 
@@ -107,6 +108,12 @@ const router = new Router({
       name: 'account',
       component: Account,
       meta: { title: 'Accounts - enamel', requiresAuth: true }
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: Settings,
+      meta: { title: 'Settings - enamel', requiresAuth: true }
     }
   ]
 })

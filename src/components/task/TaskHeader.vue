@@ -126,7 +126,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .task-view-header {
   box-sizing: border-box;
   padding: 12px 12px 12px 24px;
@@ -174,7 +174,9 @@ export default {
 .folder-belonged {
   font-size: 12px;
   color: rgba(0,0,0,.56);
-
+}
+.Dark .folder-belonged {
+  color: $dark-text;
 }
 
 .icon {

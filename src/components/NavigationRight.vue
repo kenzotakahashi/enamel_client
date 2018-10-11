@@ -1,6 +1,6 @@
 <template>
   <div class="nav-right">
-    <router-link :to="{name: 'notifications'}" class="notification">
+    <router-link v-if="route === 'workspace'" :to="{name: 'notifications'}" class="notification">
       <i class="far fa-bell"></i>
     </router-link>
 
@@ -10,9 +10,14 @@
       </div>
       <div class="dropdown-content" v-show="activeWidget === 'account-menu'">
         <div v-if="['Owner', 'Administrator'].includes(getUser.role) && route !== 'account'">
-          <router-link :to="{name: 'account'}">Accounts</router-link></div>
+          <router-link :to="{name: 'account'}">Accounts</router-link>
+        </div>
         <div v-if="route !== 'workspace'">
-          <router-link :to="{name: 'workspace'}">Workspace</router-link></div>
+          <router-link :to="{name: 'workspace'}">Workspace</router-link>
+        </div>
+        <div>
+          <router-link :to="{name: 'settings'}">Settings</router-link>
+        </div>
         <div>
           <span @click="logout">Logout</span>
         </div>

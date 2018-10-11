@@ -21,16 +21,27 @@ pre {
     color: $blue;
   }
 }
+.Dark pre {
+  color: $dark-text;
+}
 
 body {
   -webkit-font-smoothing: antialiased;
   color: #eff2f4;
-  background-color: $theme-purple;
-}
-
-.white {
-  color: $black;
-  background: #fff;
+  &.Classic {
+    background-color: $classic-background;    
+    .white {
+      color: $black;
+      background: #fff;
+    }
+  }
+  &.Dark {
+    background-color: $dark-background;    
+    .white {
+      color: #fff;
+      background: $dark-background2;
+    }
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -48,12 +59,23 @@ textarea {
   border: none;
   resize: none;
   font-size: inherit;
+  color: inherit;
+  background-color: inherit;
 }
 
 input {
   outline: none;
   border: none;
   font-size: inherit;
+  background-color: inherit;
+  color: inherit;
+  vertical-align: -webkit-baseline-middle;
+}
+
+input.no-outline {
+  outline: none;
+  border: none;
+  width: 100%;
 }
 
 button {
@@ -108,6 +130,9 @@ a.link {
 .black-text-button, .black-text-button:focus {
   color: rgba(0, 0, 0, 0.9)
 }
+.Dark .black-text-button, .Dark .black-text-button:focus {
+  color: $dark-text2;
+}
 
 .black-text-button:hover {
   color: $blue-hover;
@@ -129,6 +154,15 @@ a.link {
   visibility: visible;
 }
 
+.Dark .el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: $dark-hover;
+}
+
+.el-table, .el-table__expanded-cell, .el-table th, .el-table tr, .el-input__inner {
+  color: inherit !important;
+  background-color: inherit !important;
+}
+
 .fa-angle-down, .fa-angle-right {
   font-size: 12px;
 }
@@ -138,21 +172,12 @@ a.link {
   margin: 0 5px;
 }
 
-
-input {
-  font-size: inherit;
-  vertical-align: -webkit-baseline-middle;
-}
-
-input.no-outline {
-  outline: none;
-  border: none;
-  width: 100%;
-}
-
 .small-text {
   color: rgba(0,0,0,.56);
   font-size: 11px;
+}
+.Dark .small-text {
+  color: $dark-text;
 }
 
 .tree {
@@ -220,7 +245,6 @@ input.no-outline {
 
 .tree-plate:before {
   border-radius: 0 3px 3px 0;
-  /*background-color: #48f;*/
   content: '';
   position: absolute;
   left: 0;
@@ -261,6 +285,9 @@ input.no-outline {
   z-index: 10000;
   font-size: 14px;
 }
+.Dark .dropdown-content {
+  background-color: $dark-background2;
+}
 
 .tree-plate > .dropdown-content {
   top: 30px;
@@ -282,13 +309,13 @@ input.no-outline {
   padding: 5px 16px;
   text-decoration: none;
 }
-
-.dropdown-content div:hover {
-  background-color: $hover;
+.Dark .dropdown-content div {
+  color: $dark-text2;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
+  color: inherit;
 }
 
 /* ========= modal ============*/
@@ -300,9 +327,14 @@ input.no-outline {
   left: 0;
   width: 100%;
   height: 100%;
+  color: $black;
   background-color: rgba(39, 65, 90, 0.85);
   display: table;
   transition: opacity .3s ease;
+}
+.Dark .modal-mask {
+  color: $dark-text2;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal-wrapper {
@@ -323,6 +355,10 @@ input.no-outline {
   transition: all .3s ease;
 }
 
+.Dark .modal-container {
+  background-color: $dark-background;
+}
+
 .modal-container > .close-button {
   display: flex;
   justify-content: center;
@@ -331,7 +367,7 @@ input.no-outline {
   position: absolute;
   width: 24px;
   height: 24px;
-  color: black;
+  color: inherit;
   top: 0;
   right: 0;
   opacity: .7;
@@ -366,6 +402,9 @@ input.no-outline {
   position: absolute;
   z-index: 10000;
 }
+.Dark .tooltip .tooltip-content {
+  background-color: $dark-background2;
+}
 
 .tooltip .tooltip-content.top {
   bottom: 50px;  
@@ -389,9 +428,6 @@ input.no-outline {
 .contact-picker-item {
   box-sizing: border-box;
   cursor: pointer;
-  :hover {
-    background-color: $hover;
-  }
 }
 
 .group-list-item {
@@ -401,10 +437,6 @@ input.no-outline {
   font-size: 12px;
   cursor: pointer;
   padding: 0 10px;
-}
-
-.group-list-item:hover {
-  background-color: $hover;  
 }
 
 .group-list-item > span {
@@ -495,7 +527,16 @@ input.no-outline {
   white-space: nowrap;
 }
 
+.contact-picker-item:hover,
+.dropdown-content div:hover,
+.group-list-item:hover,
 .menu-item:hover {
   background-color: $hover;
 }
 
+.Dark .contact-picker-item:hover,
+.Dark .dropdown-content div:hover,
+.Dark .group-list-item:hover,
+.Dark .menu-item:hover {
+  background-color: $dark-hover;
+}

@@ -69,7 +69,6 @@ export default {
 <style scoped lang="scss">
 .comment-box {
   display: flex;
-  color: rgba(0,0,0,.56);
   margin-top: 10px;
   padding: 12px;
   border-top: 1px solid;

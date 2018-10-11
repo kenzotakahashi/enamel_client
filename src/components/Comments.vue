@@ -88,13 +88,15 @@ export default {
 .user-name {
   font-weight: 600;
   font-size: 12px;
-  color: rgba(0,0,0,.9);
 }
 
 .date {
   margin-left: 10px;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.56);
+}
+.Dark .date {
+  color: $dark-text;
 }
 
 .notification-body {
@@ -118,6 +120,9 @@ export default {
     }
   }
 }
+.Dark .notification-body.comment {
+  background-color: $dark-background3;
+}
 
 .action-wrapper {
   right: -8px;
@@ -140,6 +145,10 @@ export default {
     padding: 2px 7px;
     cursor: pointer;
   }
+}
+.Dark .action-wrapper {
+  background-color: $dark-background2;
+  border: 1px solid $dark-text;
 }
 
 </style>

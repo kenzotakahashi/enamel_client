@@ -13,7 +13,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
 .remove-button {
   visibility: hidden;
   display: block;

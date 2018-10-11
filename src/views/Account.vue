@@ -246,7 +246,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .container {
   width: 100%;
@@ -286,6 +286,9 @@ export default {
   margin-left: 4px;
   font-weight: 400;
 }
+.Dark .count-title {
+  color: $dark-text;
+}
 
 .account-main-container {
   padding-left: 32px;
@@ -308,6 +311,9 @@ export default {
   width: 5px;
   color: rgba(0, 0, 0, 0.32);
 }
+.Dark .member-count {
+  color: $dark-text;
+}
 
 .users-overview-items {
   display: flex;
@@ -323,6 +329,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
   user-select: none;
+}
+.Dark .users-overview-item {
+  border-color: $dark-text;
 }
 
 .users-overview-item:hover, .users-overview-item:hover .users-overview-role,
@@ -340,6 +349,9 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.Dark .users-overview-role {
+  color: $dark-text;
 }
 
 .create-group-button {

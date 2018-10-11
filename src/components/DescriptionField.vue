@@ -70,7 +70,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .description-field {
   font-size: 14px;
   padding: 30px 30px;
@@ -88,11 +88,17 @@ textarea {
 .description-field:hover .description-text {
   color: rgba(0, 0, 0, 0.56);
 }
+.Dark .description-field:hover .description-text {
+  color: $dark-text2;
+}
 
 .description-text {
   font-size: 18px;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.32);
+}
+.Dark .description-text {
+  color: $dark-text;
 }
 
 .save-button {

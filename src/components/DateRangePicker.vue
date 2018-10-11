@@ -200,11 +200,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .daterange-picker {
   box-sizing: border-box;
   text-align: center;
-  background-color: #fff;
+  background-color: inherit;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.16);
 
   /* Position the tooltip */
@@ -222,7 +222,6 @@ export default {
 
 .title {
 	font-size: 17px;
-	color: #111;
 	line-height: 27px;
 	padding: 18px;
 }
@@ -237,6 +236,9 @@ export default {
 	cursor: pointer;
   border-bottom: 2px solid transparent;
 	text-transform: uppercase;
+}
+.Dark .planning-type {
+	color: $dark-text;
 }
 
 .planning-type.active {
@@ -261,7 +263,6 @@ export default {
 
 .header {
 	font-size: 17px;
-	color: #111;
 	line-height: 27px;
 	margin-bottom: 9px; 
 }
@@ -293,7 +294,6 @@ export default {
 	vertical-align: middle;
 	box-sizing: border-box;
 	width: 105px;
-	background-color: #fff;
 	padding: 0 8px;
 }
 

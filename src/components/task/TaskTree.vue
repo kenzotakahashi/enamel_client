@@ -182,6 +182,9 @@ export default {
 .tree-item:hover {
   background-color: $hover;
 }
+.Dark .tree-item:hover {
+  background-color: $dark-hover;
+}
 
 .tree-item.active {
   background-color: #4488ff29;

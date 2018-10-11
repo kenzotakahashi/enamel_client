@@ -40,7 +40,7 @@
 		</div>
 
 	  <div v-if="showTask"
-	   	class="modal-mask white" @click="showTask = false">
+	   	class="modal-mask" @click="showTask = false">
 	    <div class="modal-wrapper">
 	      <div class="modal-container" @click.stop="$store.dispatch('changeActiveWidget', null)">
 	      	<Task :taskId="taskId"></Task>
@@ -186,7 +186,6 @@ export default {
 .grid {
 	display: grid;
 	margin-top: 10px;
-	background-color: #fff;
 	border: 1px solid	rgba(0,0,0,.16);
 	border-left: 0;
 	border-right: 0;
@@ -203,6 +202,9 @@ export default {
 		border-left: 0;
 	}
 }
+.Dark .week {
+	background-color: $dark-background3;
+}
 
 .day-of-week {
 	grid-row: 2;
@@ -215,10 +217,16 @@ export default {
 		border-left: 0;
 	}
 }
+.Dark .day-of-week {
+	background-color: $dark-background3;
+}
 
 .saturday, .sunday {
 	grid-row: 3 / end;
 	background-color: #F3F3F3;
+}
+.Dark .saturday, .Dark .sunday {
+	background-color: $dark-background3;
 }
 
 .saturday {

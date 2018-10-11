@@ -82,6 +82,7 @@ fragment UserFields on User {
   rateType
   status
   readNotificationsAt
+  appearance
   createdAt
 }
 
