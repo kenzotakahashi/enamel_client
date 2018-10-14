@@ -259,7 +259,10 @@ export default {
 }
 
 .time-spent:hover, .task-name:hover {
-	background-color: $hover;	
+	background-color: $hover;
+}
+.Dark .time-spent:hover, .Dark .task-name:hover {
+	background-color: $dark-hover;
 }
 
 .modal-container {
