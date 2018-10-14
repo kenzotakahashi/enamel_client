@@ -84,15 +84,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.inner-space {
-  display: flex;
-  height: 100%;
-}
-
-.subspace {
-  width: 50%;
-  height: 100%;
-}
 
 .wrapper {
 	width: 50%;
@@ -103,8 +94,7 @@ export default {
 }
 
 .white.card {
-  display: flex;
-  flex-direction: column;
+	// TODO: date picker is hidden
   overflow: scroll;
 }
 

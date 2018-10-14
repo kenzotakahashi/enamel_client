@@ -84,11 +84,6 @@ export default {
 
 <style scoped lang="scss">
 
-.white.card {
-  display: flex;
-  flex-direction: column;
-}
-
 .task-container {
   overflow: scroll;
 }

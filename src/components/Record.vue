@@ -1,5 +1,5 @@
 <template>
-	<div class="record-form bottom" @click.stop="">
+	<div class="record-form" @click.stop="">
 		<div class="time-logger">
 			<form>
 				<div class="form-item">
@@ -40,7 +40,7 @@ import { CreateRecord, UpdateRecord, DeleteRecord, GetRecord } from '@/constants
 export default {
 	props: ['task', 'record'],
 	data() {
-		const { timeSpent, comment } = this.record || {}
+		const { timeSpent, comment, date } = this.record || {}
 		const [ hours, minutes ] = timeSpent
 			? timeSpent.split(':').map(o => parseInt(o))
 			: [0,0]
@@ -48,7 +48,7 @@ export default {
 			hours,
 			minutes,
 			comment,
-			date: moment()
+			date: date ? moment(date) : moment()
 		}
 	},
 	computed: {
@@ -127,9 +127,12 @@ export default {
 				task: this.task.id,
 				date: moment().format('YYYY-MM-DD')
 			}
-			const data = store.readQuery({ query: GetRecord, variables })
-			data.getRecord = val
-			store.writeQuery({ query: GetRecord, variables, data })
+			try {
+				const data = store.readQuery({ query: GetRecord, variables })
+				data.getRecord = val
+				store.writeQuery({ query: GetRecord, variables, data })				
+			} catch(error) {
+			}
 		}
 	}
 }
@@ -148,11 +151,6 @@ export default {
 
 	text-align: left;
   width: 290px;
-}
-
-.record-form.bottom {
-  top: 155px;
-  left: 22px;
 }
 
 .time-logger {

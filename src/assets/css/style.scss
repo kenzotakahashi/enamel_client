@@ -28,15 +28,16 @@ pre {
 body {
   -webkit-font-smoothing: antialiased;
   color: #eff2f4;
+  background-color: $classic-background;
   &.Classic {
-    background-color: $classic-background;    
+    background-color: $classic-background;
     .white {
       color: $black;
       background: #fff;
     }
   }
   &.Dark {
-    background-color: $dark-background;    
+    background-color: $dark-background;
     .white {
       color: #fff;
       background: $dark-background2;
@@ -167,9 +168,24 @@ a.link {
   font-size: 12px;
 }
 
+.inner-space {
+  display: flex;
+  height: 100%;
+}
+
+.subspace {
+  width: 50%;
+  height: 100%;
+}
+
 .card {
   border-radius: 2px;
   margin: 0 5px;
+}
+
+.white.card {
+  display: flex;
+  flex-direction: column;
 }
 
 .small-text {

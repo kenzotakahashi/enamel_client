@@ -43,7 +43,7 @@
 	   	class="modal-mask" @click="showTask = false">
 	    <div class="modal-wrapper">
 	      <div class="modal-container" @click.stop="$store.dispatch('changeActiveWidget', null)">
-	      	<Task :taskId="taskId"></Task>
+	      	<Task :taskId="taskId" :isModal="true"></Task>
 	      </div>
 	    </div>
 	  </div>

@@ -14,6 +14,7 @@ import Account from './views/Account.vue'
 import Decline from './views/Decline.vue'
 import Notifications from './views/Notifications.vue'
 import Settings from './views/Settings.vue'
+import Timelog from './views/Timelog.vue'
 
 Vue.use(Router)
 
@@ -76,6 +77,13 @@ const workspace = {
           props: true
         }
       ]
+    },
+    {
+      path: 'timelog/:id/:year/:month',
+      name: 'timelog',
+      component: Timelog,
+      meta: { title: 'Timelog - enamel' },
+      props: true,
     }
   ]
 }

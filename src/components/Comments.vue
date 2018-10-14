@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-bind:class="{comments: isModal}">
     <div v-for="log in comments" class="comment-container">
       <avatar :obj="log.user" :size="32" class="task-avatar"></avatar>
       <div class="notification-body" v-bind:class="{comment: log.body}">
@@ -28,7 +28,7 @@ import { formatDate } from '@/helpers/helpers'
 import { DeleteComment, GetComments, GetUser } from '@/constants/query.gql'
 
 export default {
-  props: ['id', 'comments'],
+  props: ['id', 'comments', 'isModal'],
   data() {
     return {
       formatDate,
@@ -66,6 +66,10 @@ export default {
 <style scoped lang="scss">
 .date {
   padding-left: 20px;
+}
+
+.comments {
+  max-height: 200px;
 }
 
 .comment-container {

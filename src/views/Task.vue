@@ -18,12 +18,13 @@
 
       <DescriptionField :model="task" kind="task"></DescriptionField>
     
-      <Comments :id="task.id" :comments="getComments"></Comments>
+      <Comments :id="task.id" :comments="getComments" :isModal="isModal"></Comments>
     </div>
 
     <CommentBox :parent="task.id" class="stick-bottom" @scrollComment="scrollComment"></CommentBox>
 
-    <Record v-if="activeWidget === 'record-form'" :task="task" :record="getRecord"></Record>
+    <Record v-if="activeWidget === 'record-form'" :task="task" :record="getRecord"
+      v-bind:style="{'top': '155px', 'left': '22px'}"></Record>
     <DateRangePicker v-if="activeWidget === 'daterange'" :task="task"></DateRangePicker>
   </div>
 
@@ -58,7 +59,7 @@ export default {
     Comments,
     CommentBox
   },
-  props: ['taskId'],
+  props: ['taskId', 'isModal'],
   data() {
     return {
       task: {

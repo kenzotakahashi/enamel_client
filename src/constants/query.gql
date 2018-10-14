@@ -98,7 +98,10 @@ fragment GroupFields on Group {
 fragment RecordFields on Record {
   id
   user
-  task
+  task {
+    id
+    name
+  }
   date
   timeSpent
   comment
@@ -270,7 +273,11 @@ query GetAllTasks($folder: String!) {
 }
 
 query GetRecord($id: String, $task: String, $date: String) {
-  getRecord(id: $id, task: $task, date: $date) { ...RecordFields }
+  getRecord(id: $id, task: $task, date: $date) {...RecordFields }
+}
+
+query GetRecords($id: String, $date: String) {
+  getRecords(id: $id, date: $date) { ...RecordFields }
 }
 
 query GetLogs {

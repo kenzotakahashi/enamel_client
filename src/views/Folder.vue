@@ -105,15 +105,6 @@ export default {
 </script>
 
 <style lang="scss">
-.inner-space {
-  display: flex;
-  height: 100%;
-}
-
-.subspace {
-  width: 50%;
-  height: 100%;
-}
 
 .folder-header {
   padding: 15px 24px 0;
@@ -165,11 +156,6 @@ export default {
 
 .max-height {
   height: 100%;
-}
-
-.white.card {
-  display: flex;
-  flex-direction: column;
 }
 
 </style>

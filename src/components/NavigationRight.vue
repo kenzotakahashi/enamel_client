@@ -1,8 +1,13 @@
 <template>
   <div class="nav-right">
-    <router-link v-if="route === 'workspace'" :to="{name: 'notifications'}" class="notification">
-      <i class="far fa-bell"></i>
-    </router-link>
+    <div v-if="route === 'workspace'">
+      <router-link :to="{name: 'notifications'}" class="menu">
+        <i class="far fa-bell"></i>
+      </router-link>
+      <router-link :to="{name: 'timelog', params: timelogParam()}" class="menu">
+        <i class="far fa-clock"></i>
+      </router-link>
+    </div>
 
     <div class="dropdown" @click.stop="$store.dispatch('changeActiveWidget', 'account-menu')">
       <div class="user-container">
@@ -36,7 +41,7 @@ export default {
   props: ['auth'],
   data() {
     return {
-      route: this.$route.name,
+      route: this.$route.path[1] === 'w' ? 'workspace' : this.$route.name,
       modalConfig: {},
       getTeam: {},
       getUser: {},
@@ -76,6 +81,13 @@ export default {
       this.$root.$data.userId = localStorage.getItem('user-id')
       this.$router.push({name: 'login'})
       this.$apollo.provider.clients.defaultClient.cache.reset()
+    },
+    timelogParam() {
+      return {
+        id: this.getUser.id,
+        year: moment().year(),
+        month: moment().month() + 1
+      }
     }
   }
 }
@@ -88,9 +100,8 @@ export default {
   align-items: center;
 }
 
-.notification {
+.menu {
   padding: 0 10px;
-  margin: 0 10px;
   font-size: 20px;
 }
 
@@ -105,6 +116,10 @@ export default {
 
 .fa-angle-down {
   padding-left: 10px;
+}
+
+.dropdown {
+  margin-left: 10px;
 }
 
 .dropdown-content {
