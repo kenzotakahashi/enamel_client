@@ -21,11 +21,15 @@
 	    		</router-link>
 	    	</div>
 	    	<div class="timelog-view" v-bind:style="gridConfig">
-	    		<div v-for="l in [1,2,3,4,5]" class="line vertical" v-bind:style="{'grid-column': l}"></div>
-
 	    		<div v-for="d in getDays()" :key="`${d}line`" class="line horizontal"
-	    			v-bind:style="{'grid-row': `d${d}`}">
+	    			v-bind:class="{
+	    				'weekend': [0,6].includes(moment({year, month: month-1, d}).day()),
+	    				'today': moment({year, month: month-1, d}).isSame(today, 'day')
+	    			}"
+	    			v-bind:style="{'grid-row': `d${d} / d${d+1}`}">
 	    		</div>
+
+	    		<div v-for="l in [1,2,3,4,5]" class="line vertical" v-bind:style="{'grid-column': l}"></div>
 
 					<div v-for="d in getDays()" :key="`${d}day`" class="day"
 						v-bind:style="{'grid-row': `d${d}` }">
@@ -91,6 +95,7 @@ export default {
 				'grid-template-columns': '35px 55px 55px 350px auto',
 				'grid-template-rows': ''
 			},
+			today: moment(),
 			end: moment({year: this.year, month: this.month - 1}).endOf('month').date(),
 			showTask: false,
 			taskId: null,
@@ -221,6 +226,9 @@ export default {
 	grid-row: 1 / end;
 	border-right: 1px solid rgba(0,0,0,.16);
 }
+.today {
+	border-top: 1px solid red;
+}
 
 .day {
 	grid-column: 1;
@@ -260,9 +268,17 @@ export default {
 
 .time-spent:hover, .task-name:hover {
 	background-color: $hover;
+	border-right: 1px solid rgba(0,0,0,.16);
 }
 .Dark .time-spent:hover, .Dark .task-name:hover {
 	background-color: $dark-hover;
+}
+
+.weekend {
+	background-color: #F3F3F3;
+}
+.Dark .weekend {
+	background-color: $dark-background3;
 }
 
 .modal-container {
