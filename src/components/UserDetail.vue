@@ -181,7 +181,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .user-detail {
   box-sizing: border-box;
   position: absolute;
@@ -323,6 +323,10 @@ td {
   margin-bottom: 8px;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.56);
+}
+
+.Dark .user-role, .Dark .user-settings-label, .Dark .user-groups-label {
+  color: $dark-text;
 }
 
 .group-list {
